@@ -49,13 +49,31 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-                    <a href="{{ url('/dashboard') }}" class="nav-link">
+                    <a href="{{ url('/') }}" class="nav-link">
                         <img src="{{ asset('images/logo/logo-new.png') }}" width="105" height="35" alt=""
                             class="">
                         {{-- <div>Ecommerce-Laravel-10</div> --}}
                     </a>
                 </h1>
                 <div class="navbar-nav flex-row order-md-last">
+                    <div class="nav-item d-none d-md-flex me-8">
+                        <div class="btn-list">
+                            <a href="#" class="btn btn-outline-info w-100" target="_blank" rel="noreferrer">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="icon icon-tabler icon-tabler-shopping-bag" width="24" height="24"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path
+                                        d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304z">
+                                    </path>
+                                    <path d="M9 11v-5a3 3 0 0 1 6 0v5"></path>
+                                </svg>
+                                POS
+                            </a>
+
+                        </div>
+                    </div>
                     <div class="nav-item d-none d-md-flex">
                         <div class="btn-list">
                             @guest
@@ -126,8 +144,9 @@
                                         <span
                                             class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                stroke="currentColor" fill="none" stroke-linecap="round"
+                                                stroke-linejoin="round">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                 <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
                                                 <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
@@ -195,64 +214,44 @@
                                                 <a class="dropdown-item" href="{{ route('product.index') }}">
                                                     Products
                                                 </a>
-                                                {{-- <a class="dropdown-item" href="{{ route('category.create') }}">
-                            Add Category
-                          </a>
-                          <a class="dropdown-item" href="{{ route('subcategory.create') }}">
-                            Add Sub Categories
-                          </a> --}}
-                                                {{-- <div class="dropend">
-                            <a class="dropdown-item dropdown-toggle" href="#sidebar-cards" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
-                              Category 1
-                            </a>
-                            <div class="dropdown-menu">
-                              <a href="./cards.html" class="dropdown-item">
-                                Sample cards
-                              </a>
-                              <a href="./card-actions.html" class="dropdown-item">
-                                Card actions
-                                
-                              </a>
-                              <a href="./cards-masonry.html" class="dropdown-item">
-                                Cards Masonry
-                              </a>
-                            </div>
-                          </div>
-                          <div class="dropend">
-                            <a class="dropdown-item dropdown-toggle" href="#sidebar-cards" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
-                              Category 2
-                            </a>
-                            <div class="dropdown-menu">
-                              <a href="./cards.html" class="dropdown-item">
-                                Sample cards
-                              </a>
-                              <a href="./card-actions.html" class="dropdown-item">
-                                Card actions
-                                
-                              </a>
-                              <a href="./cards-masonry.html" class="dropdown-item">
-                                Cards Masonry
-                              </a>
-                            </div>
-                          </div>
-                          <div class="dropend">
-                            <a class="dropdown-item dropdown-toggle" href="#sidebar-cards" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
-                              Category 3
-                            </a>
-                            <div class="dropdown-menu">
-                              <a href="./cards.html" class="dropdown-item">
-                                Sample cards
-                              </a>
-                              <a href="./card-actions.html" class="dropdown-item">
-                                Card actions
-                                
-                              </a>
-                              <a href="./cards-masonry.html" class="dropdown-item">
-                                Cards Masonry
-                              </a>
-                            </div>
-                          </div> --}}
+                                            </div>
 
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                                        data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                        <span
+                                            class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="icon icon-tabler icon-tabler-shopping-bag" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                stroke="currentColor" fill="none" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path
+                                                    d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304z">
+                                                </path>
+                                                <path d="M9 11v-5a3 3 0 0 1 6 0v5"></path>
+                                            </svg>
+                                        </span>
+                                        <span class="nav-link-title">
+                                            Purchase
+                                        </span>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-menu-columns">
+                                            <div class="dropdown-menu-column">
+                                                <a class="dropdown-item" href="#">
+                                                    Purchase List
+                                                </a>
+                                                <a class="dropdown-item" href="#">
+                                                    Add Purchase
+                                                </a>
+                                                <a class="dropdown-item" href="#">
+                                                    Import Purchase by CSV
+                                                </a>
                                             </div>
 
                                         </div>
