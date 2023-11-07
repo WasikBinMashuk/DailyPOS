@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <title>DailyShop - Admin</title>
-    <link rel="icon" type="image/png" href="{{ asset('images/logo/favicon-new.png') }}">
+    <title>DailyPOS</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo/favicon.png') }}">
 
     <!-- CSS files -->
     <link href="{{ asset('css/tabler.min.css?1684106062') }}" rel="stylesheet" />
@@ -50,7 +50,7 @@
                 </button>
                 <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
                     <a href="{{ url('/') }}" class="nav-link">
-                        <img src="{{ asset('images/logo/logo-new.png') }}" width="105" height="35" alt=""
+                        <img src="{{ asset('images/logo/DailyPOS-logo.png') }}" width="115" height="40" alt=""
                             class="">
                         {{-- <div>Ecommerce-Laravel-10</div> --}}
                     </a>
@@ -323,7 +323,7 @@
                         <ul class="list-inline list-inline-dots mb-0">
                             <li class="list-inline-item">
                                 Copyright &copy; 2023
-                                <a href="." class="link-secondary">DailyShop</a>.
+                                <a href="." class="link-secondary">DailyPOS</a>.
                                 All rights reserved.
                             </li>
                         </ul>
