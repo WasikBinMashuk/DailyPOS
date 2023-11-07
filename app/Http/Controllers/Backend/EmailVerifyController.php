@@ -20,7 +20,7 @@ class EmailVerifyController extends Controller
     public function verify(EmailVerificationRequest $request)
     {
         $request->fulfill();
-        return redirect('/dashboard');
+        return redirect('/');
     }
 
     public function verificationSend(Request $request)

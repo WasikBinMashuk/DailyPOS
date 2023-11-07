@@ -83,7 +83,7 @@
                                 <div>
                                     <input type="text" class="form-control @error('stock') is-invalid @enderror"
                                         name="stock" placeholder="Enter Stock"
-                                        value="{{ old('stock', $editProduct->price) }} ">
+                                        value="{{ old('stock', $editProduct->stock) }} ">
                                     @error('stock')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -102,14 +102,6 @@
                                         </option>
                                     </select>
                                 </div>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="trendy" value="1"
-                                        {{ old('trendy', $editProduct->trendy) == '1' ? 'checked' : '' }} />
-                                    <span class="form-check-label">Trendy Product</span>
-                                    <span class="form-check-description">This product will be featured on home page.</span>
-                                </label>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Description</label>

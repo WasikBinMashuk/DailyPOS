@@ -51,15 +51,15 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            {{-- <div class="col-md-6 mb-3">
                                 <label class="form-label required">Status</label>
                                 <div>
-                                    <select name="status" class="form-select" disabled>
+                                    <select name="status" class="form-select">
                                         <option value="1" selected>Active</option>
                                         <option value="0">Inactive</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <div class="card-footer text-end">

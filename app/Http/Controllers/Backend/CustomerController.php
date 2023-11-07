@@ -34,12 +34,12 @@ class CustomerController extends Controller
      */
     public function store(CustomerFormRequest $request)
     {
+        // dd('dada');
         try {
             Customer::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'mobile' => $request->mobile,
-                'status' => $request->status,
                 'address' => $request->address,
             ]);
 
