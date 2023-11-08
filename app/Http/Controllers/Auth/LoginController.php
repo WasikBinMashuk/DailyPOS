@@ -32,11 +32,26 @@ class LoginController extends Controller
      * @return mixed
      */
 
+    //Overriding the method for Captcha validation
+    protected function validateLogin(Request $request)
+    {
+        $request->validate(
+            [
+                $this->username() => 'required|string',
+                'password' => 'required|string',
+                'captcha' => 'required|captcha',
+            ],
+            [
+                'captcha.captcha' => 'The captcha is invalid',
+            ]
+        );
+    }
+
     //overriding the method to suspend inactivated users
     protected function authenticated(Request $request, $user)
     {
-        
-        if($user->status == 0){
+
+        if ($user->status == 0) {
             Auth::logout();
 
             // sweet alert
@@ -44,7 +59,6 @@ class LoginController extends Controller
 
             return redirect()->route('login');
         }
-        
     }
     /**
      * Where to redirect users after login.
@@ -62,6 +76,4 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
-
-    
 }

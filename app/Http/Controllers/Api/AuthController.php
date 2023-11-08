@@ -55,9 +55,20 @@ class AuthController extends Controller
     //Customer login API
     public function login(Request $request)
     {
-        if (Auth::guard('customer')->attempt(['email' => $request->email, 'password' => $request->password])) {
-            $user = Auth::guard('customer')->user();
-            $success['token'] = $user->createToken('DailyShop')->plainTextToken;
+        // return $request->all();
+        // $rules = ['captcha' => 'required|captcha_api:' . request('key')];
+        $rules = ['captcha' => 'required|captcha_api:' . request('key') . ',math'];
+        $validator = validator()->make(request()->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'invalid captcha',
+            ]);
+        }
+
+
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            $user = Auth::user();
+            $success['token'] = $user->createToken('DailyPOS')->plainTextToken;
             $success['name'] = $user->name;
 
             return ApiResponseHelper::apiResponse('Success', '200', 'Login successful', $success);

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\CaptchaController as ApiCaptchaController;
+use App\Http\Controllers\Backend\CaptchaController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Customer\LoginController;
@@ -23,6 +25,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Mews\Captcha\Facades\Captcha;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +53,9 @@ Route::middleware('auth')->prefix('email')->group(function () {
 
 // Localization Route
 Route::get('lang/change', [LangController::class, 'lang_change'])->name('lang.change');
+
+//Captcha Route
+Route::get('reload-captcha', [CaptchaController::class, 'reloadCaptcha']);
 
 // AUTH group route for users, categories, subcategories and products
 Route::group(['middleware' => ['auth', 'verified']], function () {
@@ -122,8 +129,8 @@ Route::get('send/mail', function () {
     dd('Send mail successfully');
 });
 
-
-Route::get('response/api', [OtpController::class, 'apiTesting']);
+//Captcha APIs
+Route::get('api/captcha', [ApiCaptchaController::class, 'view']);
 
 
 // Route::get('/otp', function () {
