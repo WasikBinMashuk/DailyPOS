@@ -246,6 +246,9 @@
                                     <div class="dropdown-menu">
                                         <div class="dropdown-menu-columns">
                                             <div class="dropdown-menu-column">
+                                                <a class="dropdown-item" href="{{ route('suppliers.index') }}">
+                                                    Suppliers List
+                                                </a>
                                                 <a class="dropdown-item" href="#">
                                                     Purchase List
                                                 </a>
@@ -285,7 +288,7 @@
                                 </li>
 
                             </ul>
-                            <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
+                            {{-- <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
                                 <form action="./" method="get" autocomplete="off" novalidate>
                                     <div class="input-icon">
                                         <span class="input-icon-addon">
@@ -303,7 +306,7 @@
                                             aria-label="Search in website">
                                     </div>
                                 </form>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

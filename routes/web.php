@@ -19,6 +19,7 @@ use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CustomerDashboardController;
 use App\Http\Controllers\LangController;
 use App\Http\Controllers\Backend\RoleController;
+use App\Http\Controllers\Backend\SupplierController;
 use App\Http\Controllers\Frontend\OtpController;
 use App\Jobs\SendEmailJob;
 use Illuminate\Support\Facades\Auth;
@@ -104,6 +105,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     // Customer crud routes in admin panel
     Route::resource('customers', CustomerController::class);
+
+    //Supplier crud routes
+    Route::resource('suppliers', SupplierController::class);
 
 
     // Roles routes with role of Super Admin only
