@@ -14,7 +14,7 @@ class CaptchaController extends Controller
     public function view()
     {
         // Generate captcha key
-         $captchaKey = FacadesCaptcha::create('math', true);
+        $captchaKey = FacadesCaptcha::create('math', true);
 
         // // Get captcha image URL
         // $captchaImageURL = FacadesCaptcha::src('math');
@@ -22,11 +22,11 @@ class CaptchaController extends Controller
         $base64Image = $captchaKey['img']; // Encode the image as PNG
         $base64Image = str_replace('data:image/png;base64,', '', $base64Image);
         $imageData = base64_decode($base64Image);
-        $filePath = public_path('images/captcha/captchaImg.png'); // Define the file path where you want to save the image
+        $filePath = public_path('images/captcha/captchaImg' . time() . '.png'); // Define the file path where you want to save the image
 
         file_put_contents($filePath, $imageData); // Save the image data to the file
 
-        $imageUrl = asset('images/captcha/captchaImg.png'); // Get the URL of the saved image
+        $imageUrl = asset('images/captcha/captchaImg' . time() . '.png'); // Get the URL of the saved image
 
 
         // Now, you can use $captchaKey and $captchaImageURL as needed
