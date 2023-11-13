@@ -23,6 +23,10 @@ class Product extends Model
         'description',
     ];
 
+    public function stock():HasMany{
+        return $this->hasMany(Stock::class);
+    }
+
     public function subCategory(): BelongsTo
     {
         return $this->belongsTo(SubCategory::class);
