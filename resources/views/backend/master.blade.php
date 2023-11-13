@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>DailyPOS</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo/favicon.png') }}">
 
@@ -249,10 +250,10 @@
                                                 <a class="dropdown-item" href="{{ route('suppliers.index') }}">
                                                     Suppliers List
                                                 </a>
-                                                <a class="dropdown-item" href="#">
+                                                <a class="dropdown-item" href="{{ route('purchases.index') }}">
                                                     Purchase List
                                                 </a>
-                                                <a class="dropdown-item" href="#">
+                                                <a class="dropdown-item" href="{{ route('purchases.create') }}">
                                                     Add Purchase
                                                 </a>
                                                 <a class="dropdown-item" href="#">

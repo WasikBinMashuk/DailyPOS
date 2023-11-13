@@ -11,6 +11,7 @@ use App\Http\Controllers\Backend\EmailVerifyController;
 use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Backend\ProductController;
+use App\Http\Controllers\Backend\PurchaseController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\SubCategoryController;
 use App\Http\Controllers\Backend\UserController;
@@ -108,6 +109,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     //Supplier crud routes
     Route::resource('suppliers', SupplierController::class);
+
+    //Purchase crud routes
+    Route::resource('purchases', PurchaseController::class);
+    Route::post('/purchases/submit-form', [PurchaseController::class, 'formSubmit'])->name('purchase.cart');
+    Route::post('/purchases/store-data', [PurchaseController::class, 'storeData']);
 
 
     // Roles routes with role of Super Admin only
