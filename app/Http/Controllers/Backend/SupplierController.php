@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Supplier;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class SupplierController extends Controller
 {
@@ -33,11 +34,17 @@ class SupplierController extends Controller
     {
         $request->validate([
             'supplier_name' => 'required|unique:suppliers|string|min:1|max:255',
+            'email' => 'required|string|email|min:1|max:255|unique:suppliers',
+            'mobile' => 'required|unique:suppliers|numeric|digits:11',
+            'address' => 'required|string|min:1|max:255',
         ]);
 
         try {
             Supplier::create([
                 'supplier_name' => $request->supplier_name,
+                'email' => $request->email,
+                'mobile' => $request->mobile,
+                'address' => $request->address,
             ]);
 
             // sweet alert
@@ -79,12 +86,18 @@ class SupplierController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'supplier_name' => 'required|unique:suppliers|string|min:1|max:255',
+            'supplier_name' => ['required', 'string', 'min:1', 'max:255', Rule::unique('suppliers', 'supplier_name')->ignore($id)],
+            'email' => ['required', 'string', 'email', 'min:1', 'max:255', Rule::unique('suppliers', 'email')->ignore($id)],
+            'mobile' => ['required', 'numeric', 'digits:11', Rule::unique('suppliers', 'mobile')->ignore($id)],
+            'address' => 'required|string|min:1|max:255',
         ]);
 
         try {
             Supplier::where('id', $id)->first()->update([
                 'supplier_name' => $request->supplier_name,
+                'email' => $request->email,
+                'mobile' => $request->mobile,
+                'address' => $request->address,
             ]);
 
             // sweet alert

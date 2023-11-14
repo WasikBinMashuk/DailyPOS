@@ -22,6 +22,9 @@
                                 <tr>
                                     {{-- <th scope="col">Category ID</th> --}}
                                     <th scope="col">Supplier Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Mobile</th>
+                                    <th scope="col">Address</th>
                                     <th scope="col">Actions</th>
                                     <th scope="col"></th>
                                     {{-- <th scope="col"></th> --}}
@@ -32,6 +35,9 @@
                                 @foreach ($suppliers as $supplier)
                                     <tr>
                                         <td>{{ $supplier->supplier_name }}</td>
+                                        <td>{{ $supplier->email }}</td>
+                                        <td>{{ $supplier->mobile }}</td>
+                                        <td>{{ $supplier->address }}</td>
                                         <td style="width: 100px">
                                             <a href="{{ route('suppliers.edit', $supplier->id) }}" class="btn btn-primary">
                                                 <i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i>
