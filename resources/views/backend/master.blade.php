@@ -19,12 +19,19 @@
 
     {{-- Jquery CSS --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css"> --}}
+    <link rel="stylesheet" type="text/css" href="{{ asset('jqueryui/jquery-ui.min.css') }}">
 
     {{-- Jquery CDN --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     {{-- datatables CDN --}}
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <!-- Jquery UI for autocomplete -->
+    {{-- <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"
+        integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" crossorigin="anonymous"></script> --}}
+    <script src="{{ asset('jqueryui/jquery-ui.min.js') }}" type="text/javascript"></script>
 
     <style>
         @import url('https://rsms.me/inter/inter.css');
@@ -461,6 +468,9 @@
 
     {{-- Fontawesome --}}
     <script src="https://kit.fontawesome.com/d8c89bb2c3.js" crossorigin="anonymous"></script>
+
+    {{-- DatePicker --}}
+    <script src="{{ asset('libs/litepicker/dist/litepicker.js?1684106062') }}" defer></script>
 
     <!-- Tabler Core -->
     <script src="{{ asset('js/tabler.min.js?1684106062') }}" defer></script>

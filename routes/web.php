@@ -114,7 +114,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resource('purchases', PurchaseController::class);
     Route::post('/purchases/submit-form', [PurchaseController::class, 'formSubmit'])->name('purchase.cart');
     Route::post('/purchases/store-data', [PurchaseController::class, 'storeData']);
-
+    Route::post('/purchases/autocomplete', [PurchaseController::class, 'autoComplete'])->name('autoComplete');
 
     // Roles routes with role of Super Admin only
     Route::group(['middleware' => 'role:Super Admin'], function () {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -117,5 +118,39 @@ class PurchaseController extends Controller
         toast('Data Updated!', 'success');
         return redirect()->route('purchases.create');
         // return response()->json(['success' => true, 'message' => 'Data stored successfully']);
+    }
+
+    public function autoComplete(Request $request)
+    {
+        // dd($request->term);
+        // $data = Product::select('product_name')->where('product_name', 'LIKE', "%$request->term%")->get();
+        // $result = [];
+
+        // foreach ($data as $item) {
+        //     $result[] = $item->product_name; // Change 'name' to the field you want to autocomplete
+        // }
+
+        // return response()->json($result);
+
+        // $res = Product::select("product_name")
+        //     ->where("product_name", "LIKE", "%{$request->term}%")
+        //     ->get();
+
+        // return response()->json($res);
+
+        $search = $request->search;
+
+        if ($search == '') {
+            $employees = Product::orderby('product_name', 'asc')->select('id', 'product_name')->limit(5)->get();
+        } else {
+            $employees = Product::orderby('product_name', 'asc')->select('id', 'product_name')->where('product_name', 'like', '%' . $search . '%')->limit(5)->get();
+        }
+
+        $response = array();
+        foreach ($employees as $employee) {
+            $response[] = array("value" => $employee->id, "label" => $employee->product_name);
+        }
+
+        return response()->json($response);
     }
 }

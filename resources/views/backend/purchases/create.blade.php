@@ -1,8 +1,9 @@
 @extends('backend.master')
 @section('content')
     <div class="page-wrapper mt-5" style="display: flex; justify-content: center; flex-direction:row">
-        <div class="row">
-            <div class="col-md-6 ">
+
+        <div class="">
+            <div class="">
                 <form id="myForm">
                     @csrf
                     <div class="card">
@@ -12,11 +13,32 @@
                         <div class=" card-body  ">
 
                             <div class="row">
-                                <div class="mb-3">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label required">Date</label>
+                                    <div class="input-icon mb-2">
+                                        <input class="form-control" placeholder="Select a date" id="datepicker-icon"
+                                            value="" />
+                                        <span class="input-icon-addon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path
+                                                    d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
+                                                <path d="M16 3v4" />
+                                                <path d="M8 3v4" />
+                                                <path d="M4 11h16" />
+                                                <path d="M11 15h1" />
+                                                <path d="M12 15v3" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
                                     <label class="form-label required">Select Supplier</label>
                                     <div>
                                         <select name="supplier_id" class="form-select" id="supplier_id">
-                                            <option value="" selected disabled>Select a supplier</option>
+                                            <option value="" selected disabled>--Select supplier--</option>
                                             @foreach ($suppliers as $supplier)
                                                 <option value="{{ $supplier->id }}">{{ $supplier->supplier_name }}</option>
                                             @endforeach
@@ -24,43 +46,30 @@
                                         <span id="supplier_id_error" class="error-message text-danger"></span>
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label ">Product Name</label>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label required">Status</label>
                                     <div>
-                                        <input type="text"
-                                            class="form-control @error('product_name') is-invalid @enderror"
-                                            name="product_name" placeholder="Enter product name"
-                                            value="{{ old('product_name') }}" id="product_name">
-                                        <span id="product_name_error" class="error-message text-danger"></span>
-                                        @error('product_name')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+                                        <select name="status" class="form-select" id="status">
+                                            <option value="" selected disabled>--Select status--</option>
+                                            <option value="received">Received</option>
+                                            <option value="received">pending</option>
+                                        </select>
+                                        <span id="supplier_id_error" class="error-message text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label required">Quantity</label>
+                                    <label class="form-label required">Payment Method</label>
                                     <div>
-                                        <input type="text" class="form-control @error('quantity') is-invalid @enderror"
-                                            name="quantity" placeholder="Enter Stock" value="{{ old('quantity') }}"
-                                            id="quantity">
-                                        <span id="quantity_error" class="error-message text-danger"></span>
-                                        @error('quantity')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+                                        <select name="payment_method" class="form-select" id="payment_method">
+                                            <option value="" selected disabled>--Select method--</option>
+                                            <option value="Cash on delivery">Cash on delivery</option>
+                                            <option value="Cash on delivery">Online payment</option>
+                                        </select>
+                                        <span id="supplier_id_error" class="error-message text-danger"></span>
                                     </div>
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label required">Price of each product</label>
-                                    <div>
-                                        <input type="text" class="form-control @error('price') is-invalid @enderror"
-                                            name="price" placeholder="Enter Price" value="{{ old('price') }}"
-                                            id="price">
-                                        <span id="price_error" class="error-message text-danger"></span>
-                                        @error('price')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
+
+
                             </div>
 
 
@@ -71,68 +80,93 @@
                     </div>
                 </form>
             </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class=" card-header justify-content-between ">
-                        <div>
-                            <h3 class="card-title">Cart</h3>
-                        </div>
-                        <div>
-
-                            <div class="d-inline">
-                                {{-- <a class="btn btn-info" href="{{ route('suppliers.create') }}">Add</a> --}}
-                            </div>
-
-                        </div>
+            <div class="card mt-5">
+                <div class="mb-3 card-body">
+                    <label class="form-label ">Product Name</label>
+                    <div>
+                        <input type="text" class="form-control" name="product_name" placeholder="Enter product name"
+                            id="employee_search">
                     </div>
-                    <div class="card-body">
-                        <table class="table " id="dataTable">
-                            <thead>
+                </div>
+            </div>
+            <div class="card mt-5">
+                <div class=" card-header justify-content-between ">
+                    <div>
+                        <h3 class="card-title">Order Items</h3>
+                    </div>
+                    <div>
+
+                        <div class="d-inline">
+                            {{-- <a class="btn btn-info" href="{{ route('suppliers.create') }}">Add</a> --}}
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table " id="dataTable">
+                        <thead>
+                            <tr>
+                                {{-- <th scope="col">Category ID</th> --}}
+                                <th scope="col">supplier Id</th>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Total Price</th>
+                                <th scope="col">Action</th>
+                                {{-- <th scope="col"></th> --}}
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{-- @foreach ($suppliers as $supplier)
                                 <tr>
-                                    {{-- <th scope="col">Category ID</th> --}}
-                                    <th scope="col">supplier Id</th>
-                                    <th scope="col">Product Name</th>
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Total Price</th>
-                                    <th scope="col">Action</th>
-                                    {{-- <th scope="col"></th> --}}
+                                    <td>{{ $supplier->supplier_name }}</td>
+                                    <td style="width: 100px">
+                                        <a href="{{ route('suppliers.edit', $supplier->id) }}" class="btn btn-primary">
+                                            <i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i>
+                                        </a>
+                                    </td>
+                                    <td style="width: 100px">
+                                        <form action="{{ route('suppliers.destroy', $supplier->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger"
+                                                onclick="return confirm('Are you sure to delete this user?')">
+                                                <i class="fa-regular fa-trash-can" style="color: #ffffff;"></i>
+                                            </button>
+                                        </form>
+                            </td>
+                            </tr>
+                            @endforeach --}}
+                        </tbody>
+                    </table>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{-- @foreach ($suppliers as $supplier)
-                                    <tr>
-                                        <td>{{ $supplier->supplier_name }}</td>
-                                        <td style="width: 100px">
-                                            <a href="{{ route('suppliers.edit', $supplier->id) }}" class="btn btn-primary">
-                                                <i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i>
-                                            </a>
-                                        </td>
-                                        <td style="width: 100px">
-                                            <form action="{{ route('suppliers.destroy', $supplier->id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger"
-                                                    onclick="return confirm('Are you sure to delete this user?')">
-                                                    <i class="fa-regular fa-trash-can" style="color: #ffffff;"></i>
-                                                </button>
-                                            </form>
-                                </td>
-                                </tr>
-                                @endforeach --}}
-                            </tbody>
-                        </table>
-
-                        {{-- {{ $suppliers->links('pagination::bootstrap-5') }} --}}
-                    </div>
-                    <div class="card-footer text-end">
-                        <button onclick="storeDataInDatabase()" class="btn btn-success">Submit</button>
-                    </div>
+                    {{-- {{ $suppliers->links('pagination::bootstrap-5') }} --}}
+                </div>
+                <div class="card-footer text-end">
+                    <button onclick="storeDataInDatabase()" class="btn btn-success">Submit</button>
                 </div>
             </div>
         </div>
     </div>
+
+    {{-- Datepicker script --}}
+    {{-- <script>
+        // @formatter:off
+        document.addEventListener("DOMContentLoaded", function() {
+            window.Litepicker &&
+                new Litepicker({
+                    element: document.getElementById("datepicker-icon"),
+                    buttonText: {
+                        previousMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
+                        nextMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
+                    },
+                });
+        });
+        // @formatter:on
+    </script> --}}
 
 
     <script>
@@ -238,5 +272,38 @@
                 }
             });
         }
+    </script>
+
+    <script type="text/javascript">
+        // CSRF Token
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        $(document).ready(function() {
+
+            $("#employee_search").autocomplete({
+                source: function(request, response) {
+                    // Fetch data
+                    $.ajax({
+                        url: "{{ route('autoComplete') }}",
+                        type: 'post',
+                        dataType: "json",
+                        data: {
+                            _token: CSRF_TOKEN,
+                            search: request.term
+                        },
+                        success: function(data) {
+                            response(data);
+                        }
+                    });
+                },
+                select: function(event, ui) {
+                    // Set selection
+                    $('#employee_search').val(ui.item.label); // display the selected text
+                    $('#employeeid').val(ui.item.value); // save selected id to input
+                    return false;
+                },
+                minLength: 2
+            });
+
+        });
     </script>
 @endsection
