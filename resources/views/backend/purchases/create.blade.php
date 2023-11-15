@@ -85,7 +85,7 @@
                     <label class="form-label ">Product Name</label>
                     <div>
                         <input type="text" class="form-control" name="product_name" placeholder="Enter product name"
-                            id="employee_search">
+                            id="product_name">
                     </div>
                 </div>
             </div>
@@ -279,7 +279,7 @@
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         $(document).ready(function() {
 
-            $("#employee_search").autocomplete({
+            $("#product_name").autocomplete({
                 source: function(request, response) {
                     // Fetch data
                     $.ajax({
@@ -297,8 +297,8 @@
                 },
                 select: function(event, ui) {
                     // Set selection
-                    $('#employee_search').val(ui.item.label); // display the selected text
-                    $('#employeeid').val(ui.item.value); // save selected id to input
+                    $('#product_name').val(ui.item.label); // display the selected text
+                    // $('#product_name').val(ui.item.value); // save selected id to input
                     return false;
                 },
                 minLength: 2

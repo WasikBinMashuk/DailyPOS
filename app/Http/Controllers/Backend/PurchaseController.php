@@ -143,7 +143,7 @@ class PurchaseController extends Controller
         if ($search == '') {
             $employees = Product::orderby('product_name', 'asc')->select('id', 'product_name')->limit(5)->get();
         } else {
-            $employees = Product::orderby('product_name', 'asc')->select('id', 'product_name')->where('product_name', 'like', '%' . $search . '%')->limit(5)->get();
+            $employees = Product::orderby('product_name', 'asc')->select('id', 'product_name')->where('product_name', 'like', "%$search%")->limit(5)->get();
         }
 
         $response = array();
