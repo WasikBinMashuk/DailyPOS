@@ -23,7 +23,8 @@ class Product extends Model
         'description',
     ];
 
-    public function stock():HasMany{
+    public function stock(): HasMany
+    {
         return $this->hasMany(Stock::class);
     }
 
