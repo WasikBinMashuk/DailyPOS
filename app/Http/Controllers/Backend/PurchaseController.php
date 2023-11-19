@@ -141,16 +141,16 @@ class PurchaseController extends Controller
         $search = $request->search;
 
         if ($search == '') {
-            $employees = Product::orderby('product_name', 'asc')->select('id', 'product_name')->limit(5)->get();
+            $products = Product::orderby('product_name', 'asc')->select('id', 'product_name', 'price')->limit(5)->get();
         } else {
-            $employees = Product::orderby('product_name', 'asc')->select('id', 'product_name')->where('product_name', 'like', "%$search%")->limit(5)->get();
+            $products = Product::orderby('product_name', 'asc')->select('id', 'product_name', 'price')->where('product_name', 'like', "%$search%")->limit(5)->get();
         }
 
         $response = array();
-        foreach ($employees as $employee) {
-            $response[] = array("value" => $employee->id, "label" => $employee->product_name);
+        foreach ($products as $product) {
+            $response[] = array("value" => $product->id, "label" => $product->product_name, "price" => $product->price);
         }
-
+        // dd($response);
         return response()->json($response);
     }
 }

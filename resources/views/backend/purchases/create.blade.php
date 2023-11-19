@@ -103,15 +103,15 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table " id="dataTable">
+                    <table class="table " id="product_table">
                         <thead>
                             <tr>
                                 {{-- <th scope="col">Category ID</th> --}}
-                                <th scope="col">supplier Id</th>
+                                <th scope="col">Product ID</th>
                                 <th scope="col">Product Name</th>
                                 <th scope="col">Quantity</th>
                                 <th scope="col">Price</th>
-                                <th scope="col">Total Price</th>
+                                {{-- <th scope="col">Total Price</th> --}}
                                 <th scope="col">Action</th>
                                 {{-- <th scope="col"></th> --}}
 
@@ -159,9 +159,9 @@
                     element: document.getElementById("datepicker-icon"),
                     buttonText: {
                         previousMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
                         nextMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
-    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
                     },
                 });
         });
@@ -277,6 +277,7 @@
     {{-- JQuery autocomplete ui --}}
     <script type="text/javascript">
         // CSRF Token
+        var mainPrice;
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         $(document).ready(function() {
 
@@ -298,12 +299,70 @@
                 },
                 select: function(event, ui) {
                     // Set selection
-                    $('#product_name').val(ui.item.label); // display the selected text
+                    // $('#product_name').val(ui.item.label); // display the selected text
                     // $('#product_name').val(ui.item.value); // save selected id to input
+
+                    // Update the table with selected product information
+                    mainPrice = ui.item.price;
+                    updateTable(ui.item.value, ui.item.label, ui.item.price, 1);
+
+                    // Clear the input field
+                    $('#product_name').val('');
+
                     return false;
                 },
                 minLength: 2
             });
+
+            function updateTable(productId, productName, productPrice, quantity) {
+                var table = $('#product_table');
+                // Checking if the product already exists in the table
+                var existingRow = table.find('tr[data-product-id="' + productId + '"]');
+                if (existingRow.length > 0) {
+                    // Product already exists, update the quantity
+                    var quantityInput = existingRow.find('.quantity-input');
+                    var newQuantity = parseInt(quantityInput.val()) + 1;
+                    quantityInput.val(newQuantity);
+
+                    // Update the Price based on the new quantity
+                    var updatedPrice = newQuantity * productPrice;
+                    existingRow.find('.price').text(updatedPrice);
+
+                } else {
+                    // Product doesn't exist, add a new row
+                    var newRow = $('<tr data-product-id="' + productId + '"><td>' + productId + '</td><td>' +
+                        productName + '</td><td><input type="number" class="quantity-input" min="1" value="' +
+                        quantity + '"></td><td class="price">' + productPrice +
+                        '</td><td><button onclick="deleteRow(this)" class="btn btn-danger">Delete</button></td></tr>'
+                    );
+                    table.find('tbody').append(newRow);
+                }
+            }
+
+            // Handle quantity changes
+            $('#product_table').on('click', '.quantity-input', function() {
+                // Prevent propagation to avoid unwanted behaviors
+                event.stopPropagation();
+            });
+
+            $('#product_table').on('input', '.quantity-input', function() {
+                var newQuantity = $(this).val();
+
+                // Update total price on quantity changes
+                var updatedPrice = newQuantity * mainPrice;
+                $(this).closest('tr').find('.price').text(updatedPrice);
+
+                // Optionally, you can send an AJAX request to update the server-side quantity
+                // and recalculate the total price.
+            });
+
+            function deleteRow(button) {
+                // Get the row to be deleted
+                var row = button.parentNode.parentNode;
+
+                // Remove the row from the table
+                row.parentNode.removeChild(row);
+            }
 
         });
     </script>
