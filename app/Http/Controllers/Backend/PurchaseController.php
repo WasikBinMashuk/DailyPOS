@@ -122,22 +122,6 @@ class PurchaseController extends Controller
 
     public function autoComplete(Request $request)
     {
-        // dd($request->term);
-        // $data = Product::select('product_name')->where('product_name', 'LIKE', "%$request->term%")->get();
-        // $result = [];
-
-        // foreach ($data as $item) {
-        //     $result[] = $item->product_name; // Change 'name' to the field you want to autocomplete
-        // }
-
-        // return response()->json($result);
-
-        // $res = Product::select("product_name")
-        //     ->where("product_name", "LIKE", "%{$request->term}%")
-        //     ->get();
-
-        // return response()->json($res);
-
         $search = $request->search;
 
         if ($search == '') {

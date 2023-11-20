@@ -8,7 +8,7 @@
                     @csrf
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Add Purchases</h3>
+                            <h3 class="card-title">Purchase</h3>
                         </div>
                         <div class=" card-body  ">
 
@@ -74,15 +74,15 @@
 
 
                         </div>
-                        <div class="card-footer text-end">
+                        {{-- <div class="card-footer text-end">
                             <button type="button" onclick="submitForm()" class="btn btn-primary">Add</button>
-                        </div>
+                        </div> --}}
                     </div>
                 </form>
             </div>
             <div class="card mt-5">
                 <div class="mb-3 card-body">
-                    <label class="form-label ">Product Name</label>
+                    <label class="form-label ">Select Products</label>
                     <div>
                         <input type="text" class="form-control" name="product_name" placeholder="Enter product name"
                             id="product_name">
@@ -110,41 +110,34 @@
                                 <th scope="col">Product ID</th>
                                 <th scope="col">Product Name</th>
                                 <th scope="col">Quantity</th>
-                                <th scope="col">Price</th>
-                                {{-- <th scope="col">Total Price</th> --}}
+                                <th scope="col">Price (&#2547;)</th>
+                                <th scope="col">Total Price (&#2547;)</th>
                                 <th scope="col">Action</th>
                                 {{-- <th scope="col"></th> --}}
 
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- @foreach ($suppliers as $supplier)
-                                <tr>
-                                    <td>{{ $supplier->supplier_name }}</td>
-                                    <td style="width: 100px">
-                                        <a href="{{ route('suppliers.edit', $supplier->id) }}" class="btn btn-primary">
-                                            <i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i>
-                                        </a>
-                                    </td>
-                                    <td style="width: 100px">
-                                        <form action="{{ route('suppliers.destroy', $supplier->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger"
-                                                onclick="return confirm('Are you sure to delete this user?')">
-                                                <i class="fa-regular fa-trash-can" style="color: #ffffff;"></i>
-                                            </button>
-                                        </form>
-                            </td>
-                            </tr>
-                            @endforeach --}}
+
                         </tbody>
+                        <tfoot style="display: none;">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <th>Subtotal:</th>
+                                <td id="subtotal"></td>
+                            </tr>
+                        </tfoot>
                     </table>
 
                     {{-- {{ $suppliers->links('pagination::bootstrap-5') }} --}}
                 </div>
-                <div class="card-footer text-end">
-                    <button onclick="storeDataInDatabase()" class="btn btn-success">Submit</button>
+                <div class="card-footer d-grid gap-2 col-6 mx-auto">
+                    <button onclick="storeDataInDatabase()" id="submit-button" class="btn btn-success"
+                        style="display: none;">Submit</button>
+                </div>
+                <div>
                 </div>
             </div>
         </div>
@@ -169,7 +162,7 @@
     </script>
 
 
-    <script>
+    {{-- <script>
         function submitForm() {
             let formData = new FormData(document.getElementById('myForm'));
 
@@ -272,12 +265,11 @@
                 }
             });
         }
-    </script>
+    </script> --}}
 
-    {{-- JQuery autocomplete ui --}}
+    {{-- JQuery autocomplete UI, Update dependant table --}}
     <script type="text/javascript">
         // CSRF Token
-        var mainPrice;
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         $(document).ready(function() {
 
@@ -303,7 +295,6 @@
                     // $('#product_name').val(ui.item.value); // save selected id to input
 
                     // Update the table with selected product information
-                    mainPrice = ui.item.price;
                     updateTable(ui.item.value, ui.item.label, ui.item.price, 1);
 
                     // Clear the input field
@@ -324,19 +315,26 @@
                     var newQuantity = parseInt(quantityInput.val()) + 1;
                     quantityInput.val(newQuantity);
 
-                    // Update the Price based on the new quantity
-                    var updatedPrice = newQuantity * productPrice;
-                    existingRow.find('.price').text(updatedPrice);
+                    // Update the Total Price based on the new quantity
+                    var totalPrice = newQuantity * productPrice;
+                    existingRow.find('.total-price').text(totalPrice);
 
                 } else {
                     // Product doesn't exist, add a new row
                     var newRow = $('<tr data-product-id="' + productId + '"><td>' + productId + '</td><td>' +
-                        productName + '</td><td><input type="number" class="quantity-input" min="1" value="' +
-                        quantity + '"></td><td class="price">' + productPrice +
-                        '</td><td><button onclick="deleteRow(this)" class="btn btn-danger">Delete</button></td></tr>'
+                        productName +
+                        '</td><td><input style="width: 60px;" type="number" class="quantity-input" min="1" value="' +
+                        quantity + '"></td><td class="base-price">' + productPrice +
+                        '</td><td class="total-price">' + productPrice +
+                        '</td><td><button class="btn btn-danger remove-btn"><i class="fa-regular fa-trash-can" style="color: #ffffff;"></i></button></td></tr>'
                     );
                     table.find('tbody').append(newRow);
+
+                    // Shows the footer
+                    toggleTableFooter();
                 }
+                // Update the subtotal
+                updateSubtotal();
             }
 
             // Handle quantity changes
@@ -347,22 +345,68 @@
 
             $('#product_table').on('input', '.quantity-input', function() {
                 var newQuantity = $(this).val();
+                var basePrice = $(this).closest('tr').find('.base-price').text();
+                var totalPrice = newQuantity * basePrice;
+                $(this).closest('tr').find('.total-price').text(totalPrice);
 
-                // Update total price on quantity changes
-                var updatedPrice = newQuantity * mainPrice;
-                $(this).closest('tr').find('.price').text(updatedPrice);
+                // Update the subtotal
+                updateSubtotal();
 
                 // Optionally, you can send an AJAX request to update the server-side quantity
                 // and recalculate the total price.
             });
 
-            function deleteRow(button) {
-                // Get the row to be deleted
-                var row = button.parentNode.parentNode;
+            // updating subtotal price
+            function updateSubtotal() {
+                var subtotal = 0;
+                // Iterate through each row and add up the product prices
+                $('#product_table tbody tr').each(function() {
+                    var price = parseFloat($(this).find('.total-price').text());
+                    if (!isNaN(price)) {
+                        subtotal += price;
+                    }
+                });
 
-                // Remove the row from the table
-                row.parentNode.removeChild(row);
+                // Update the subtotal cell at the bottom of the table
+                $('#subtotal').text(subtotal);
             }
+
+            //Handle table footer hide/show
+            function toggleTableFooter() {
+                var tableRows = $('#product_table tbody tr'); // Select all rows in the table body
+                var tableFooter = $('#product_table tfoot'); // Select the table footer
+                var submitButton = $('#submit-button'); //Select submit button
+
+                // Check if there are any rows
+                if (tableRows.length > 0) {
+                    tableFooter.show(); // If there are rows, show the table footer
+                    submitButton.show(); // If there are rows, show the submit button
+                } else {
+                    tableFooter.hide(); // If there are no rows, hide the table footer
+                    submitButton.hide(); // If there are rows, hide the submit button
+                }
+            }
+
+            // Handle row removal
+            $('#product_table').on('click', '.remove-btn', function() {
+                var row = $(this).closest('tr');
+                var rowTotalPrice = parseFloat(row.find('.total-price').text());
+
+                var subTotal = document.getElementById("subtotal").innerText;
+
+                if (!isNaN(rowTotalPrice)) {
+                    subTotal -= rowTotalPrice;
+                }
+
+                // Update the subtotal cell at the bottom of the table
+                $('#subtotal').text(subTotal);
+
+                // Remove the row
+                row.remove();
+
+                //hides the footer
+                toggleTableFooter();
+            });
 
         });
     </script>
