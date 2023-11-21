@@ -105,7 +105,7 @@ class PurchaseController extends Controller
 
     public function storeData(Request $request)
     {
-        dd($request->data[0]["payment_method"]);
+        // dd($request->data[0]["payment_method"]);
 
         $validator = Validator::make($request->data[0], [
             'supplier_id' => 'required|integer',
@@ -119,11 +119,11 @@ class PurchaseController extends Controller
         }
 
         $purchase = Purchase::create([
-            'supplier_id' => $request->data[0]->supplier_id,
-            'company_name' => $request->company_name,
-            'address' => $request->address,
-            'city' => $request->city,
-            'country' => $request->country,
+            'supplier_id' => $request->data[0]['supplier_id'],
+            'date' => $request->data[0]['date'],
+            'status' => $request->data[0]['status'],
+            'payment_method' => $request->data[0]['payment_method'],
+            'subtotal' => $request->data[0]['subtotal'],
         ]);
         // Loop through the submitted data and store it in the database
         // foreach ($request->all() as $data) {
@@ -136,7 +136,7 @@ class PurchaseController extends Controller
         // }
         // sweet alert
         toast('Data Updated!', 'success');
-        return redirect()->route('purchases.create');
+        // return redirect()->route('purchases.create');
         // return response()->json(['success' => true, 'message' => 'Data stored successfully']);
     }
 
