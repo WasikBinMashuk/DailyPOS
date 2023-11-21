@@ -16,8 +16,8 @@
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label required">Date</label>
                                     <div class="input-icon mb-2">
-                                        <input class="form-control" placeholder="Select a date" id="datepicker-icon"
-                                            value="" />
+                                        <input class="form-control" name="date" placeholder="Select a date"
+                                            id="datepicker-icon" value="" />
                                         <span class="input-icon-addon">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                 height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -33,6 +33,7 @@
                                             </svg>
                                         </span>
                                     </div>
+                                    <span id="date_error" class="error-message text-danger"></span>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label required">Select Supplier</label>
@@ -54,7 +55,7 @@
                                             <option value="received">Received</option>
                                             <option value="received">pending</option>
                                         </select>
-                                        <span id="supplier_id_error" class="error-message text-danger"></span>
+                                        <span id="status_error" class="error-message text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-3">
@@ -65,7 +66,7 @@
                                             <option value="Cash on delivery">Cash on delivery</option>
                                             <option value="Cash on delivery">Online payment</option>
                                         </select>
-                                        <span id="supplier_id_error" class="error-message text-danger"></span>
+                                        <span id="payment_method_error" class="error-message text-danger"></span>
                                     </div>
                                 </div>
 
@@ -323,7 +324,7 @@
                     // Product doesn't exist, add a new row
                     var newRow = $('<tr data-product-id="' + productId + '"><td>' + productId + '</td><td>' +
                         productName +
-                        '</td><td><input style="width: 60px;" type="number" class="quantity-input" min="1" value="' +
+                        '</td><td><input style="width: 60px;" type="number" name="quantity-inp" class="quantity-input" min="1" value="' +
                         quantity + '"></td><td class="base-price">' + productPrice +
                         '</td><td class="total-price">' + productPrice +
                         '</td><td><button class="btn btn-danger remove-btn"><i class="fa-regular fa-trash-can" style="color: #ffffff;"></i></button></td></tr>'
@@ -409,5 +410,63 @@
             });
 
         });
+    </script>
+
+    <script type="text/javascript">
+        function storeDataInDatabase() {
+            // Get all rows from the table
+            let tableData = [];
+            $('#product_table tbody tr').each(function() {
+                let rowData = {
+                    product_id: $(this).find('td:eq(0)').text(),
+                    // product_name: $(this).find('td:eq(1)').text(),
+                    quantity: $(this).find('input[name="quantity-inp"]').val(),
+                    price: $(this).find('td:eq(3)').text(),
+                    total_price: $(this).find('td:eq(4)').text(),
+                    date: $('#datepicker-icon').val(),
+                    supplier_id: $('#supplier_id').val(),
+                    status: $('#status').val(),
+                    payment_method: $('#payment_method').val(),
+                    subtotal: $('#subtotal').text(),
+                };
+                tableData.push(rowData);
+            });
+
+            // Clear previous errors
+            // $('.error-message').text('');
+
+            // Make an AJAX request to store data in the database
+            $.ajax({
+                url: '/purchases/store-data',
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    data: tableData
+                },
+                success: function(response) {
+                    // Handle the response, e.g., show a success message
+                    // console.log(response.message);
+
+                },
+                error: function(data) {
+                    if (data.status === 422) {
+                        var errors = data.responseJSON.errors;
+
+                        // Clear previous errors
+                        $('.error-message').text('');
+
+                        // Display errors in your form
+                        $.each(errors, function(key, value) {
+                            // You can customize how you want to display the errors here
+                            $('#' + key + '_error').text(value[0]);
+                        });
+                    } else {
+                        // Handle other errors
+                    }
+                }
+            });
+        }
     </script>
 @endsection

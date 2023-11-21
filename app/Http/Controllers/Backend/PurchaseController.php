@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Purchase;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -104,7 +105,26 @@ class PurchaseController extends Controller
 
     public function storeData(Request $request)
     {
-        // dd($request->toArray());
+        dd($request->data[0]["payment_method"]);
+
+        $validator = Validator::make($request->data[0], [
+            'supplier_id' => 'required|integer',
+            'date' => 'required|string',
+            'status' => 'required|string',
+            'payment_method' => 'required|string',
+        ]);
+        if ($validator->fails()) {
+            // $error = $validator->errors()->first();
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $purchase = Purchase::create([
+            'supplier_id' => $request->data[0]->supplier_id,
+            'company_name' => $request->company_name,
+            'address' => $request->address,
+            'city' => $request->city,
+            'country' => $request->country,
+        ]);
         // Loop through the submitted data and store it in the database
         // foreach ($request->all() as $data) {
         //     YourModel::create([
