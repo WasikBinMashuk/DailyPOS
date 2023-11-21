@@ -448,7 +448,8 @@
                 success: function(response) {
                     // Handle the response, e.g., show a success message
                     // console.log(response.message);
-
+                    // Reload the page
+                    location.reload();
                 },
                 error: function(data) {
                     if (data.status === 422) {

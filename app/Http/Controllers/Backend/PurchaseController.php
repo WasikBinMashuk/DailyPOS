@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Purchase;
+use App\Models\PurchaseDetail;
+use App\Models\Stock;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -105,7 +107,7 @@ class PurchaseController extends Controller
 
     public function storeData(Request $request)
     {
-        // dd($request->data[0]["payment_method"]);
+        // dd($request->data);
 
         $validator = Validator::make($request->data[0], [
             'supplier_id' => 'required|integer',
@@ -125,19 +127,34 @@ class PurchaseController extends Controller
             'payment_method' => $request->data[0]['payment_method'],
             'subtotal' => $request->data[0]['subtotal'],
         ]);
-        // Loop through the submitted data and store it in the database
-        // foreach ($request->all() as $data) {
-        //     YourModel::create([
-        //         'supplier' => $data['supplier'],
-        //         'product' => $data['product'],
-        //         'quantity' => $data['quantity'],
-        //         'price' => $data['price'],
-        //     ]);
-        // }
+        foreach ($request->data as $data) {
+            $details[] = [
+                'purchase_id' => $purchase->id,
+                'product_id' => $data['product_id'],
+                'quantity' => $data['quantity'],
+                'price' => $data['price'],
+                'total_price' => $data['total_price'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+
+            $product = Product::where('id', $data['product_id'])->first();
+            $product->update([
+                'stock' => $product->stock + $data['quantity'],
+            ]);
+
+            Stock::create([
+                'product_id' => $data['product_id'],
+                'source' => "supplier",
+                'quantity' => $data['quantity'],
+            ]);
+        }
+        if (isset($details)) PurchaseDetail::insert($details);
+
         // sweet alert
-        toast('Data Updated!', 'success');
-        // return redirect()->route('purchases.create');
-        // return response()->json(['success' => true, 'message' => 'Data stored successfully']);
+        toast('New Purchase Added!', 'success');
+
+        return response()->json(['success' => true, 'message' => 'Data stored successfully']);
     }
 
     public function autoComplete(Request $request)
