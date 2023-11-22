@@ -108,6 +108,9 @@ class PurchaseController extends Controller
     public function storeData(Request $request)
     {
         // dd($request->data);
+        if (!$request->filled('data')) {
+            return response()->json(['errors' => 'no data found'], 406);
+        }
 
         $validator = Validator::make($request->data[0], [
             'supplier_id' => 'required|integer',

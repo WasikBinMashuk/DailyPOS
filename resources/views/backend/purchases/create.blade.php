@@ -63,8 +63,8 @@
                                     <div>
                                         <select name="payment_method" class="form-select" id="payment_method">
                                             <option value="" selected disabled>--Select method--</option>
-                                            <option value="Cash on delivery">Cash on Delivery</option>
-                                            <option value="Cash on delivery">Online Payment</option>
+                                            <option value="Cash on delivery">COD</option>
+                                            <option value="Cash on delivery">Online</option>
                                         </select>
                                         <span id="payment_method_error" class="error-message text-danger"></span>
                                     </div>
@@ -142,6 +142,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="loader-div">
+        <img class="loader-img" src="{{ asset('gif/loader.gif') }}" style="height: 120px;width: auto;" />
     </div>
 
     {{-- Datepicker script --}}
@@ -414,6 +417,9 @@
 
     <script type="text/javascript">
         function storeDataInDatabase() {
+
+            $(".loader-div").show(); // show loader
+
             // Get all rows from the table
             let tableData = [];
             $('#product_table tbody tr').each(function() {
@@ -448,12 +454,17 @@
                 success: function(response) {
                     // Handle the response, e.g., show a success message
                     // console.log(response.message);
+
                     // Reload the page
                     location.reload();
+
+                    $(".loader-div").hide(); // hide loader
                 },
                 error: function(data) {
                     if (data.status === 422) {
                         var errors = data.responseJSON.errors;
+
+                        $(".loader-div").hide(); // hide loader
 
                         // Clear previous errors
                         $('.error-message').text('');
@@ -465,6 +476,8 @@
                         });
                     } else {
                         // Handle other errors
+                        // Reload the page
+                        location.reload();
                     }
                 }
             });
