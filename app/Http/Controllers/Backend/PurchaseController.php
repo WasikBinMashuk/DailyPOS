@@ -111,7 +111,7 @@ class PurchaseController extends Controller
 
         $validator = Validator::make($request->data[0], [
             'supplier_id' => 'required|integer',
-            'date' => 'required|string',
+            'date' => 'required|date',
             'status' => 'required|string',
             'payment_method' => 'required|string',
         ]);

@@ -53,7 +53,7 @@
                                         <select name="status" class="form-select" id="status">
                                             <option value="" selected disabled>--Select status--</option>
                                             <option value="received">Received</option>
-                                            <option value="received">pending</option>
+                                            <option value="pending">Pending</option>
                                         </select>
                                         <span id="status_error" class="error-message text-danger"></span>
                                     </div>
@@ -63,8 +63,8 @@
                                     <div>
                                         <select name="payment_method" class="form-select" id="payment_method">
                                             <option value="" selected disabled>--Select method--</option>
-                                            <option value="Cash on delivery">Cash on delivery</option>
-                                            <option value="Cash on delivery">Online payment</option>
+                                            <option value="Cash on delivery">Cash on Delivery</option>
+                                            <option value="Cash on delivery">Online Payment</option>
                                         </select>
                                         <span id="payment_method_error" class="error-message text-danger"></span>
                                     </div>

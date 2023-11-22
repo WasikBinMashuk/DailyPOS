@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('product_code')->unique();
             $table->string('product_name');
             $table->string('price');
-            $table->string('stock');
             $table->text('product_image')->nullable();
+            $table->string('stock');
             $table->tinyInteger('status')->default(1)->comment('0 = inactive, 1 = active');
             $table->longText('description')->nullable();
             $table->timestamps();
