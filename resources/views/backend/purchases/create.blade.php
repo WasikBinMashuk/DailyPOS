@@ -63,8 +63,8 @@
                                     <div>
                                         <select name="payment_method" class="form-select" id="payment_method">
                                             <option value="" selected disabled>--Select method--</option>
-                                            <option value="Cash on delivery">COD</option>
-                                            <option value="Cash on delivery">Online</option>
+                                            <option value="cod">COD</option>
+                                            <option value="online">Online</option>
                                         </select>
                                         <span id="payment_method_error" class="error-message text-danger"></span>
                                     </div>

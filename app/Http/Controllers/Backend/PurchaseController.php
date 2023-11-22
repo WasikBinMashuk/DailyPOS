@@ -8,6 +8,7 @@ use App\Models\Purchase;
 use App\Models\PurchaseDetail;
 use App\Models\Stock;
 use App\Models\Supplier;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,7 +19,9 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        //
+        $purchases = Purchase::with(['purchaseDetail', 'supplier'])->paginate(10);
+        // dd($purchases);
+        return view('backend.purchases.index', compact('purchases'));
     }
 
     /**
@@ -51,7 +54,10 @@ class PurchaseController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $editPurchase = Purchase::find($id);
+        $suppliers = Supplier::all();
+        // dd($editPurchase);
+        return view('backend.purchases.edit', compact('suppliers', 'editPurchase'));
     }
 
     /**
@@ -59,7 +65,29 @@ class PurchaseController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'date' => ['required', 'date'],
+            'supplier_id' => ['required', 'string'],
+            'status' => ['required', 'string'],
+            'payment_method' => ['required', 'string'],
+        ]);
+
+        try {
+            Purchase::where('id', $id)->first()->update([
+                'date' => $request->date,
+                'supplier_id' => $request->supplier_id,
+                'status' => $request->status,
+                'payment_method' => $request->payment_method,
+            ]);
+
+            // sweet alert
+            toast('Purchase Data Updated!', 'success');
+        } catch (Exception $e) {
+            // dd($e->getMessage());
+            toast('Something went wrong', 'error');
+        }
+
+        return redirect()->route('purchases.index');
     }
 
     /**
@@ -67,43 +95,54 @@ class PurchaseController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // dd($id);
+        // try {
+        Purchase::findOrFail($id)->delete();
+
+        // sweet alert
+        toast('Purchase history Deleted!', 'info');
+        // } catch (Exception $e) {
+        //     // dd($e->getMessage());
+        //     toast('Something went wrong', 'error');
+        // }
+
+        return redirect()->back();
     }
 
-    public function formSubmit(Request $request)
-    {
+    // public function formSubmit(Request $request)
+    // {
 
-        // Validate the request data
-        // $validatedData = $request->validate([
-        //     'supplier_id' => 'required|integer',
-        //     'product_name' => 'required|string',
-        //     'quantity' => 'required|integer',
-        //     'price' => 'required|numeric',
-        // ]);
-        // Save the data to the database or perform other actions as needed
+    //     // Validate the request data
+    //     // $validatedData = $request->validate([
+    //     //     'supplier_id' => 'required|integer',
+    //     //     'product_name' => 'required|string',
+    //     //     'quantity' => 'required|integer',
+    //     //     'price' => 'required|numeric',
+    //     // ]);
+    //     // Save the data to the database or perform other actions as needed
 
-        // $validated = $request->validated();
-        $validator = Validator::make($request->all(), [
-            'supplier_id' => 'required|integer',
-            'product_name' => 'required|string',
-            'quantity' => 'required|integer',
-            'price' => 'required|numeric',
-        ]);
-        if ($validator->fails()) {
-            // $error = $validator->errors()->first();
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
+    //     // $validated = $request->validated();
+    //     $validator = Validator::make($request->all(), [
+    //         'supplier_id' => 'required|integer',
+    //         'product_name' => 'required|string',
+    //         'quantity' => 'required|integer',
+    //         'price' => 'required|numeric',
+    //     ]);
+    //     if ($validator->fails()) {
+    //         // $error = $validator->errors()->first();
+    //         return response()->json(['errors' => $validator->errors()], 422);
+    //     }
 
-        $data = [
-            'supplier_id' => $request->supplier_id,
-            'product_name' => $request->product_name,
-            'quantity' => $request->quantity,
-            'price' => $request->price,
-            'total_price' => $request->price * $request->quantity,
-        ];
+    //     $data = [
+    //         'supplier_id' => $request->supplier_id,
+    //         'product_name' => $request->product_name,
+    //         'quantity' => $request->quantity,
+    //         'price' => $request->price,
+    //         'total_price' => $request->price * $request->quantity,
+    //     ];
 
-        return response()->json(['message' => 'Successfully created', 'code' => 200, 'data' => $data]);
-    }
+    //     return response()->json(['message' => 'Successfully created', 'code' => 200, 'data' => $data]);
+    // }
 
     public function storeData(Request $request)
     {
