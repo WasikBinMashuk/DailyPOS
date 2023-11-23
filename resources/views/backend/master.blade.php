@@ -248,8 +248,10 @@
                                                 <a class="dropdown-item" href="{{ route('product.index') }}">
                                                     Products
                                                 </a>
+                                                <a class="dropdown-item" href="{{ route('branches.index') }}">
+                                                    Branch List
+                                                </a>
                                             </div>
-
                                         </div>
                                     </div>
                                 </li>

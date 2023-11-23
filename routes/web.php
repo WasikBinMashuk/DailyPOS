@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CaptchaController as ApiCaptchaController;
+use App\Http\Controllers\Backend\BranchController;
 use App\Http\Controllers\Backend\CaptchaController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\CategoryController;
@@ -112,9 +113,12 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     //Purchase crud routes
     Route::resource('purchases', PurchaseController::class);
-    Route::post('/purchases/submit-form', [PurchaseController::class, 'formSubmit'])->name('purchase.cart');
+    // Route::post('/purchases/submit-form', [PurchaseController::class, 'formSubmit'])->name('purchase.cart');
     Route::post('/purchases/store-data', [PurchaseController::class, 'storeData']);
     Route::post('/purchases/autocomplete', [PurchaseController::class, 'autoComplete'])->name('autoComplete');
+
+    //Branch crud routes
+    Route::resource('branches', BranchController::class);
 
     // Roles routes with role of Super Admin only
     Route::group(['middleware' => 'role:Super Admin'], function () {
