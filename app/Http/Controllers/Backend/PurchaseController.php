@@ -19,7 +19,7 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        $purchases = Purchase::with(['purchaseDetail', 'supplier'])->paginate(10);
+        $purchases = Purchase::with(['purchaseDetail', 'supplier'])->latest()->paginate(10);
         // dd($purchases);
         return view('backend.purchases.index', compact('purchases'));
     }
@@ -46,7 +46,9 @@ class PurchaseController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $purchaseDetails = PurchaseDetail::with(['product'])->where('purchase_id', $id)->get();
+        // dd($purchaseDetails);
+        return view('backend.purchases.purchaseDetails', compact('purchaseDetails'));
     }
 
     /**
@@ -56,7 +58,6 @@ class PurchaseController extends Controller
     {
         $editPurchase = Purchase::find($id);
         $suppliers = Supplier::all();
-        // dd($editPurchase);
         return view('backend.purchases.edit', compact('suppliers', 'editPurchase'));
     }
 
@@ -65,18 +66,33 @@ class PurchaseController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if (!$request->filled('status')) {
+            $status = "received";
+        }
         $request->validate([
             'date' => ['required', 'date'],
             'supplier_id' => ['required', 'string'],
-            'status' => ['required', 'string'],
+            // 'status' => ['required', 'string'],
             'payment_method' => ['required', 'string'],
         ]);
-
         try {
-            Purchase::where('id', $id)->first()->update([
+            $purchase = Purchase::where('id', $id)->first();
+
+            //updating product stock if status is Received
+            if ($request->status == "received" && $purchase->status == "pending") {
+                $purchaseDetails = PurchaseDetail::where('purchase_id', $id)->get();
+                foreach ($purchaseDetails as $detail) {
+                    $product = Product::where('id', $detail->product_id)->first();
+                    $product->update([
+                        'stock' => $product->stock + $detail->quantity,
+                    ]);
+                }
+            }
+
+            $purchase->update([
                 'date' => $request->date,
                 'supplier_id' => $request->supplier_id,
-                'status' => $request->status,
+                'status' => $request->status ?? $status,
                 'payment_method' => $request->payment_method,
             ]);
 
@@ -95,18 +111,7 @@ class PurchaseController extends Controller
      */
     public function destroy(string $id)
     {
-        // dd($id);
-        // try {
-        Purchase::findOrFail($id)->delete();
-
-        // sweet alert
-        toast('Purchase history Deleted!', 'info');
-        // } catch (Exception $e) {
-        //     // dd($e->getMessage());
-        //     toast('Something went wrong', 'error');
-        // }
-
-        return redirect()->back();
+        //
     }
 
     // public function formSubmit(Request $request)
@@ -180,10 +185,13 @@ class PurchaseController extends Controller
                 'updated_at' => now(),
             ];
 
-            $product = Product::where('id', $data['product_id'])->first();
-            $product->update([
-                'stock' => $product->stock + $data['quantity'],
-            ]);
+
+            if ($purchase->status == "received") {
+                $product = Product::where('id', $data['product_id'])->first();
+                $product->update([
+                    'stock' => $product->stock + $data['quantity'],
+                ]);
+            }
 
             Stock::create([
                 'product_id' => $data['product_id'],

@@ -281,10 +281,7 @@
                                                     Suppliers List
                                                 </a>
                                                 <a class="dropdown-item" href="{{ route('purchases.index') }}">
-                                                    Purchase List
-                                                </a>
-                                                <a class="dropdown-item" href="{{ route('purchases.create') }}">
-                                                    Add Purchase
+                                                    Purchase History
                                                 </a>
                                                 <a class="dropdown-item" href="#">
                                                     Import Purchase by CSV

@@ -8,7 +8,7 @@
                     @csrf
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Purchase</h3>
+                            <h3 class="card-title">Make a Purchase</h3>
                         </div>
                         <div class=" card-body  ">
 

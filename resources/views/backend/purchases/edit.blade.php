@@ -63,18 +63,32 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label required">Status</label>
                                 <div>
-                                    <select name="status" class="form-select">
-                                        <option value="received"
-                                            {{ $editPurchase->status == 'received' ? 'selected' : '' }}>
-                                            Received
-                                        </option>
-                                        <option value="pending" {{ $editPurchase->status == 'pending' ? 'selected' : '' }}>
-                                            Pending
-                                        </option>
-                                    </select>
-                                    @error('status')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                    @if ($editPurchase->status == 'received')
+                                        <select name="status" class="form-select" disabled>
+                                            <option selected>
+                                                Received
+                                            </option>
+                                        </select>
+                                        {{-- <input type="text" value="received" name="status" readonly> --}}
+                                        @error('status')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    @else
+                                        <select name="status" class="form-select">
+                                            <option value="received"
+                                                {{ $editPurchase->status == 'received' ? 'selected' : '' }}>
+                                                Received
+                                            </option>
+                                            <option value="pending"
+                                                {{ $editPurchase->status == 'pending' ? 'selected' : '' }}>
+                                                Pending
+                                            </option>
+                                        </select>
+                                        @error('status')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    @endif
+
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">

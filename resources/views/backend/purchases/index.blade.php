@@ -6,7 +6,7 @@
                 <div class="card">
                     <div class=" card-header justify-content-between ">
                         <div>
-                            <h3 class="card-title">Purchses</h3>
+                            <h3 class="card-title">Purchse History</h3>
                         </div>
                         <div>
 
@@ -28,8 +28,6 @@
                                     <th scope="col">Payment Method</th>
                                     <th scope="col">Subtotal</th>
                                     <th scope="col">Actions</th>
-                                    <th scope="col"></th>
-                                    {{-- <th scope="col"></th> --}}
 
                                 </tr>
                             </thead>
@@ -39,23 +37,34 @@
                                         <td>{{ $purchase->id }}</td>
                                         <td>{{ $purchase->supplier->supplier_name }}</td>
                                         <td>{{ $purchase->date }}</td>
-                                        <td>{{ $purchase->status }}</td>
+                                        <td>
+                                            @if ($purchase->status == 'received')
+                                                <span class="badge bg-success">Received</span>
+                                            @else
+                                                <span class="badge bg-warning">Pending</span>
+                                            @endif
+                                        </td>
                                         <td>{{ $purchase->payment_method }}</td>
                                         <td>{{ $purchase->subtotal }}</td>
-                                        <td style="width: 100px">
-                                            <a href="{{ route('purchases.edit', $purchase->id) }}" class="btn btn-primary">
-                                                <i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i>
-                                            </a>
-                                        </td>
-                                        <td style="width: 100px">
-                                            <form action="{{ route('purchases.destroy', $purchase->id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger"
-                                                    onclick="return confirm('Are you sure to delete this user?')">
-                                                    <i class="fa-regular fa-trash-can" style="color: #ffffff;"></i>
-                                                </button>
-                                            </form>
+                                        <td>
+                                            <div class="btn-group" role="group" aria-label="Purchase Actions">
+                                                <a href="{{ route('purchases.edit', $purchase->id) }}"
+                                                    class="btn btn-primary">
+                                                    <i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i>
+                                                </a>
+                                                <a href="{{ route('purchases.show', $purchase->id) }}" class="btn btn-info">
+                                                    <i class="fa-regular fa-eye" style="color: #ffffff;"></i>
+                                                </a>
+                                                {{-- <form action="{{ route('purchases.destroy', $purchase->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger"
+                                                        onclick="return confirm('Are you sure to delete this user?')">
+                                                        <i class="fa-regular fa-trash-can" style="color: #ffffff;"></i>
+                                                    </button>
+                                                </form> --}}
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
