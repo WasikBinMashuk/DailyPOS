@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\PurchaseDetail;
@@ -20,7 +21,6 @@ class PurchaseController extends Controller
     public function index()
     {
         $purchases = Purchase::with(['purchaseDetail', 'supplier'])->latest()->paginate(10);
-        // dd($purchases);
         return view('backend.purchases.index', compact('purchases'));
     }
 
@@ -30,7 +30,8 @@ class PurchaseController extends Controller
     public function create()
     {
         $suppliers = Supplier::all();
-        return view('backend.purchases.create', compact('suppliers'));
+        $branches = Branch::all();
+        return view('backend.purchases.create', compact('suppliers', 'branches'));
     }
 
     /**
@@ -75,33 +76,41 @@ class PurchaseController extends Controller
             // 'status' => ['required', 'string'],
             'payment_method' => ['required', 'string'],
         ]);
-        try {
-            $purchase = Purchase::where('id', $id)->first();
+        // try {
+        $purchase = Purchase::where('id', $id)->first();
 
-            //updating product stock if status is Received
-            if ($request->status == "received" && $purchase->status == "pending") {
-                $purchaseDetails = PurchaseDetail::where('purchase_id', $id)->get();
-                foreach ($purchaseDetails as $detail) {
-                    $product = Product::where('id', $detail->product_id)->first();
-                    $product->update([
-                        'stock' => $product->stock + $detail->quantity,
-                    ]);
-                }
+        //updating product stock if status is Received
+        if ($request->status == "received" && $purchase->status == "pending") {
+            $purchaseDetails = PurchaseDetail::with('purchase')->where('purchase_id', $id)->get();
+            foreach ($purchaseDetails as $detail) {
+                $product = Product::where('id', $detail->product_id)->first();
+
+                $product->update([
+                    'stock' => $product->stock + $detail->quantity,
+                ]);
+                Stock::create([
+                    'product_id' => $detail->product_id,
+                    'branch_id' => $detail->purchase->branch_id,
+                    'source' => "supplier",
+                    'quantity' => $detail->quantity,
+                    'date' => $request->date,
+                ]);
             }
-
-            $purchase->update([
-                'date' => $request->date,
-                'supplier_id' => $request->supplier_id,
-                'status' => $request->status ?? $status,
-                'payment_method' => $request->payment_method,
-            ]);
-
-            // sweet alert
-            toast('Purchase Data Updated!', 'success');
-        } catch (Exception $e) {
-            // dd($e->getMessage());
-            toast('Something went wrong', 'error');
         }
+
+        $purchase->update([
+            'date' => $request->date,
+            'supplier_id' => $request->supplier_id,
+            'status' => $request->status ?? $status,
+            'payment_method' => $request->payment_method,
+        ]);
+
+        // sweet alert
+        toast('Purchase Data Updated!', 'success');
+        // } catch (Exception $e) {
+        //     // dd($e->getMessage());
+        //     toast('Something went wrong', 'error');
+        // }
 
         return redirect()->route('purchases.index');
     }
@@ -158,6 +167,7 @@ class PurchaseController extends Controller
 
         $validator = Validator::make($request->data[0], [
             'supplier_id' => 'required|integer',
+            'branch_id' => 'required|integer',
             'date' => 'required|date',
             'status' => 'required|string',
             'payment_method' => 'required|string',
@@ -169,6 +179,7 @@ class PurchaseController extends Controller
 
         $purchase = Purchase::create([
             'supplier_id' => $request->data[0]['supplier_id'],
+            'branch_id' => $request->data[0]['branch_id'],
             'date' => $request->data[0]['date'],
             'status' => $request->data[0]['status'],
             'payment_method' => $request->data[0]['payment_method'],
@@ -185,19 +196,21 @@ class PurchaseController extends Controller
                 'updated_at' => now(),
             ];
 
-
+            //updating product quantity and stock if status is "Received"
             if ($purchase->status == "received") {
                 $product = Product::where('id', $data['product_id'])->first();
                 $product->update([
                     'stock' => $product->stock + $data['quantity'],
                 ]);
-            }
 
-            Stock::create([
-                'product_id' => $data['product_id'],
-                'source' => "supplier",
-                'quantity' => $data['quantity'],
-            ]);
+                Stock::create([
+                    'product_id' => $data['product_id'],
+                    'branch_id' => $data['branch_id'],
+                    'source' => "supplier",
+                    'quantity' => $data['quantity'],
+                    'date' => $data['date'],
+                ]);
+            }
         }
         if (isset($details)) PurchaseDetail::insert($details);
 

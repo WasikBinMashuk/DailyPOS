@@ -24,6 +24,9 @@ class SubCategoryController extends Controller
             ->orderBy('sub_category_name', 'ASC')
             ->paginate(10);
 
+        // $categories = Category::with('subCategories')
+        //     ->orderBy('category_name', 'ASC')
+        //     ->paginate(10);
         return view('backend.categories.Subcategories', compact('subCategories'));
     }
 

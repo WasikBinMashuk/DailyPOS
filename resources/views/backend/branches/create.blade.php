@@ -13,7 +13,7 @@
                             <label class="form-label required">Branch Name</label>
                             <div>
                                 <input type="text" class="form-control @error('branch_name') is-invalid @enderror"
-                                    name="branch_name" placeholder="Enter branch name">
+                                    name="branch_name" placeholder="Enter branch name" value="{{ old('branch_name') }}">
                                 @error('branch_name')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -23,7 +23,7 @@
                             <label class="form-label required">Mobile</label>
                             <div>
                                 <input type="text" class="form-control @error('mobile') is-invalid @enderror"
-                                    name="mobile" placeholder="Enter mobile number">
+                                    name="mobile" placeholder="Enter mobile number" value="{{ old('mobile') }}">
                                 @error('mobile')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -33,7 +33,7 @@
                             <label class="form-label">Address</label>
                             <div>
                                 <input type="text" class="form-control @error('address') is-invalid @enderror"
-                                    name="address" placeholder="Enter address">
+                                    name="address" placeholder="Enter address" value="{{ old('address') }}">
                                 @error('address')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror

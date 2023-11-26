@@ -12,12 +12,19 @@ class Stock extends Model
 
     protected $fillable = [
         'product_id',
+        'branch_id',
         'source',
         'quantity',
+        'date',
     ];
 
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class);
     }
 }

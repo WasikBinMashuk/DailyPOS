@@ -68,7 +68,7 @@
 
     {{-- need to explore and fix --}}
     <script>
-        document.getElementById('deleteForm').addEventListener('submit', function(e) {
+        document.getElementById('').addEventListener('submit', function(e) {
             e.preventDefault(); // Prevent the form from submitting normally
 
             // Read the form action attribute

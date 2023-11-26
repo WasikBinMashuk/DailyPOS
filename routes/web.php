@@ -21,6 +21,7 @@ use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CustomerDashboardController;
 use App\Http\Controllers\LangController;
 use App\Http\Controllers\Backend\RoleController;
+use App\Http\Controllers\Backend\StockController;
 use App\Http\Controllers\Backend\SupplierController;
 use App\Http\Controllers\Frontend\OtpController;
 use App\Jobs\SendEmailJob;
@@ -119,6 +120,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     //Branch crud routes
     Route::resource('branches', BranchController::class);
+
+    // Stock 
+    Route::get('/stocks', [StockController::class, 'index'])->name('stock.index');
 
     // Roles routes with role of Super Admin only
     Route::group(['middleware' => 'role:Super Admin'], function () {

@@ -282,6 +282,9 @@
                                                 <a class="dropdown-item" href="{{ route('suppliers.index') }}">
                                                     Suppliers List
                                                 </a>
+                                                <a class="dropdown-item" href="{{ route('stock.index') }}">
+                                                    Stock History
+                                                </a>
                                                 <a class="dropdown-item" href="{{ route('purchases.index') }}">
                                                     Purchase History
                                                 </a>

@@ -69,6 +69,18 @@
                                         <span id="payment_method_error" class="error-message text-danger"></span>
                                     </div>
                                 </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label required">Select Branch</label>
+                                    <div>
+                                        <select name="branch_id" class="form-select" id="branch_id">
+                                            <option value="" selected disabled>--Select method--</option>
+                                            @foreach ($branches as $branch)
+                                                <option value="{{ $branch->id }}">{{ $branch->branch_name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <span id="branch_id_error" class="error-message text-danger"></span>
+                                    </div>
+                                </div>
 
 
                             </div>
@@ -431,6 +443,7 @@
                     total_price: $(this).find('td:eq(4)').text(),
                     date: $('#datepicker-icon').val(),
                     supplier_id: $('#supplier_id').val(),
+                    branch_id: $('#branch_id').val(),
                     status: $('#status').val(),
                     payment_method: $('#payment_method').val(),
                     subtotal: $('#subtotal').text(),

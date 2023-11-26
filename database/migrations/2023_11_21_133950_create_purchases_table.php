@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
             $table->foreignId('supplier_id')->constrained();
+            $table->foreignId('branch_id')->constrained();
             $table->date('date');
             $table->string('status');
             $table->string('payment_method');
