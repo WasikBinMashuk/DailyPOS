@@ -26,7 +26,6 @@
                                     <th scope="col">Mobile</th>
                                     <th scope="col">Address</th>
                                     <th scope="col">Actions</th>
-                                    <th scope="col"></th>
                                     {{-- <th scope="col"></th> --}}
 
                                 </tr>
@@ -38,21 +37,22 @@
                                         <td>{{ $supplier->email }}</td>
                                         <td>{{ $supplier->mobile }}</td>
                                         <td>{{ $supplier->address }}</td>
-                                        <td style="width: 100px">
-                                            <a href="{{ route('suppliers.edit', $supplier->id) }}" class="btn btn-primary">
-                                                <i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i>
-                                            </a>
-                                        </td>
-                                        <td style="width: 100px">
-                                            <form action="{{ route('suppliers.destroy', $supplier->id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger"
-                                                    onclick="return confirm('Are you sure to delete this user?')">
-                                                    <i class="fa-regular fa-trash-can" style="color: #ffffff;"></i>
-                                                </button>
-                                            </form>
-                                            {{-- onclick="confirmation(event)"" --}}
+
+                                        <td style="width: 150px;">
+                                            <div style="display: flex; gap: 2px;">
+                                                <a href="{{ route('suppliers.edit', $supplier->id) }}"
+                                                    class="btn btn-primary">
+                                                    <i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i>
+                                                </a>
+                                                <form action="{{ route('suppliers.destroy', $supplier->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger form-delete-sweetAlert">
+                                                        <i class="fa-regular fa-trash-can" style="color: #ffffff;"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

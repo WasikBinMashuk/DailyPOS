@@ -29,8 +29,6 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
     <!-- Jquery UI for autocomplete -->
-    {{-- <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"
-        integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" crossorigin="anonymous"></script> --}}
     <script src="{{ asset('jqueryui/jquery-ui.min.js') }}" type="text/javascript"></script>
 
     <style>
@@ -372,7 +370,7 @@
         </footer>
     </div>
 
-
+    {{-- sweet Alert for all alerts except Deletion alert --}}
     @include('sweetalert::alert')
 
     {{-- MODAL --}}
@@ -559,6 +557,27 @@
                     }
                 });
         }
+    </script>
+
+    {{-- Sweet Alert on Delete form --}}
+    <script type="text/javascript">
+        $('.form-delete-sweetAlert').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                title: "Are you sure to delete this?",
+                text: "You won't be able to revert this delete",
+                icon: "warning",
+                type: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    form.submit();
+                }
+            });
+        });
     </script>
 
 </body>

@@ -42,11 +42,7 @@
                                                     method="POST">
                                                     @csrf
                                                     @method('DELETE')
-                                                    {{-- <button type="submit" class="btn btn-danger">
-                                                        <i class="fa-regular fa-trash-can" style="color: #ffffff;"></i>
-                                                    </button> --}}
-                                                    <button type="submit" class="btn btn-danger"
-                                                        onclick="return confirm('Are you sure to delete this user?')">
+                                                    <button type="submit" class="btn btn-danger form-delete-sweetAlert">
                                                         <i class="fa-regular fa-trash-can" style="color: #ffffff;"></i>
                                                     </button>
                                                 </form>
@@ -65,29 +61,4 @@
 
         </div>
     </div>
-
-    {{-- need to explore and fix --}}
-    <script>
-        document.getElementById('').addEventListener('submit', function(e) {
-            e.preventDefault(); // Prevent the form from submitting normally
-
-            // Read the form action attribute
-            var urlToRedirect = this.getAttribute('action');
-            console.log(urlToRedirect);
-
-            swal({
-                    title: "Are you sure to delete this?",
-                    text: "You won't be able to revert this delete",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
-
-                .then((willCancel) => {
-                    if (willCancel) {
-                        window.location.href = urlToRedirect
-                    }
-                });
-        });
-    </script>
 @endsection
