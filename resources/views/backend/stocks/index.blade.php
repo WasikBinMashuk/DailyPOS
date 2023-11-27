@@ -1,4 +1,5 @@
 @extends('backend.master')
+@section('title', 'Stocks')
 @section('content')
     <div class="container">
         <div class="row justify-content-center mt-5">

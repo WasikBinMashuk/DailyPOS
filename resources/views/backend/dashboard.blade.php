@@ -1,4 +1,5 @@
 @extends('backend.master')
+@section('title', 'Home')
 @section('content')
     <!-- Page header -->
     <div class="page-header d-print-none">

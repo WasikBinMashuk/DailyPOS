@@ -1,4 +1,5 @@
 @extends('backend.master')
+@section('title', 'Create purchase')
 @section('content')
     <div class="page-wrapper mt-5" style="display: flex; justify-content: center; flex-direction:row">
 

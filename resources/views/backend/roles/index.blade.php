@@ -1,4 +1,5 @@
 @extends('backend.master')
+@section('title', 'Roles')
 @section('content')
     <div class="page-wrapper mt-5 mx-5">
         <div class="row">
