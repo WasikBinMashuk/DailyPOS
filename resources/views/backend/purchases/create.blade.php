@@ -117,7 +117,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table " id="product_table">
+                    <table class="table table-striped table-hover table-bordered" id="product_table">
                         <thead>
                             <tr>
                                 {{-- <th scope="col">Category ID</th> --}}

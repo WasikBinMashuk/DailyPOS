@@ -65,6 +65,15 @@
             right: 0;
             margin: auto;
         }
+
+        .scrollable-div {
+            max-height: 500px;
+            /* Set the maximum height for the scrollable area */
+            overflow: auto;
+            /* Enable vertical and horizontal scrollbars as needed */
+            /* border: 1px solid #ccc; */
+            /* Optional: Add a border for better visibility */
+        }
     </style>
 </head>
 
@@ -89,7 +98,8 @@
                     @auth
                         <div class="nav-item d-none d-md-flex me-8">
                             <div class="btn-list">
-                                <a href="#" class="btn btn-outline-info w-100" target="_blank" rel="noreferrer">
+                                <a href="{{ route('pos.index') }}" class="btn btn-outline-info w-100" target="_blank"
+                                    rel="noreferrer">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         class="icon icon-tabler icon-tabler-shopping-bag" width="24" height="24"
                                         viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -348,7 +358,7 @@
         <div class="page-wrapper">
             <!-- Page header -->
 
-            @yield('content');
+            @yield('content')
 
             <!-- Page body -->
 

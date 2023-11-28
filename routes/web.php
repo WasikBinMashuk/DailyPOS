@@ -10,6 +10,7 @@ use App\Http\Controllers\Frontend\CustomerAuthController;
 use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\EmailVerifyController;
 use App\Http\Controllers\Backend\OrderController;
+use App\Http\Controllers\Backend\PosController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\PurchaseController;
@@ -123,6 +124,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     // Stock 
     Route::get('/stocks', [StockController::class, 'index'])->name('stock.index');
+
+    //POS
+    Route::get('/pos/create', [PosController::class, 'index'])->name('pos.index');
 
     // Roles routes with role of Super Admin only
     Route::group(['middleware' => 'role:Super Admin'], function () {

@@ -1,4 +1,5 @@
 @extends('backend.master')
+@section('title', 'Login')
 @section('content')
 
     <body class=" d-flex flex-column">
