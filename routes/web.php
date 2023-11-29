@@ -117,7 +117,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resource('purchases', PurchaseController::class);
     // Route::post('/purchases/submit-form', [PurchaseController::class, 'formSubmit'])->name('purchase.cart');
     Route::post('/purchases/store-data', [PurchaseController::class, 'storeData']);
-    Route::post('/purchases/autocomplete', [PurchaseController::class, 'autoComplete'])->name('autoComplete');
+    Route::post('/purchases/autocomplete/products', [PurchaseController::class, 'autoCompleteProducts'])->name('autoComplete.product');
+
 
     //Branch crud routes
     Route::resource('branches', BranchController::class);
@@ -127,6 +128,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     //POS
     Route::get('/pos/create', [PosController::class, 'index'])->name('pos.index');
+    Route::post('/purchases/autocomplete/customer', [PosController::class, 'autoCompleteCustomer'])->name('autoComplete.customer');
 
     // Roles routes with role of Super Admin only
     Route::group(['middleware' => 'role:Super Admin'], function () {

@@ -9,8 +9,10 @@
                         <div class="card-header gap-5">
                             <div class="input-group w-50">
                                 <button class="btn btn-outline-secondary " disabled><i class="fa-solid fa-user"></i></button>
-                                <input type="text" class="form-control" placeholder="Walk-In Customer">
-                                <a href="#" class="btn btn-outline-primary" type="button" id="button-addon2"><i
+                                <input type="text" class="form-control" id="customer_id" name="customer_id"
+                                    placeholder="Walk-In Customer">
+                                <a href="{{ route('customers.create') }}" target="_blank" title="Create Customer"
+                                    class="btn btn-outline-primary" type="button" id="button-addon2"><i
                                         class="fa-solid fa-plus"></i></a>
                             </div>
                             <div class="input-group ms-10 w-75">
@@ -18,7 +20,8 @@
                                         class="fa-solid fa-magnifying-glass-plus"></i></button>
                                 <input type="text" class="form-control" id="product_name" name="product_name"
                                     placeholder="Enter Product Name">
-                                <a href="#" class="btn btn-outline-primary" type="button" id="button-addon2"><i
+                                <a href="{{ route('product.create') }}" target="_blank" title="Create Product"
+                                    class="btn btn-outline-primary" type="button" id="button-addon2"><i
                                         class="fa-solid fa-plus"></i></a>
                             </div>
                         </div>
@@ -54,7 +57,7 @@
                     <div class="card">
                         <div class=" card-header justify-content-between ">
                             <div>
-                                <h3 class="card-title">POS</h3>
+                                <h3 class="card-title">Products</h3>
                             </div>
                             <div>
 
@@ -68,22 +71,25 @@
                             <div class="row scrollable-div">
                                 @foreach ($products as $product)
                                     <div class="col-md-3 mt-2">
-                                        <div class="card" style="width: 8rem; height: 8rem;">
-                                            <div class="card-body" style="text-align: center">
-                                                @if ($product->product_image)
-                                                    <img src="{{ asset('images/' . $product->product_image) }}"
-                                                        class="card-img-top" style="height: 40px; width:40px;">
-                                                @else
-                                                    <img src="{{ asset('images/no.jpg') }}" class="card-img-top"
-                                                        alt="...">
-                                                @endif
+                                        <a href="#" id="pos-product-cards" style="text-decoration: none;">
+                                            <div class="card shadow" style="width: 8rem; height: 8rem;">
+                                                <div class="card-body" style="text-align: center">
+                                                    @if ($product->product_image)
+                                                        <img src="{{ asset('images/' . $product->product_image) }}"
+                                                            class="card-img-top" style="height: 40px; width:40px;">
+                                                    @else
+                                                        <img src="{{ asset('images/no.jpg') }}" class="card-img-top"
+                                                            alt="...">
+                                                    @endif
+                                                </div>
+                                                {{-- <img src="..." class="card-img-top" alt="..."> --}}
+                                                <div class="card-body" style="text-align: center">
+                                                    <p class="card-text text-wrap fs-5 fw-bolder">
+                                                        {{ $product->product_name }}
+                                                    </p>
+                                                </div>
                                             </div>
-                                            {{-- <img src="..." class="card-img-top" alt="..."> --}}
-                                            <div class="card-body" style="text-align: center">
-                                                <p class="card-text text-wrap fs-5 fw-bolder">{{ $product->product_name }}
-                                                </p>
-                                            </div>
-                                        </div>
+                                        </a>
                                     </div>
                                 @endforeach
 
@@ -95,6 +101,7 @@
         </div>
     </div>
 
+    {{-- AutoComplete for product search and update table --}}
     <script type="text/javascript">
         // CSRF Token
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
@@ -104,7 +111,7 @@
                 source: function(request, response) {
                     // Fetch data
                     $.ajax({
-                        url: "{{ route('autoComplete') }}",
+                        url: "{{ route('autoComplete.product') }}",
                         type: 'post',
                         dataType: "json",
                         data: {
@@ -235,6 +242,40 @@
                 toggleTableFooter();
             });
 
+        });
+    </script>
+
+    {{-- AutoComplete for Customer search --}}
+    <script>
+        // CSRF Token
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        $(document).ready(function() {
+
+            $("#customer_id").autocomplete({
+                source: function(request, response) {
+                    // Fetch data
+                    $.ajax({
+                        url: "{{ route('autoComplete.customer') }}",
+                        type: 'post',
+                        dataType: "json",
+                        data: {
+                            _token: CSRF_TOKEN,
+                            search: request.term
+                        },
+                        success: function(data) {
+                            response(data);
+                        }
+                    });
+                },
+                select: function(event, ui) {
+                    // Set selection
+                    $('#customer_id').val(ui.item.label); // display the selected text
+                    // $('#customer_id').val(ui.item.value); // save selected id to input
+
+                    return false;
+                },
+                minLength: 2
+            });
         });
     </script>
 @endsection

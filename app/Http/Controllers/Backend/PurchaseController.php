@@ -220,14 +220,14 @@ class PurchaseController extends Controller
         return response()->json(['success' => true, 'message' => 'Data stored successfully']);
     }
 
-    public function autoComplete(Request $request)
+    public function autoCompleteProducts(Request $request)
     {
         $search = $request->search;
 
         if ($search == '') {
             $products = Product::orderby('product_name', 'asc')->select('id', 'product_name', 'price')->limit(5)->get();
         } else {
-            $products = Product::orderby('product_name', 'asc')->select('id', 'product_name', 'price')->where('product_name', 'like', "%$search%")->limit(5)->get();
+            $products = Product::orderby('product_name', 'asc')->select('id', 'product_name', 'price')->where('product_name', 'like', "%$search%")->orWhere('product_code', 'like', "%$search%")->limit(5)->get();
         }
 
         $response = array();
