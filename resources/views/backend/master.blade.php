@@ -57,6 +57,24 @@
             opacity: 0.8;
         }
 
+        .posTableDiv {
+            position: relative;
+        }
+
+        .card-loader-div {
+            display: none;
+            position: absolute;
+            /* margin: 0px; */
+            /* padding: 0px; */
+            /* right: 0px; */
+            /* top: 0px; */
+            width: 95%;
+            height: 95%;
+            background-color: #fff;
+            z-index: 30001;
+            opacity: 0.8;
+        }
+
         .loader-img {
             position: absolute;
             top: 0;

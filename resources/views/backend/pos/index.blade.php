@@ -25,7 +25,13 @@
                                         class="fa-solid fa-plus"></i></a>
                             </div>
                         </div>
-                        <div class="card-body" style="min-height:400px">
+                        <div class="card-body posTableDiv" style="min-height:400px">
+                            {{-- Loader --}}
+                            <div class="card-loader-div">
+                                <img class="loader-img" src="{{ asset('gif/loader.gif') }}"
+                                    style="height: 120px;width: auto;" />
+                            </div>
+
                             <table class="table table-striped table-hover table-bordered" id="product_table">
                                 <thead>
                                     <tr>
@@ -70,8 +76,10 @@
                         <div class="card-body">
                             <div class="row scrollable-div">
                                 @foreach ($products as $product)
-                                    <div class="col-md-3 mt-2">
-                                        <a href="#" id="pos-product-cards" style="text-decoration: none;">
+                                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mt-2">
+                                        <a href="" class="pos-product-card" data-id="{{ $product->id }}"
+                                            data-name="{{ $product->product_name }}" data-price="{{ $product->price }}"
+                                            style="text-decoration: none;">
                                             <div class="card shadow" style="width: 8rem; height: 8rem;">
                                                 <div class="card-body" style="text-align: center">
                                                     @if ($product->product_image)
@@ -101,6 +109,7 @@
         </div>
     </div>
 
+
     {{-- AutoComplete for product search and update table --}}
     <script type="text/javascript">
         // CSRF Token
@@ -128,8 +137,12 @@
                     // $('#product_name').val(ui.item.label); // display the selected text
                     // $('#product_name').val(ui.item.value); // save selected id to input
 
-                    // Update the table with selected product information
-                    updateTable(ui.item.value, ui.item.label, ui.item.price, 1);
+                    $(".card-loader-div").show(); // show loader
+                    setTimeout(function() {
+                        // Update the table with selected product information
+                        updateTable(ui.item.value, ui.item.label, ui.item.price, 1);
+
+                    }, 200);
 
                     // Clear the input field
                     $('#product_name').val('');
@@ -152,7 +165,6 @@
                     // Update the Total Price based on the new quantity
                     var totalPrice = newQuantity * productPrice;
                     existingRow.find('.total-price').text(totalPrice);
-
                 } else {
                     // Product doesn't exist, add a new row
                     var newRow = $('<tr data-product-id="' + productId + '"><td>' + productId + '</td><td>' +
@@ -167,6 +179,8 @@
                     // Shows the footer
                     toggleTableFooter();
                 }
+                $(".card-loader-div").hide(); // hide loader
+
                 // Update the subtotal
                 updateSubtotal();
             }
@@ -186,8 +200,22 @@
                 // Update the subtotal
                 updateSubtotal();
 
-                // Optionally, you can send an AJAX request to update the server-side quantity
-                // and recalculate the total price.
+            });
+
+            // click event listener for the product cards
+            $('.pos-product-card').on('click', function(e) {
+                e.preventDefault();
+                var productId = $(this).data('id');
+                var productName = $(this).data('name');
+                var productPrice = $(this).data('price');
+
+                $(".card-loader-div").show(); // show loader
+                setTimeout(function() {
+                    // Update the table with selected product information
+                    updateTable(productId, productName, productPrice, 1);
+
+                }, 200);
+
             });
 
             // updating subtotal price
@@ -278,4 +306,6 @@
             });
         });
     </script>
+
+
 @endsection

@@ -11,7 +11,7 @@
                     <h3 class="d-inline card-title">Products</h3>
                   </div> --}}
                             <div class="">
-                                <h3 class="card-title">Product List</h3>
+                                <h3 class="card-title">Product List (<span id="totalRecords"></span>)</h3>
                             </div>
                         </div>
                         <div>
@@ -48,7 +48,7 @@
 
     <script>
         $(document).ready(function() {
-            $('#productTable').DataTable({
+            var table = $('#productTable').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -95,7 +95,11 @@
                         searchable: false
                     },
 
-                ]
+                ],
+                "initComplete": function(settings, json) {
+                    // alert('DataTables has finished its initialisation.');
+                    document.getElementById("totalRecords").innerHTML = table.page.info().recordsTotal;
+                }
             });
         });
     </script>

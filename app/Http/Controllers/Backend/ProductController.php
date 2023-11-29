@@ -60,6 +60,7 @@ class ProductController extends Controller
                 ->rawColumns(['action', 'status', 'product_image', 'trendy', 'price'])
                 ->toJson();
         }
+
         return view('backend.products.index');
     }
 
