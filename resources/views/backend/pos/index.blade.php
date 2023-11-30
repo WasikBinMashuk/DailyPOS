@@ -25,7 +25,7 @@
                                         class="fa-solid fa-plus"></i></a>
                             </div>
                         </div>
-                        <div class="card-body posTableDiv" style="min-height:400px">
+                        <div class="card-body posTableDiv">
                             {{-- Loader --}}
                             <div class="card-loader-div">
                                 <img class="loader-img" src="{{ asset('gif/loader.gif') }}"
@@ -56,6 +56,24 @@
                                     </tr>
                                 </tfoot>
                             </table>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end align-items-center mt-2">
+                        <div>
+                            <button type="button" class="btn btn-warning" data-pay_method="cash"
+                                title="Mark complete paid & checkout"> <i class="fas fa-credit-card pe-2"
+                                    aria-hidden="true"></i>
+                                Card</button>
+
+                        </div>
+                        <div class="ms-1">
+                            <button type="button" class="btn btn-success" data-pay_method="cash"
+                                title="Mark complete paid & checkout"> <i class="fas fa-money-bill-alt pe-2"
+                                    aria-hidden="true"></i> Cash</button>
+
+                        </div>
+                        <div class="pos-total">
+                            <span>Total Payable: <span id="total-payable">0</span></span>
                         </div>
                     </div>
                 </div>
@@ -108,6 +126,7 @@
             </div>
         </div>
     </div>
+
 
 
     {{-- AutoComplete for product search and update table --}}
@@ -231,6 +250,9 @@
 
                 // Update the subtotal cell at the bottom of the table
                 $('#subtotal').text(subtotal);
+                $('#total-payable').text(subtotal);
+                // document.getElementById('total-payable').innerHTML = 'Total Payable: ' + subtotal;
+
             }
 
             //Handle table footer hide/show
@@ -254,7 +276,11 @@
                 var row = $(this).closest('tr');
                 var rowTotalPrice = parseFloat(row.find('.total-price').text());
 
-                var subTotal = document.getElementById("subtotal").innerText;
+                var subTotal = parseFloat(document.getElementById("subtotal").innerText);
+
+                if (isNaN(subTotal)) {
+                    subTotal = 0;
+                }
 
                 if (!isNaN(rowTotalPrice)) {
                     subTotal -= rowTotalPrice;
@@ -262,6 +288,9 @@
 
                 // Update the subtotal cell at the bottom of the table
                 $('#subtotal').text(subTotal);
+
+                // Update the total payable div
+                $('#total-payable').text(subTotal);
 
                 // Remove the row
                 row.remove();

@@ -294,7 +294,7 @@
                 source: function(request, response) {
                     // Fetch data
                     $.ajax({
-                        url: "{{ route('autoComplete') }}",
+                        url: "{{ route('autoComplete.product') }}",
                         type: 'post',
                         dataType: "json",
                         data: {
