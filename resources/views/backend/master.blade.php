@@ -96,25 +96,12 @@
             /* Optional: Add a border for better visibility */
         }
 
-        /* .pos-form-actions {
-            height: auto;
-            padding-top: 12px;
-            padding-bottom: 20px;
-            position: fixed;
-            bottom: 0px;
-            background-color: #D1D5DC;
-            width: 100%;
-            z-index: 1000;
-        } */
-
         .pos-total {
             display: inline-block;
             padding: 6px 8px;
             background-color: navy;
             vertical-align: middle;
             margin-left: 4px;
-            /* margin-right: 5px; */
-
         }
 
         .pos-total span {

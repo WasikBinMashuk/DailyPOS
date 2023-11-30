@@ -118,7 +118,6 @@
                                         </a>
                                     </div>
                                 @endforeach
-
                             </div>
                         </div>
                     </div>
@@ -126,8 +125,6 @@
             </div>
         </div>
     </div>
-
-
 
     {{-- AutoComplete for product search and update table --}}
     <script type="text/javascript">
