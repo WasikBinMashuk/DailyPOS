@@ -93,31 +93,20 @@
                         </div>
                         <div class="card-body">
                             <div class="row scrollable-div">
-                                @foreach ($products as $product)
-                                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mt-2">
-                                        <a href="" class="pos-product-card" data-id="{{ $product->id }}"
-                                            data-name="{{ $product->product_name }}" data-price="{{ $product->price }}"
-                                            style="text-decoration: none;">
-                                            <div class="card shadow" style="width: 8rem; height: 8rem;">
-                                                <div class="card-body" style="text-align: center">
-                                                    @if ($product->product_image)
-                                                        <img src="{{ asset('images/' . $product->product_image) }}"
-                                                            class="card-img-top" style="height: 40px; width:40px;">
-                                                    @else
-                                                        <img src="{{ asset('images/no.jpg') }}" class="card-img-top"
-                                                            alt="...">
-                                                    @endif
-                                                </div>
-                                                {{-- <img src="..." class="card-img-top" alt="..."> --}}
-                                                <div class="card-body" style="text-align: center">
-                                                    <p class="card-text text-wrap fs-5 fw-bolder">
-                                                        {{ $product->product_name }}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </a>
+                                <div id="data-wrapper">
+                                    <div class="row" id="product-data">
+                                        @include('backend.pos.data')
                                     </div>
-                                @endforeach
+                                </div>
+                                <div class="product-show-loader text-center mt-2" style="display: none;">
+                                    <div class="d-flex justify-content-center">
+                                        <div class="spinner-border text-info" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        {{-- <img class="" src="{{ asset('gif/loader.gif') }}"
+                                            style="height: 120px;width: auto;" /> --}}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -126,6 +115,53 @@
         </div>
     </div>
 
+    {{-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script> --}}
+    <script>
+        var ENDPOINT = "{{ route('pos.index') }}";
+        var page = 1;
+        var hasMorePages = true;
+
+        // $('.scrollable-div').scroll(function() {
+        //     if ($(window).scrollTop() + $(window).height() >= ($(document).height() - 20) && hasMorePages) {
+        //         page++;
+        //         LoadMore(page);
+        //     }
+        // });
+        $('.scrollable-div').scroll(function() {
+            var element = $(this);
+            if (element.scrollTop() + element.innerHeight() >= (element[0].scrollHeight - 20) && hasMorePages) {
+                page++;
+                LoadMore(page);
+            }
+        });
+
+        function LoadMore(page) {
+            // alert("Page : " + page);
+            $.ajax({
+                    url: ENDPOINT + "?page=" + page,
+                    datatype: "html",
+                    type: "get",
+                    beforeSend: function() {
+                        $('.product-show-loader').show();
+                    }
+                })
+                .done(function(response) {
+                    if (response.html == '') {
+                        $('.product-show-loader').hide();
+                        $("#data-wrapper").append("<div class='mt-5 text-center'>No More Products</div>");
+                        hasMorePages = false;
+                        return;
+                    }
+
+                    $('.product-show-loader').hide();
+                    // $("#data-wrapper").append("<div class='row'>" + response.html + "</div>");
+                    $("#product-data").append(response.html);
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    console.log('Server error occured');
+                });
+        }
+    </script>
     {{-- AutoComplete for product search and update table --}}
     <script type="text/javascript">
         // CSRF Token
@@ -219,7 +255,7 @@
             });
 
             // click event listener for the product cards
-            $('.pos-product-card').on('click', function(e) {
+            $(document).on('click', '.pos-product-card', function(e) {
                 e.preventDefault();
                 var productId = $(this).data('id');
                 var productName = $(this).data('name');

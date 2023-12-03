@@ -9,10 +9,17 @@ use Illuminate\Http\Request;
 
 class PosController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::limit(20)->get();
-        // dd($products);
+        // $products = Product::limit(20)->get();
+        // return view('backend.pos.index', compact('products'));
+        $products = Product::paginate(12);
+
+        if ($request->ajax()) {
+            $view = view('backend.pos.data', compact('products'))->render();
+            return response()->json(['html' => $view]);
+        }
+
         return view('backend.pos.index', compact('products'));
     }
 

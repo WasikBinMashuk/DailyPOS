@@ -88,6 +88,7 @@
         }
 
         .scrollable-div {
+            min-height: 400px;
             max-height: 500px;
             /* Set the maximum height for the scrollable area */
             overflow: auto;
