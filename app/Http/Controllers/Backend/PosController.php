@@ -45,18 +45,20 @@ class PosController extends Controller
 
     public function productFilter(Request $request)
     {
-        // dd($request->cid);
-        // $products = Product::limit(20)->get();
-        // return view('backend.pos.index', compact('products'));
         if ($request->cid == 0) {
             $products = Product::paginate(12);
-            $view = view('backend.pos.data', compact('products'))->render();
-            return response()->json(['html' => $view]);
+        } else {
+            $products = Product::where('category_id', $request->cid)->get();
         }
-        $products = Product::where('category_id', $request->cid)->get();
-        // dd($products);
 
         $view = view('backend.pos.data', compact('products'))->render();
-        return response()->json(['html' => $view]);
+        $responseData = ['html' => $view];
+
+        // Add flag to response if $request->cid is 0
+        if ($request->cid == 0) {
+            $responseData['flag'] = 1;
+        }
+
+        return response()->json($responseData);
     }
 }

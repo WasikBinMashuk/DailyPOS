@@ -128,52 +128,11 @@
         </div>
     </div>
 
-    {{-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script> --}}
-
-    {{-- Select2 dropdown for category selection --}}
-    <script>
-        $('#small-bootstrap-class-single-field').select2({
-            theme: "bootstrap-5",
-            // width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-            // width: 'element',
-            placeholder: $(this).data('placeholder'),
-            dropdownParent: $('#small-bootstrap-class-single-field').parent(),
-        });
-        $('#small-bootstrap-class-single-field').on('select2:select', function(e) {
-            // var data = e.params.data;
-            var categoryId = e.params.data.id;
-            // console.log(data);
-            $.ajax({
-                url: "{{ route('pos.product.filter') }}",
-                datatype: "html",
-                type: "get",
-                beforeSend: function() {
-                    $('.product-show-loader').show();
-                },
-                data: 'cid=' + categoryId,
-                success: function(response) {
-                    // Handle the response data as needed
-                    // console.log(data);
-
-
-                    $('.product-show-loader').hide();
-                    // $("#data-wrapper").append("<div class='row'>" + response.html + "</div>");
-                    $("#product-data").html(response.html);
-                    $('#no-product').remove();
-                },
-                error: function(xhr, status, error) {
-                    // Handle errors
-                    console.error(xhr.responseText);
-                }
-            });
-        });
-    </script>
-
     {{-- Product table scroll to view more data --}}
     <script>
         var ENDPOINT = "{{ route('pos.index') }}";
-        var page = 1;
         var hasMorePages = true;
+        var page = 1;
 
         // $('.scrollable-div').scroll(function() {
         //     if ($(window).scrollTop() + $(window).height() >= ($(document).height() - 20) && hasMorePages) {
@@ -216,6 +175,45 @@
                     console.log('Server error occured');
                 });
         }
+    </script>
+
+    {{-- Select2 dropdown for category selection --}}
+    <script>
+        $('#small-bootstrap-class-single-field').select2({
+            theme: "bootstrap-5",
+            // width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            // width: 'element',
+            placeholder: $(this).data('placeholder'),
+            dropdownParent: $('#small-bootstrap-class-single-field').parent(),
+        });
+        $('#small-bootstrap-class-single-field').on('select2:select', function(e) {
+            // var data = e.params.data;
+            var categoryId = e.params.data.id;
+            $.ajax({
+                url: "{{ route('pos.product.filter') }}",
+                datatype: "html",
+                type: "get",
+                beforeSend: function() {
+                    $('.product-show-loader').show();
+                },
+                data: 'cid=' + categoryId,
+                success: function(response) {
+                    if (response.flag == 1) {
+                        hasMorePages = true;
+                        page = 1;
+                    }
+
+                    $('.product-show-loader').hide();
+                    // $("#data-wrapper").append("<div class='row'>" + response.html + "</div>");
+                    $("#product-data").html(response.html);
+                    $('#no-product').remove();
+                },
+                error: function(xhr, status, error) {
+                    // Handle errors
+                    console.error(xhr.responseText);
+                }
+            });
+        });
     </script>
 
     {{-- AutoComplete for product search and update table --}}
