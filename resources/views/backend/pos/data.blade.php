@@ -12,10 +12,14 @@
                             alt="...">
                     @endif
                 </div>
-                {{-- <img src="..." class="card-img-top" alt="..."> --}}
                 <div class="card-body" style="text-align: center">
                     <p class="card-text text-wrap fs-5 fw-bolder">
-                        {{ $product->product_name }}
+                        @if (strlen($product->product_name) > 15)
+                            {{-- Adjust the character limit as needed --}}
+                            {{ substr($product->product_name, 0, 15) }}...
+                        @else
+                            {{ $product->product_name }}
+                        @endif
                     </p>
                 </div>
             </div>
