@@ -133,7 +133,7 @@
         var ENDPOINT = "{{ route('pos.index') }}";
         var hasMorePages = true;
         var page = 1;
-        var count = 0;
+        var count = 0; // count variable to force stop html empty return condition
 
         // $('.scrollable-div').scroll(function() {
         //     if ($(window).scrollTop() + $(window).height() >= ($(document).height() - 20) && hasMorePages) {
@@ -212,12 +212,15 @@
                         hasMorePages = true;
                         page = 1;
                         count = 0;
+                    } else {
+                        hasMorePages = false; //making it false to stop scrolling on filter data
                     }
 
                     $('.product-show-loader').hide();
                     // $("#data-wrapper").append("<div class='row'>" + response.html + "</div>");
                     $("#product-data").html(response.html);
                     $('#no-product').remove();
+
                 },
                 error: function(xhr, status, error) {
                     // Handle errors
