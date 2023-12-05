@@ -128,11 +128,12 @@
         </div>
     </div>
 
-    {{-- Product table scroll to view more data --}}
+    {{-- Product table scroll to view more data and Select2 features --}}
     <script>
         var ENDPOINT = "{{ route('pos.index') }}";
         var hasMorePages = true;
         var page = 1;
+        var count = 0;
 
         // $('.scrollable-div').scroll(function() {
         //     if ($(window).scrollTop() + $(window).height() >= ($(document).height() - 20) && hasMorePages) {
@@ -140,9 +141,19 @@
         //         LoadMore(page);
         //     }
         // });
+        // $('.scrollable-div').scroll(function() {
+        //     // Check if the user has scrolled to the bottom
+        //     if ($('.scrollable-div').scrollTop() + $('.scrollable-div').height() >= $('.scrollable-div')[0]
+        //         .scrollHeight && hasMorePages) {
+        //         // Perform actions when reaching the bottom
+        //         page++;
+        //         console.log('In scroll IF ' + hasMorePages);
+        //         LoadMore(page);
+        //     }
+        // });
         $('.scrollable-div').scroll(function() {
             var element = $(this);
-            if (element.scrollTop() + element.innerHeight() >= (element[0].scrollHeight - 20) && hasMorePages) {
+            if ((element.scrollTop() + element.innerHeight() >= (element[0].scrollHeight - 20)) && hasMorePages) {
                 page++;
                 LoadMore(page);
             }
@@ -159,11 +170,12 @@
                     }
                 })
                 .done(function(response) {
-                    if (response.html == '') {
+                    if (response.html == '' && count == 0) {
                         $('.product-show-loader').hide();
                         $("#data-wrapper").append(
                             "<div class='mt-5 text-center' id='no-product'>No More Products</div>");
                         hasMorePages = false;
+                        count = 1;
                         return;
                     }
 
@@ -175,10 +187,8 @@
                     console.log('Server error occured');
                 });
         }
-    </script>
 
-    {{-- Select2 dropdown for category selection --}}
-    <script>
+        // Select2 dropdown for category selection
         $('#small-bootstrap-class-single-field').select2({
             theme: "bootstrap-5",
             // width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
@@ -201,6 +211,7 @@
                     if (response.flag == 1) {
                         hasMorePages = true;
                         page = 1;
+                        count = 0;
                     }
 
                     $('.product-show-loader').hide();

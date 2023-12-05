@@ -48,7 +48,7 @@ class PosController extends Controller
         if ($request->cid == 0) {
             $products = Product::paginate(12);
         } else {
-            $products = Product::where('category_id', $request->cid)->get();
+            $products = Product::where('category_id', $request->cid)->paginate(12);
         }
 
         $view = view('backend.pos.data', compact('products'))->render();
