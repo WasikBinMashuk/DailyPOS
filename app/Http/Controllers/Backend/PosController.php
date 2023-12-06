@@ -61,4 +61,21 @@ class PosController extends Controller
 
         return response()->json($responseData);
     }
+
+    public function autoCompletePosProducts(Request $request)
+    {
+        $search = $request->search;
+
+        if ($search == '') {
+            $products = Product::orderby('product_name', 'asc')->select('id', 'product_name', 'price', 'stock')->limit(5)->get();
+        } else {
+            $products = Product::orderby('product_name', 'asc')->select('id', 'product_name', 'price', 'stock')->where('product_name', 'like', "%$search%")->orWhere('product_code', 'like', "%$search%")->limit(5)->get();
+        }
+        $response = array();
+        foreach ($products as $product) {
+            $response[] = array("value" => $product->id, "label" => $product->product_name, "price" => $product->price, "stock" => $product->stock);
+        }
+        // dd($response);
+        return response()->json($response);
+    }
 }

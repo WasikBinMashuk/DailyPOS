@@ -240,7 +240,7 @@
                 source: function(request, response) {
                     // Fetch data
                     $.ajax({
-                        url: "{{ route('autoComplete.product') }}",
+                        url: "{{ route('autoComplete.pos.product') }}",
                         type: 'post',
                         dataType: "json",
                         data: {
@@ -260,8 +260,8 @@
                     $(".card-loader-div").show(); // show loader
                     setTimeout(function() {
                         // Update the table with selected product information
-                        updateTable(ui.item.value, ui.item.label, ui.item.price, 1);
-
+                        updateTable(ui.item.value, ui.item.label, ui.item.price, 1, ui.item
+                            .stock);
                     }, 200);
 
                     // Clear the input field
@@ -272,13 +272,20 @@
                 minLength: 2
             });
 
-            function updateTable(productId, productName, productPrice, quantity) {
+            function updateTable(productId, productName, productPrice, quantity, stock) {
                 var table = $('#product_table');
                 // Checking if the product already exists in the table
                 var existingRow = table.find('tr[data-product-id="' + productId + '"]');
                 if (existingRow.length > 0) {
                     // Product already exists, update the quantity
                     var quantityInput = existingRow.find('.quantity-input');
+
+                    //showing an alert on max quantity changes
+                    if (parseInt(quantityInput.val()) == stock) {
+                        alert('Max Stock: ' + stock);
+                        $(".card-loader-div").hide(); // hide loader
+                        return;
+                    }
                     var newQuantity = parseInt(quantityInput.val()) + 1;
                     quantityInput.val(newQuantity);
 
@@ -289,7 +296,8 @@
                     // Product doesn't exist, add a new row
                     var newRow = $('<tr data-product-id="' + productId + '"><td>' + productId + '</td><td>' +
                         productName +
-                        '</td><td><input style="width: 60px;" type="number" name="quantity-inp" class="quantity-input" min="1" value="' +
+                        '</td><td><input style="width: 60px;" type="number" name="quantity-inp" class="quantity-input" min="1" max="' +
+                        stock + '" value="' +
                         quantity + '"></td><td class="base-price">' + productPrice +
                         '</td><td class="total-price">' + productPrice +
                         '</td><td><button class="btn btn-danger remove-btn"><i class="fa-regular fa-trash-can" style="color: #ffffff;"></i></button></td></tr>'
@@ -315,6 +323,14 @@
                 var newQuantity = $(this).val();
                 var basePrice = $(this).closest('tr').find('.base-price').text();
                 var totalPrice = newQuantity * basePrice;
+                var maxStock = $(this).attr("max");
+
+                //showing an alert on max quantity changes
+                if (parseInt(maxStock) < parseInt(newQuantity)) {
+                    alert('Max Stock: ' + maxStock);
+                    $(this).val(maxStock);
+                    return;
+                }
                 $(this).closest('tr').find('.total-price').text(totalPrice);
 
                 // Update the subtotal
@@ -328,11 +344,12 @@
                 var productId = $(this).data('id');
                 var productName = $(this).data('name');
                 var productPrice = $(this).data('price');
+                var productStock = $(this).data('stock');
 
                 $(".card-loader-div").show(); // show loader
                 setTimeout(function() {
                     // Update the table with selected product information
-                    updateTable(productId, productName, productPrice, 1);
+                    updateTable(productId, productName, productPrice, 1, productStock);
 
                 }, 200);
 
