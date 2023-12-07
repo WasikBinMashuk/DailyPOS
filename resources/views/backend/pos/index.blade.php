@@ -329,6 +329,10 @@
                 if (parseInt(maxStock) < parseInt(newQuantity)) {
                     alert('Max Stock: ' + maxStock);
                     $(this).val(maxStock);
+                    totalPrice = maxStock * basePrice;
+                    $(this).closest('tr').find('.total-price').text(totalPrice);
+                    // Update the subtotal
+                    updateSubtotal();
                     return;
                 }
                 $(this).closest('tr').find('.total-price').text(totalPrice);
