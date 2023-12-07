@@ -6,8 +6,8 @@
             <div class="row">
                 <div class="col-md-7">
                     <div class="card">
-                        <div class="card-header gap-5">
-                            <div class="input-group w-50">
+                        <div class="card-header gap-2 justify-content-around">
+                            <div class="input-group w-25">
                                 <button class="btn btn-outline-secondary " disabled><i class="fa-solid fa-user"></i></button>
                                 <input type="text" class="form-control" id="customer_id" name="customer_id"
                                     placeholder="Walk-In Customer">
@@ -15,7 +15,7 @@
                                     class="btn btn-outline-primary" type="button" id="button-addon2"><i
                                         class="fa-solid fa-plus"></i></a>
                             </div>
-                            <div class="input-group ms-10 w-75">
+                            <div class="input-group ms-10 w-50">
                                 <button class="btn btn-outline-secondary " disabled><i
                                         class="fa-solid fa-magnifying-glass-plus"></i></button>
                                 <input type="text" class="form-control" id="product_name" name="product_name"
@@ -23,6 +23,14 @@
                                 <a href="{{ route('product.create') }}" target="_blank" title="Create Product"
                                     class="btn btn-outline-primary" type="button" id="button-addon2"><i
                                         class="fa-solid fa-plus"></i></a>
+                            </div>
+                            <div>
+                                <select name="branch_id" class="form-select" title="Branch">
+                                    @foreach ($branches as $branch)
+                                        <option value="{{ $branch->id }}" {{ $branch->default == '1' ? 'selected' : '' }}>
+                                            {{ $branch->branch_name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="card-body posTableDiv">

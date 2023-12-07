@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Product;
@@ -16,13 +17,14 @@ class PosController extends Controller
         // return view('backend.pos.index', compact('products'));
         $products = Product::paginate(12);
         $categories = Category::all();
+        $branches = Branch::all();
 
         if ($request->ajax()) {
             $view = view('backend.pos.data', compact('products'))->render();
             return response()->json(['html' => $view]);
         }
 
-        return view('backend.pos.index', compact('products', 'categories'));
+        return view('backend.pos.index', compact('products', 'categories', 'branches'));
     }
 
     public function autoCompleteCustomer(Request $request)
