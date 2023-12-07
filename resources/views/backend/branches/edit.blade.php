@@ -43,6 +43,17 @@
                                     @enderror
                                 </div>
                             </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Make Default</label>
+                                <div>
+                                    <select name="default" class="form-select">
+                                        <option value="1" {{ $editBranch->default == '1' ? 'selected' : '' }}>Yes
+                                        </option>
+                                        <option value="0" {{ $editBranch->default == '0' ? 'selected' : '' }}>No
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer text-end">

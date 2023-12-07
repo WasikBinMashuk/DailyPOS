@@ -14,6 +14,7 @@ class Branch extends Model
         'branch_name',
         'mobile',
         'address',
+        'default',
     ];
 
     public function stock(): HasMany

@@ -87,6 +87,7 @@ class BranchController extends Controller
             'branch_name' => ['required', 'string', 'min:1', 'max:255', Rule::unique('branches', 'branch_name')->ignore($id)],
             'mobile' => ['required', 'numeric', 'digits:11', Rule::unique('branches', 'branch_name')->ignore($id)],
             'address' => 'required|string|min:1|max:255',
+            'default' => 'required|string|in:0,1',
         ]);
 
         try {
@@ -94,6 +95,7 @@ class BranchController extends Controller
                 'branch_name' => $request->branch_name,
                 'mobile' => $request->mobile,
                 'address' => $request->address,
+                'default' => $request->default,
             ]);
 
             // sweet alert

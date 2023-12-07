@@ -31,7 +31,12 @@
                             <tbody>
                                 @foreach ($branches as $branch)
                                     <tr>
-                                        <td>{{ $branch->branch_name }}</td>
+                                        <td>
+                                            {{ $branch->branch_name }}
+                                            @if ($branch->default == 1)
+                                                <span class="badge rounded-pill bg-success">Default</span>
+                                            @endif
+                                        </td>
                                         <td>{{ $branch->mobile }}</td>
                                         <td>{{ $branch->address }}</td>
                                         <td style="width: 150px;">
