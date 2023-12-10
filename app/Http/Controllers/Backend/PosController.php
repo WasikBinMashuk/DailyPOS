@@ -32,13 +32,11 @@ class PosController extends Controller
 
     public function productFetch(Request $request)
     {
-        // dd($request->branch_id);
         // $products = Product::paginate(12);
         $products = Stock::with('product')->where('branch_id', $request->branch_id)->where('quantity', '>=', '1')
             ->select('product_id', DB::raw('SUM(quantity) as quantity'))
             ->groupBy('product_id')
             ->paginate(12);
-        // dd($products);
         $view = view('backend.pos.data', compact('products'))->render();
         return response()->json(['html' => $view]);
     }
@@ -63,13 +61,11 @@ class PosController extends Controller
 
     public function productFilter(Request $request)
     {
-        // dd($request->branch_id);
         if ($request->cid == 0) {
             $products = Stock::with('product')->where('branch_id', $request->branch_id)->where('quantity', '>=', '1')
                 ->select('product_id', DB::raw('SUM(quantity) as quantity'))
                 ->groupBy('product_id')
                 ->paginate(12);
-            // dd($products);
         } else {
             $products = Stock::with('product')->where('branch_id', $request->branch_id)->where('quantity', '>=', '1')
                 ->whereHas('product', function ($query) use ($request) {
@@ -78,8 +74,6 @@ class PosController extends Controller
                 ->select('product_id', DB::raw('SUM(quantity) as quantity'))
                 ->groupBy('product_id')
                 ->get();
-
-            // dd($products);
         }
 
         $view = view('backend.pos.data', compact('products'))->render();

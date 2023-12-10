@@ -136,8 +136,6 @@
         </div>
     </div>
 
-    <script></script>
-
     {{-- Product table scroll to view more data and Select2 features --}}
     <script type="text/javascript">
         var ENDPOINT = "{{ route('pos.index') }}";
@@ -145,22 +143,22 @@
         var page = 1;
         var count = 0; // count variable to force stop html empty return condition
         var selectedBranchId;
+
+        // branch change triggering
         $(document).ready(function() {
-            // Attach change event to the select element
             $('#branch_id').change(function() {
-                // Get the selected value
+                // Get the branch_id
                 selectedBranchId = $(this).val();
 
                 // Make AJAX call to fetch data based on the selected value
-                fetchData(selectedBranchId);
+                fetchBranchwiseProducts(selectedBranchId);
             });
 
             // Trigger the change event on page load to make an initial AJAX call
             $('#branch_id').trigger('change');
         });
 
-        function fetchData(selectedBranchId) {
-            // Make AJAX call to fetch data based on the selected value
+        function fetchBranchwiseProducts(selectedBranchId) {
             $.ajax({
                     url: "{{ route('pos.products') }}", // Replace with your Laravel backend API endpoint
                     type: 'GET',
@@ -191,6 +189,7 @@
                 });
         }
 
+        // Scroll to load more products
         $('.scrollable-div').scroll(function() {
             var element = $(this);
             if ((element.scrollTop() + element.innerHeight() >= (element[0].scrollHeight - 20)) && hasMorePages) {
@@ -464,9 +463,6 @@
 
         });
     </script>
-
-    {{-- AutoComplete for product search and update table --}}
-    <script type="text/javascript"></script>
 
     {{-- AutoComplete for Customer search --}}
     <script>
