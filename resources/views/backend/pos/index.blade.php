@@ -25,7 +25,7 @@
                                         class="fa-solid fa-plus"></i></a>
                             </div>
                             <div>
-                                <select name="branch_id" class="form-select" title="Branch">
+                                <select name="branch_id" id="branch_id" class="form-select" title="Branch">
                                     @foreach ($branches as $branch)
                                         <option value="{{ $branch->id }}" {{ $branch->default == '1' ? 'selected' : '' }}>
                                             {{ $branch->branch_name }}</option>
@@ -136,29 +136,61 @@
         </div>
     </div>
 
+    <script></script>
+
     {{-- Product table scroll to view more data and Select2 features --}}
-    <script>
+    <script type="text/javascript">
         var ENDPOINT = "{{ route('pos.index') }}";
         var hasMorePages = true;
         var page = 1;
         var count = 0; // count variable to force stop html empty return condition
+        var selectedBranchId;
+        $(document).ready(function() {
+            // Attach change event to the select element
+            $('#branch_id').change(function() {
+                // Get the selected value
+                selectedBranchId = $(this).val();
 
-        // $('.scrollable-div').scroll(function() {
-        //     if ($(window).scrollTop() + $(window).height() >= ($(document).height() - 20) && hasMorePages) {
-        //         page++;
-        //         LoadMore(page);
-        //     }
-        // });
-        // $('.scrollable-div').scroll(function() {
-        //     // Check if the user has scrolled to the bottom
-        //     if ($('.scrollable-div').scrollTop() + $('.scrollable-div').height() >= $('.scrollable-div')[0]
-        //         .scrollHeight && hasMorePages) {
-        //         // Perform actions when reaching the bottom
-        //         page++;
-        //         console.log('In scroll IF ' + hasMorePages);
-        //         LoadMore(page);
-        //     }
-        // });
+                // Make AJAX call to fetch data based on the selected value
+                fetchData(selectedBranchId);
+            });
+
+            // Trigger the change event on page load to make an initial AJAX call
+            $('#branch_id').trigger('change');
+        });
+
+        function fetchData(selectedBranchId) {
+            // Make AJAX call to fetch data based on the selected value
+            $.ajax({
+                    url: "{{ route('pos.products') }}", // Replace with your Laravel backend API endpoint
+                    type: 'GET',
+                    datatype: "html",
+                    data: {
+                        branch_id: selectedBranchId
+                    },
+                    beforeSend: function() {
+                        $('.product-show-loader').show();
+                    }
+                }).done(function(response) {
+                    if (response.html == '' && count == 0) {
+                        $('.product-show-loader').hide();
+                        $("#data-wrapper").append(
+                            "<div class='mt-5 text-center' id='no-product'>No More Products</div>");
+                        hasMorePages = false;
+                        count = 1;
+                        return;
+                    }
+
+                    $('.product-show-loader').hide();
+                    // $("#data-wrapper").append("<div class='row'>" + response.html + "</div>");
+                    // $("#product-data").append(response.html);
+                    $("#product-data").html(response.html);
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    console.log('Server error occured');
+                });
+        }
+
         $('.scrollable-div').scroll(function() {
             var element = $(this);
             if ((element.scrollTop() + element.innerHeight() >= (element[0].scrollHeight - 20)) && hasMorePages) {
@@ -214,7 +246,10 @@
                 beforeSend: function() {
                     $('.product-show-loader').show();
                 },
-                data: 'cid=' + categoryId,
+                data: {
+                    cid: categoryId,
+                    branch_id: selectedBranchId
+                },
                 success: function(response) {
                     if (response.flag == 1) {
                         hasMorePages = true;
@@ -236,14 +271,11 @@
                 }
             });
         });
-    </script>
 
-    {{-- AutoComplete for product search and update table --}}
-    <script type="text/javascript">
+        // -----------------------------AutoComplete for product search and update table--------------------------------------------------------
         // CSRF Token
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         $(document).ready(function() {
-
             $("#product_name").autocomplete({
                 source: function(request, response) {
                     // Fetch data
@@ -253,7 +285,8 @@
                         dataType: "json",
                         data: {
                             _token: CSRF_TOKEN,
-                            search: request.term
+                            search: request.term,
+                            branch_id: selectedBranchId
                         },
                         success: function(data) {
                             response(data);
@@ -431,6 +464,9 @@
 
         });
     </script>
+
+    {{-- AutoComplete for product search and update table --}}
+    <script type="text/javascript"></script>
 
     {{-- AutoComplete for Customer search --}}
     <script>
