@@ -136,7 +136,6 @@
         </div>
     </div>
 
-    {{-- Product table scroll to view more data and Select2 features --}}
     <script type="text/javascript">
         var ENDPOINT = "{{ route('pos.index') }}";
         var hasMorePages = true;
@@ -160,7 +159,7 @@
 
         function fetchBranchwiseProducts(selectedBranchId) {
             $.ajax({
-                    url: "{{ route('pos.products') }}", // Replace with your Laravel backend API endpoint
+                    url: "{{ route('pos.products') }}",
                     type: 'GET',
                     datatype: "html",
                     data: {
@@ -189,7 +188,7 @@
                 });
         }
 
-        // Scroll to load more products
+        // Product table scroll to view more data and Select2 features
         $('.scrollable-div').scroll(function() {
             var element = $(this);
             if ((element.scrollTop() + element.innerHeight() >= (element[0].scrollHeight - 20)) && hasMorePages) {
@@ -259,10 +258,10 @@
                     }
 
                     $('.product-show-loader').hide();
+
                     // $("#data-wrapper").append("<div class='row'>" + response.html + "</div>");
                     $("#product-data").html(response.html);
                     $('#no-product').remove();
-
                 },
                 error: function(xhr, status, error) {
                     // Handle errors
