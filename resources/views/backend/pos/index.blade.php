@@ -25,7 +25,8 @@
                                         class="fa-solid fa-plus"></i></a>
                             </div>
                             <div>
-                                <select name="branch_id" id="branch_id" class="form-select" title="Branch">
+                                <select name="branch_id" id="branch_id" class="form-select" title="Branch"
+                                    style="cursor: pointer;">
                                     @foreach ($branches as $branch)
                                         <option value="{{ $branch->id }}" {{ $branch->default == '1' ? 'selected' : '' }}>
                                             {{ $branch->branch_name }}</option>
@@ -64,6 +65,18 @@
                                     </tr>
                                 </tfoot>
                             </table>
+                        </div>
+                        <div class="d-flex card-footer gap-2 justify-content-end">
+                            <div class="input-group w-25">
+                                <span class="input-group-text" id="inputGroup-sizing-default">Due</span>
+                                <input type="text" class="form-control" aria-label="Sizing example input"
+                                    aria-describedby="inputGroup-sizing-default">
+                            </div>
+                            <div class="input-group w-25">
+                                <span class="input-group-text" id="inputGroup-sizing-default">Pay</span>
+                                <input type="text" class="form-control" aria-label="Sizing example input"
+                                    aria-describedby="inputGroup-sizing-default">
+                            </div>
                         </div>
                     </div>
                     <div class="d-flex justify-content-end align-items-center mt-2">
