@@ -68,13 +68,13 @@
                         </div>
                         <div class="d-flex card-footer gap-2 justify-content-end">
                             <div class="input-group w-25">
-                                <span class="input-group-text" id="inputGroup-sizing-default">Due</span>
-                                <input type="text" class="form-control" aria-label="Sizing example input"
-                                    aria-describedby="inputGroup-sizing-default">
+                                <span class="input-group-text">Due</span>
+                                <input type="text" id="due-amount" class="form-control shadow-none" readonly
+                                    style="outline: none; border-color:rgb(230, 230, 230)">
                             </div>
                             <div class="input-group w-25">
-                                <span class="input-group-text" id="inputGroup-sizing-default">Pay</span>
-                                <input type="text" class="form-control" aria-label="Sizing example input"
+                                <span class="input-group-text">Pay</span>
+                                <input type="text" id="pay-amount" class="form-control" aria-label="Sizing example input"
                                     aria-describedby="inputGroup-sizing-default">
                             </div>
                         </div>
@@ -324,6 +324,9 @@
                 minLength: 2
             });
 
+            //making pay-due input fields disable
+            $('#pay-amount, #due-amount').prop('disabled', true);
+
             function updateTable(productId, productName, productPrice, quantity, stock) {
                 var table = $('#product_table');
                 // Checking if the product already exists in the table
@@ -358,6 +361,9 @@
 
                     // Shows the footer
                     toggleTableFooter();
+
+                    //shows the pay-due fields
+                    togglePayDueFields();
                 }
                 $(".card-loader-div").hide(); // hide loader
 
@@ -425,6 +431,11 @@
                 // Update the subtotal cell at the bottom of the table
                 $('#subtotal').text(subtotal);
                 $('#total-payable').text(subtotal);
+
+                //Update pay-due fields
+                $('#pay-amount').val(subtotal);
+                $('#due-amount').val(0);
+
                 // document.getElementById('total-payable').innerHTML = 'Total Payable: ' + subtotal;
 
             }
@@ -466,12 +477,59 @@
                 // Update the total payable div
                 $('#total-payable').text(subTotal);
 
+                //Update pay-due fields
+                $('#pay-amount').val(subTotal);
+                $('#due-amount').val(0);
+
                 // Remove the row
                 row.remove();
 
                 //hides the footer
                 toggleTableFooter();
+
+                // hides the pay-due fields
+                togglePayDueFields();
             });
+
+            // pay-due fields logic
+            function togglePayDueFields(disable) {
+                var tableRows = $('#product_table tbody tr');
+
+                // Check if there are any rows
+                if (tableRows.length > 0) {
+                    $('#pay-amount, #due-amount').prop('disabled', false);
+                } else {
+                    $('#pay-amount, #due-amount').prop('disabled', true);
+                }
+            }
+
+            // event listener for the "Pay" input field
+            $('#pay-amount').on('input', function() {
+                var payValue = $(this).val();
+
+                // Remove any non-numeric characters
+                payValue = payValue.replace(/[^0-9.]/g, '');
+
+                // Ensure that the entered "Pay" value is a non-negative number
+                var parsedPayValue = parseFloat(payValue) || 0;
+
+                $(this).val(parsedPayValue);
+
+                // Get the subtotal value
+                var subtotal = parseFloat($('#subtotal').text()) || 0;
+
+                // Ensure that the entered "Pay" value is not greater than the subtotal
+                if (parsedPayValue > subtotal) {
+                    alert('Pay amount cannot exceed subtotal amount.');
+                    $(this).val(subtotal); // Set the "Pay" value to the subtotal
+                }
+
+                var due = subtotal - payValue;
+
+                //show "0" if due is negative
+                $('#due-amount').val(due >= 0 ? due : 0);
+            });
+
 
         });
     </script>
