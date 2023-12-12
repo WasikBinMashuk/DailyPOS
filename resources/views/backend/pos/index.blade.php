@@ -150,7 +150,7 @@
     </div>
 
     <script type="text/javascript">
-        var ENDPOINT = "{{ route('pos.index') }}";
+        var ENDPOINT = "{{ route('pos.products') }}";
         var hasMorePages = true;
         var page = 1;
         var count = 0; // count variable to force stop html empty return condition
@@ -171,6 +171,10 @@
         });
 
         function fetchBranchwiseProducts(selectedBranchId) {
+            page = 1;
+            hasMorePages = true;
+            count = 0;
+            // console.log(page);
             $.ajax({
                     url: "{{ route('pos.products') }}",
                     type: 'GET',
@@ -195,6 +199,7 @@
                     // $("#data-wrapper").append("<div class='row'>" + response.html + "</div>");
                     // $("#product-data").append(response.html);
                     $("#product-data").html(response.html);
+                    $('#no-product').remove();
                 })
                 .fail(function(jqXHR, ajaxOptions, thrownError) {
                     console.log('Server error occured');
@@ -216,6 +221,9 @@
                     url: ENDPOINT + "?page=" + page,
                     datatype: "html",
                     type: "get",
+                    data: {
+                        branch_id: selectedBranchId
+                    },
                     beforeSend: function() {
                         $('.product-show-loader').show();
                     }

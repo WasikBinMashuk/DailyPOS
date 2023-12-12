@@ -22,21 +22,21 @@ class PosController extends Controller
         $categories = Category::all();
         $branches = Branch::all();
 
-        if ($request->ajax()) {
-            $view = view('backend.pos.data', compact('products'))->render();
-            return response()->json(['html' => $view]);
-        }
+        // if ($request->ajax()) {
+        //     $view = view('backend.pos.data', compact('products'))->render();
+        //     return response()->json(['html' => $view]);
+        // }
 
         return view('backend.pos.index', compact('products', 'categories', 'branches'));
     }
 
     public function productFetch(Request $request)
     {
-        // $products = Product::paginate(12);
         $products = Stock::with('product')->where('branch_id', $request->branch_id)->where('quantity', '>=', '1')
             ->select('product_id', DB::raw('SUM(quantity) as quantity'))
             ->groupBy('product_id')
             ->paginate(12);
+
         $view = view('backend.pos.data', compact('products'))->render();
         return response()->json(['html' => $view]);
     }
