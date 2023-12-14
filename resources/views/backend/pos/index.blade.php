@@ -114,7 +114,7 @@
                                             <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                                         @endforeach
                                     </select> --}}
-                                    <select class="form-select form-select-sm" id="small-bootstrap-class-single-field"
+                                    <select class="form-select form-select-sm" id="category-select"
                                         data-placeholder="All Categories" style="width: 200px">
                                         <option value="0" selected>All Categories</option>
                                         @foreach ($categories as $category)
@@ -161,6 +161,10 @@
             $('#branch_id').change(function() {
                 // Get the branch_id
                 selectedBranchId = $(this).val();
+
+                // make all categories selected after changing every branch
+                $('#category-select').val('0');
+                $('#category-select').trigger('change');
 
                 // Make AJAX call to fetch data based on the selected value
                 fetchBranchwiseProducts(selectedBranchId);
@@ -248,14 +252,14 @@
         }
 
         // Select2 dropdown for category selection
-        $('#small-bootstrap-class-single-field').select2({
+        $('#category-select').select2({
             theme: "bootstrap-5",
             // width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
             // width: 'element',
             placeholder: $(this).data('placeholder'),
-            dropdownParent: $('#small-bootstrap-class-single-field').parent(),
+            dropdownParent: $('#category-select').parent(),
         });
-        $('#small-bootstrap-class-single-field').on('select2:select', function(e) {
+        $('#category-select').on('select2:select', function(e) {
             // var data = e.params.data;
             var categoryId = e.params.data.id;
             $.ajax({
