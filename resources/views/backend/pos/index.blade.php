@@ -11,6 +11,7 @@
                                 <button class="btn btn-outline-secondary " disabled><i class="fa-solid fa-user"></i></button>
                                 <input type="text" class="form-control" id="customer_id" name="customer_id"
                                     placeholder="Walk-In Customer">
+                                <span id="customer_id_error" class="error-message text-danger"></span>
                                 <a href="{{ route('customers.create') }}" target="_blank" title="Create Customer"
                                     class="btn btn-outline-primary" type="button" id="button-addon2"><i
                                         class="fa-solid fa-plus"></i></a>
@@ -69,13 +70,13 @@
                         <div class="d-flex card-footer gap-2 justify-content-end">
                             <div class="input-group w-25">
                                 <span class="input-group-text">Due</span>
-                                <input type="text" id="due-amount" class="form-control shadow-none" readonly
-                                    style="outline: none; border-color:rgb(230, 230, 230)">
+                                <input type="text" id="due_amount" name="due_amount" class="form-control shadow-none"
+                                    readonly style="outline: none; border-color:rgb(230, 230, 230)">
                             </div>
                             <div class="input-group w-25">
                                 <span class="input-group-text">Pay</span>
-                                <input type="text" id="pay-amount" class="form-control" aria-label="Sizing example input"
-                                    aria-describedby="inputGroup-sizing-default">
+                                <input type="text" id="pay_amount" name="pay_amount" class="form-control"
+                                    aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                             </div>
                         </div>
                     </div>
@@ -88,10 +89,11 @@
 
                         </div>
                         <div class="ms-1">
-                            <button type="button" class="btn btn-success" data-pay_method="cash"
-                                title="Mark complete paid & checkout"> <i class="fas fa-money-bill-alt pe-2"
-                                    aria-hidden="true"></i> Cash</button>
-
+                            <button type="button" onclick="storeSellDataInDatabase()" class="btn btn-success"
+                                data-pay_method="cash" id="sell-button" title="Mark complete paid & checkout">
+                                <i class="fas fa-money-bill-alt pe-2" aria-hidden="true"></i>
+                                Cash
+                            </button>
                         </div>
                         <div class="pos-total">
                             <span>Total Payable: <span id="total-payable">0</span></span>
@@ -337,7 +339,7 @@
             });
 
             //making pay-due input fields disable
-            $('#pay-amount, #due-amount').prop('disabled', true);
+            $('#pay_amount, #due_amount').prop('disabled', true);
 
             function updateTable(productId, productName, productPrice, quantity, stock) {
                 var table = $('#product_table');
@@ -445,8 +447,8 @@
                 $('#total-payable').text(subtotal);
 
                 //Update pay-due fields
-                $('#pay-amount').val(subtotal);
-                $('#due-amount').val(0);
+                $('#pay_amount').val(subtotal);
+                $('#due_amount').val(0);
 
                 // document.getElementById('total-payable').innerHTML = 'Total Payable: ' + subtotal;
 
@@ -490,8 +492,8 @@
                 $('#total-payable').text(subTotal);
 
                 //Update pay-due fields
-                $('#pay-amount').val(subTotal);
-                $('#due-amount').val(0);
+                $('#pay_amount').val(subTotal);
+                $('#due_amount').val(0);
 
                 // Remove the row
                 row.remove();
@@ -509,14 +511,14 @@
 
                 // Check if there are any rows
                 if (tableRows.length > 0) {
-                    $('#pay-amount, #due-amount').prop('disabled', false);
+                    $('#pay_amount, #due_amount').prop('disabled', false);
                 } else {
-                    $('#pay-amount, #due-amount').prop('disabled', true);
+                    $('#pay_amount, #due_amount').prop('disabled', true);
                 }
             }
 
             // event listener for the "Pay" input field
-            $('#pay-amount').on('input', function() {
+            $('#pay_amount').on('input', function() {
                 var payValue = $(this).val();
 
                 // Remove any non-numeric characters
@@ -539,11 +541,78 @@
                 var due = subtotal - payValue;
 
                 //show "0" if due is negative
-                $('#due-amount').val(due >= 0 ? due : 0);
+                $('#due_amount').val(due >= 0 ? due : 0);
             });
 
 
         });
+
+        function storeSellDataInDatabase() {
+
+            // Get all rows from the table
+            let tableData = [];
+            $('#product_table tbody tr').each(function() {
+                let rowData = {
+                    product_id: $(this).find('td:eq(0)').text(),
+                    // product_name: $(this).find('td:eq(1)').text(),
+                    quantity: $(this).find('input[name="quantity-inp"]').val(),
+                    price: $(this).find('td:eq(3)').text(),
+                    total_price: $(this).find('td:eq(4)').text(),
+                    // customer_id: $('#customer_id').val(),
+                    customer_id: $('#customer_id').data('customer_id'),
+                    branch_id: $('#branch_id').val(),
+                    pay_amount: $('#pay_amount').val(),
+                    due_amount: $('#due_amount').val(),
+                    payment_method: "cash",
+                    subtotal: $('#subtotal').text(),
+                };
+                tableData.push(rowData);
+            });
+
+            // Clear previous errors
+            // $('.error-message').text('');
+
+            // Make an AJAX request to store data in the database
+            $.ajax({
+                url: '/pos/store-data',
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    data: tableData
+                },
+                success: function(response) {
+                    // Handle the response, e.g., show a success message
+                    // console.log(response.message);
+
+                    // Reload the page
+                    // location.reload();
+
+                    // $(".loader-div").hide(); // hide loader
+                },
+                error: function(data) {
+                    // if (data.status === 422) {
+                    //     var errors = data.responseJSON.errors;
+
+                    //     $(".loader-div").hide(); // hide loader
+
+                    //     // Clear previous errors
+                    //     $('.error-message').text('');
+
+                    //     // Display errors in your form
+                    //     $.each(errors, function(key, value) {
+                    //         // You can customize how you want to display the errors here
+                    //         $('#' + key + '_error').text(value[0]);
+                    //     });
+                    // } else {
+                    //     // Handle other errors
+                    //     // Reload the page
+                    //     location.reload();
+                    // }
+                }
+            });
+        }
     </script>
 
     {{-- AutoComplete for Customer search --}}
@@ -572,6 +641,7 @@
                     // Set selection
                     $('#customer_id').val(ui.item.label); // display the selected text
                     // $('#customer_id').val(ui.item.value); // save selected id to input
+                    $('#customer_id').data('customer_id', ui.item.value);
 
                     return false;
                 },

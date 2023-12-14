@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class PosController extends Controller
 {
@@ -116,5 +117,26 @@ class PosController extends Controller
         }
         // dd($response);
         return response()->json($response);
+    }
+
+    public function storeData(Request $request)
+    {
+        dd($request->data);
+        if (!$request->filled('data')) {
+            return response()->json(['errors' => 'no data found'], 406);
+        }
+
+        $validator = Validator::make($request->data[0], [
+            'customer_id' => 'required|integer',
+            'branch_id' => 'required|integer',
+            'pay_amount' => 'required|numeric|min:1',
+            'pay_amount' => 'nullable|numeric|min:1',
+            'payment_method' => 'required|string',
+        ]);
+        if ($validator->fails()) {
+            // $error = $validator->errors()->first();
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+        // dd($request->data);
     }
 }

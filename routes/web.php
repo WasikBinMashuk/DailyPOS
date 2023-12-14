@@ -132,6 +132,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::post('/pos/autocomplete/products', [PosController::class, 'autoCompletePosProducts'])->name('autoComplete.pos.product');
     Route::get('/pos/product/filter', [PosController::class, 'productFilter'])->name('pos.product.filter');
     Route::get('/pos/products', [PosController::class, 'productFetch'])->name('pos.products');
+    Route::post('/pos/store-data', [PosController::class, 'storeData']);
 
     // Roles routes with role of Super Admin only
     Route::group(['middleware' => 'role:Super Admin'], function () {
