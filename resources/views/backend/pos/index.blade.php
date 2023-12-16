@@ -194,8 +194,10 @@
                 }).done(function(response) {
                     if (response.html == '' && count == 0) {
                         $('.product-show-loader').hide();
+                        $('#no-product').remove();
+                        $("#product-data").html(response.html);
                         $("#data-wrapper").append(
-                            "<div class='mt-5 text-center' id='no-product'>No More Products</div>");
+                            "<div class='mt-5 text-center' id='no-product'>No Products Found</div>");
                         hasMorePages = false;
                         count = 1;
                         return;
@@ -276,6 +278,16 @@
                     branch_id: selectedBranchId
                 },
                 success: function(response) {
+                    if (response.html == '') {
+                        $('.product-show-loader').hide();
+                        $('#no-product').remove();
+                        $("#product-data").html(response.html);
+                        $("#data-wrapper").append(
+                            "<div class='mt-5 text-center' id='no-product'>No Products Found</div>");
+                        // hasMorePages = false;
+                        // count = 1;
+                        return;
+                    }
                     if (response.flag == 1) {
                         hasMorePages = true;
                         page = 1;
