@@ -8,6 +8,8 @@ use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Sell;
+use App\Models\SellDetail;
+use App\Models\SellPayment;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -131,7 +133,7 @@ class PosController extends Controller
             'customer_id' => 'required|integer',
             'branch_id' => 'required|integer',
             'pay_amount' => 'required|numeric',
-            'due_amount' => 'nullable|numeric',
+            'due_amount' => 'required|numeric',
             'payment_method' => 'required|string',
         ]);
         if ($validator->fails()) {
@@ -143,10 +145,28 @@ class PosController extends Controller
         $sell = Sell::create([
             'customer_id' => $request->data[0]['customer_id'],
             'branch_id' => $request->data[0]['branch_id'],
+            'subtotal' => $request->data[0]['subtotal'],
+        ]);
+
+        $sell_payment = SellPayment::create([
+            'sell_id' => $sell->id,
             'paid' => $request->data[0]['pay_amount'],
             'due' => $request->data[0]['due_amount'],
             'payment_method' => $request->data[0]['payment_method'],
             'subtotal' => $request->data[0]['subtotal'],
         ]);
+
+        foreach ($request->data as $data) {
+            $sellDetails[] = [
+                'sell_id' => $sell->id,
+                'product_id' => $data['product_id'],
+                'quantity' => $data['quantity'],
+                'price' => $data['price'],
+                'total_price' => $data['total_price'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+        if (isset($sellDetails)) SellDetail::insert($sellDetails);
     }
 }

@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('sell_id')->constrained();
             $table->string('payment_method');
             $table->decimal('due', 10, 2)->default(0);
-            $table->decimal('paid', 10, 2);
-            $table->decimal('total_price', 10, 2);
+            $table->decimal('paid', 10, 2)->default(0);
+            $table->decimal('subtotal', 10, 2);
             $table->timestamps();
         });
     }

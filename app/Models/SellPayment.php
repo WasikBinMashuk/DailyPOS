@@ -14,6 +14,6 @@ class SellPayment extends Model
         'payment_method',
         'due',
         'paid',
-        'total_price',
+        'subtotal',
     ];
 }
