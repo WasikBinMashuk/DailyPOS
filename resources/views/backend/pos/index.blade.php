@@ -159,22 +159,9 @@
         var count = 0; // count variable to force stop html empty return condition
         var selectedBranchId;
 
-        // branch change triggering
+
         $(document).ready(function() {
-            $('#branch_id').change(function() {
-                // Get the branch_id
-                selectedBranchId = $(this).val();
 
-                // make all categories selected after changing every branch
-                $('#category-select').val('0');
-                $('#category-select').trigger('change');
-
-                // Make AJAX call to fetch data based on the selected value
-                fetchBranchwiseProducts(selectedBranchId);
-            });
-
-            // Trigger the change event on page load to make an initial AJAX call
-            $('#branch_id').trigger('change');
         });
 
         function fetchBranchwiseProducts(selectedBranchId) {
@@ -557,7 +544,36 @@
                 $('#due_amount').val(due >= 0 ? due : 0);
             });
 
+            // branch change triggering
+            $('#branch_id').change(function() {
+                // Get the branch_id
+                selectedBranchId = $(this).val();
 
+                // make all categories selected after changing every branch
+                $('#category-select').val('0');
+                $('#category-select').trigger('change');
+
+                // Clear the table body
+                $("#product_table tbody").empty();
+                // Hide the table footer
+                $("#product_table tfoot").hide();
+
+                // Update the subtotal cell at the bottom of the table
+                $('#subtotal').text(0);
+                $('#total-payable').text(0);
+
+                //Update pay-due fields
+                $('#pay_amount').val(0);
+                $('#due_amount').val(0);
+                // hides the pay-due fields
+                togglePayDueFields();
+
+                // Make AJAX call to fetch data based on the selected value
+                fetchBranchwiseProducts(selectedBranchId);
+            });
+
+            // Trigger the change event on page load to make an initial AJAX call
+            $('#branch_id').trigger('change');
         });
 
         function storeSellDataInDatabase() {
