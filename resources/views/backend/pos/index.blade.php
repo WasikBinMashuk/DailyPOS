@@ -77,6 +77,7 @@
                                 <span class="input-group-text">Pay</span>
                                 <input type="text" id="pay_amount" name="pay_amount" class="form-control"
                                     aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                <span id="pay_amount_error" class="error-message text-danger"></span>
                             </div>
                         </div>
                     </div>

@@ -7,6 +7,7 @@ use App\Models\Branch;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Product;
+use App\Models\Sell;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -129,8 +130,8 @@ class PosController extends Controller
         $validator = Validator::make($request->data[0], [
             'customer_id' => 'required|integer',
             'branch_id' => 'required|integer',
-            'pay_amount' => 'required|numeric|min:1',
-            'pay_amount' => 'nullable|numeric|min:1',
+            'pay_amount' => 'required|numeric',
+            'due_amount' => 'nullable|numeric',
             'payment_method' => 'required|string',
         ]);
         if ($validator->fails()) {
@@ -138,5 +139,14 @@ class PosController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
         // dd($request->data);
+
+        $sell = Sell::create([
+            'customer_id' => $request->data[0]['customer_id'],
+            'branch_id' => $request->data[0]['branch_id'],
+            'paid' => $request->data[0]['pay_amount'],
+            'due' => $request->data[0]['due_amount'],
+            'payment_method' => $request->data[0]['payment_method'],
+            'subtotal' => $request->data[0]['subtotal'],
+        ]);
     }
 }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('branch_name')->unique();
             $table->string('mobile', 11)->unique();
             $table->string('address')->nullable();
+            $table->tinyInteger('default')->default(0)->comment('0 = not default, 1 = default');
             $table->timestamps();
         });
     }
