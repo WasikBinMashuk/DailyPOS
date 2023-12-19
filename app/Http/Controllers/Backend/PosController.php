@@ -166,6 +166,23 @@ class PosController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
+            // $quantity = $data['quantity'];
+            // $stocks = Stock::where('product_id', $data['product_id'])->orderby('quantity', 'desc')->get();
+            // foreach ($stocks as $stock) {
+            //     if ($stock->quantity > 0) {
+            //         $updateStock = Stock::find($stock->id);
+            //         if ($stock->quantity > $quantity) {
+            //             $updateStock->update([
+            //                 'quantity' => $stock->quantity - $quantity,
+            //             ]);
+            //             $quantity = 0;
+            //         }
+            //         elseif($stock->quantity < $quantity){
+            //             $quantity = $quantity - $stock->quantity;
+
+            //         }
+            //     }
+            // }
         }
         if (isset($sellDetails)) SellDetail::insert($sellDetails);
     }
