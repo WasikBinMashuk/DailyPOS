@@ -124,7 +124,9 @@ class PosController extends Controller
 
     public function storeData(Request $request)
     {
-        dd($request->data);
+        // $stocks = Stock::where('product_id', $request->data[0]['product_id'])->orderBy('quantity', 'DESC')->get();
+        // dd($stocks);
+        // dd($request->data);
         if (!$request->filled('data')) {
             return response()->json(['errors' => 'no data found'], 406);
         }
@@ -166,24 +168,35 @@ class PosController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
-            // $quantity = $data['quantity'];
-            // $stocks = Stock::where('product_id', $data['product_id'])->orderby('quantity', 'desc')->get();
-            // foreach ($stocks as $stock) {
-            //     if ($stock->quantity > 0) {
-            //         $updateStock = Stock::find($stock->id);
-            //         if ($stock->quantity > $quantity) {
-            //             $updateStock->update([
-            //                 'quantity' => $stock->quantity - $quantity,
-            //             ]);
-            //             $quantity = 0;
-            //         }
-            //         elseif($stock->quantity < $quantity){
-            //             $quantity = $quantity - $stock->quantity;
+            $quantity = $data['quantity'];
+            $stocks = Stock::where('product_id', $data['product_id'])->orderBy('quantity', 'DESC')->get();
+            foreach ($stocks as $stock) {
+                if ($stock->quantity > 0) {
+                    $updateStock = Stock::find($stock->id);
+                    if ($stock->quantity >= $quantity && $stock->quantity != 0) {
+                        $updateStock->update([
+                            'quantity' => $stock->quantity - $quantity,
+                        ]);
+                        $quantity = 0;
+                    } elseif ($stock->quantity < $quantity) {
+                        $quantity = $quantity - $stock->quantity;
+                        $updateStock->update([
+                            'quantity' => 0,
+                        ]);
+                    }
+                }
 
-            //         }
-            //     }
-            // }
+                $product = Product::where('id', $data['product_id'])->first();
+                $product->update([
+                    'stock' => $product->stock - $data['quantity'],
+                ]);
+            }
         }
         if (isset($sellDetails)) SellDetail::insert($sellDetails);
+
+        // sweet alert
+        toast('Product Sold!', 'success');
+
+        return response()->json(['success' => true, 'message' => 'Product sold successfully']);
     }
 }

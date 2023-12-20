@@ -152,6 +152,10 @@
         </div>
     </div>
 
+    <div class="loader-div">
+        <img class="loader-img" src="{{ asset('gif/loader.gif') }}" style="height: 120px;width: auto;" />
+    </div>
+
     <script type="text/javascript">
         var ENDPOINT = "{{ route('pos.products') }}";
         var hasMorePages = true;
@@ -578,6 +582,15 @@
 
         function storeSellDataInDatabase() {
 
+            // var rowCount = document.getElementById('product_table').rows.length;
+
+            if ($('#product_table tbody tr').length == 0) {
+                alert('No rows in product_table. Cannot store sell data.');
+                return;
+            }
+
+            $(".loader-div").show(); // show loader
+
             // Get all rows from the table
             let tableData = [];
             $('#product_table tbody tr').each(function() {
@@ -616,29 +629,29 @@
                     // console.log(response.message);
 
                     // Reload the page
-                    // location.reload();
+                    location.reload();
 
-                    // $(".loader-div").hide(); // hide loader
+                    $(".loader-div").hide(); // hide loader
                 },
                 error: function(data) {
-                    // if (data.status === 422) {
-                    //     var errors = data.responseJSON.errors;
+                    if (data.status === 422) {
+                        var errors = data.responseJSON.errors;
 
-                    //     $(".loader-div").hide(); // hide loader
+                        $(".loader-div").hide(); // hide loader
 
-                    //     // Clear previous errors
-                    //     $('.error-message').text('');
+                        // Clear previous errors
+                        $('.error-message').text('');
 
-                    //     // Display errors in your form
-                    //     $.each(errors, function(key, value) {
-                    //         // You can customize how you want to display the errors here
-                    //         $('#' + key + '_error').text(value[0]);
-                    //     });
-                    // } else {
-                    //     // Handle other errors
-                    //     // Reload the page
-                    //     location.reload();
-                    // }
+                        // Display errors in your form
+                        $.each(errors, function(key, value) {
+                            // You can customize how you want to display the errors here
+                            $('#' + key + '_error').text(value[0]);
+                        });
+                    } else {
+                        // Handle other errors
+                        // Reload the page
+                        location.reload();
+                    }
                 }
             });
         }
