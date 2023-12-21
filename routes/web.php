@@ -64,7 +64,7 @@ Route::get('lang/change', [LangController::class, 'lang_change'])->name('lang.ch
 Route::get('reload-captcha', [CaptchaController::class, 'reloadCaptcha']);
 
 // AUTH group route for users, categories, subcategories and products
-Route::group(['middleware' => ['auth', 'verified']], function () {
+Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/', [DashboardController::class, 'dashboard']);
 
