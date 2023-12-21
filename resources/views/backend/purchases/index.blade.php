@@ -24,6 +24,7 @@
                                     {{-- <th scope="col">Category ID</th> --}}
                                     <th scope="col">Purchase ID</th>
                                     <th scope="col">Supplier Name</th>
+                                    <th scope="col">Branch Name</th>
                                     <th scope="col">Purchase Date</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Payment Method</th>
@@ -37,6 +38,7 @@
                                     <tr>
                                         <td>{{ $purchase->id }}</td>
                                         <td>{{ $purchase->supplier->supplier_name }}</td>
+                                        <td>{{ $purchase->branch->branch_name }}</td>
                                         <td>{{ $purchase->date }}</td>
                                         <td>
                                             @if ($purchase->status == 'received')

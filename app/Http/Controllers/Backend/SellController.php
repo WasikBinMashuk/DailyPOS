@@ -43,6 +43,6 @@ class SellController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // dd($request);
     }
 }
