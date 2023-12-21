@@ -22,6 +22,7 @@ use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CustomerDashboardController;
 use App\Http\Controllers\LangController;
 use App\Http\Controllers\Backend\RoleController;
+use App\Http\Controllers\Backend\SellController;
 use App\Http\Controllers\Backend\StockController;
 use App\Http\Controllers\Backend\SupplierController;
 use App\Http\Controllers\Frontend\OtpController;
@@ -133,6 +134,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/pos/product/filter', [PosController::class, 'productFilter'])->name('pos.product.filter');
     Route::get('/pos/products', [PosController::class, 'productFetch'])->name('pos.products');
     Route::post('/pos/store-data', [PosController::class, 'storeData']);
+
+    // Sell 
+    //Branch crud routes
+    Route::resource('sells', SellController::class);
 
     // Roles routes with role of Super Admin only
     Route::group(['middleware' => 'role:Super Admin'], function () {

@@ -48,7 +48,6 @@ class PurchaseController extends Controller
     public function show(string $id)
     {
         $purchaseDetails = PurchaseDetail::with(['product'])->where('purchase_id', $id)->get();
-        // dd($purchaseDetails);
         return view('backend.purchases.purchaseDetails', compact('purchaseDetails'));
     }
 
@@ -114,49 +113,6 @@ class PurchaseController extends Controller
 
         return redirect()->route('purchases.index');
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-
-    // public function formSubmit(Request $request)
-    // {
-
-    //     // Validate the request data
-    //     // $validatedData = $request->validate([
-    //     //     'supplier_id' => 'required|integer',
-    //     //     'product_name' => 'required|string',
-    //     //     'quantity' => 'required|integer',
-    //     //     'price' => 'required|numeric',
-    //     // ]);
-    //     // Save the data to the database or perform other actions as needed
-
-    //     // $validated = $request->validated();
-    //     $validator = Validator::make($request->all(), [
-    //         'supplier_id' => 'required|integer',
-    //         'product_name' => 'required|string',
-    //         'quantity' => 'required|integer',
-    //         'price' => 'required|numeric',
-    //     ]);
-    //     if ($validator->fails()) {
-    //         // $error = $validator->errors()->first();
-    //         return response()->json(['errors' => $validator->errors()], 422);
-    //     }
-
-    //     $data = [
-    //         'supplier_id' => $request->supplier_id,
-    //         'product_name' => $request->product_name,
-    //         'quantity' => $request->quantity,
-    //         'price' => $request->price,
-    //         'total_price' => $request->price * $request->quantity,
-    //     ];
-
-    //     return response()->json(['message' => 'Successfully created', 'code' => 200, 'data' => $data]);
-    // }
 
     public function storeData(Request $request)
     {

@@ -328,7 +328,7 @@
                                             </svg>
                                         </span>
                                         <span class="nav-link-title">
-                                            Purchase
+                                            Purchase/Sell
                                         </span>
                                     </a>
                                     <div class="dropdown-menu">
@@ -343,8 +343,8 @@
                                                 <a class="dropdown-item" href="{{ route('purchases.index') }}">
                                                     Purchase History
                                                 </a>
-                                                <a class="dropdown-item" href="#">
-                                                    Import Purchase by CSV
+                                                <a class="dropdown-item" href="{{ route('sells.index') }}">
+                                                    Sell History
                                                 </a>
                                             </div>
 

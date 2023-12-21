@@ -28,4 +28,9 @@ class Customer extends Authenticatable
             set: fn (string $value) => ucwords($value),
         );
     }
+
+    public function sell(): HasMany
+    {
+        return $this->hasMany(Sell::class);
+    }
 }

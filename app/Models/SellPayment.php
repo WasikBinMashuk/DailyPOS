@@ -16,4 +16,9 @@ class SellPayment extends Model
         'paid',
         'subtotal',
     ];
+
+    public function sell()
+    {
+        return $this->belongsTo(Sell::class);
+    }
 }

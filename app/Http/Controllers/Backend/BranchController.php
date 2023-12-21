@@ -91,6 +91,9 @@ class BranchController extends Controller
         ]);
 
         try {
+            Branch::where('default', 1)->first()->update([
+                'default' => 0
+            ]);
             Branch::where('id', $id)->first()->update([
                 'branch_name' => $request->branch_name,
                 'mobile' => $request->mobile,
