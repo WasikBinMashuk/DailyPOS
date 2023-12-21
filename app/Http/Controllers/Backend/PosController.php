@@ -14,6 +14,7 @@ use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class PosController extends Controller
 {
@@ -137,12 +138,13 @@ class PosController extends Controller
             'pay_amount' => 'required|numeric',
             'due_amount' => 'required|numeric',
             'payment_method' => 'required|string',
+        ], [
+            'customer_id.required' => 'Field is required.',
         ]);
         if ($validator->fails()) {
             // $error = $validator->errors()->first();
             return response()->json(['errors' => $validator->errors()], 422);
         }
-        // dd($request->data);
 
         $sell = Sell::create([
             'customer_id' => $request->data[0]['customer_id'],
@@ -150,7 +152,7 @@ class PosController extends Controller
             'subtotal' => $request->data[0]['subtotal'],
         ]);
 
-        $sell_payment = SellPayment::create([
+        SellPayment::create([
             'sell_id' => $sell->id,
             'paid' => $request->data[0]['pay_amount'],
             'due' => $request->data[0]['due_amount'],
@@ -195,7 +197,8 @@ class PosController extends Controller
         if (isset($sellDetails)) SellDetail::insert($sellDetails);
 
         // sweet alert
-        toast('Product Sold!', 'success');
+        // toast('Product Sold!', 'success');
+        Alert::success('Product Sold!', '');
 
         return response()->json(['success' => true, 'message' => 'Product sold successfully']);
     }

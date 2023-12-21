@@ -11,10 +11,10 @@
                                 <button class="btn btn-outline-secondary " disabled><i class="fa-solid fa-user"></i></button>
                                 <input type="text" class="form-control" id="customer_id" name="customer_id"
                                     placeholder="Walk-In Customer">
-                                <span id="customer_id_error" class="error-message text-danger"></span>
                                 <a href="{{ route('customers.create') }}" target="_blank" title="Create Customer"
                                     class="btn btn-outline-primary" type="button" id="button-addon2"><i
                                         class="fa-solid fa-plus"></i></a>
+                                <div><span id="customer_id_error" class="error-message text-danger"></span></div>
                             </div>
                             <div class="input-group ms-10 w-50">
                                 <button class="btn btn-outline-secondary " disabled><i
@@ -684,6 +684,9 @@
                     $('#customer_id').val(ui.item.label); // display the selected text
                     // $('#customer_id').val(ui.item.value); // save selected id to input
                     $('#customer_id').data('customer_id', ui.item.value);
+
+                    // Clear previous errors
+                    $('.error-message').text('');
 
                     return false;
                 },
