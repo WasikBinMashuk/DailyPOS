@@ -138,7 +138,6 @@ Route::group(['middleware' => ['auth']], function () {
     // Sell 
     //Branch crud routes
     Route::resource('sells', SellController::class);
-    Route::post('/sells/{id}/update', [SellController::class, 'update'])->name('sells.modal.update');
 
     // Roles routes with role of Super Admin only
     Route::group(['middleware' => 'role:Super Admin'], function () {
