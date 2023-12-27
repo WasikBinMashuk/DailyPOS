@@ -46,26 +46,17 @@
                                         <td>{{ $sell->sellPayment->due }}</td>
                                         <td>{{ $sell->sellPayment->paid }}</td>
                                         <td>{{ $sell->subtotal }}</td>
-                                        <td>
-                                            <div class="btn-group" role="group" aria-label="Purchase Actions">
-                                                {{-- <a href="#" class="btn btn-primary payment-status"
-                                                    data-id="{{ $sell->id }}" data-bs-toggle="modal"
-                                                    data-bs-target="#payment-status-modal">
-                                                    <i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i>
-                                                </a> --}}
-                                                <a href="{{ route('sells.show', $sell->id) }}" class="btn btn-info">
-                                                    <i class="fa-regular fa-eye" style="color: #ffffff;"></i>
-                                                </a>
-                                                {{-- <form action="{{ route('sells.destroy', $sell->id) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger"
-                                                        onclick="return confirm('Are you sure to delete this user?')">
-                                                        <i class="fa-regular fa-trash-can" style="color: #ffffff;"></i>
-                                                    </button>
-                                                </form> --}}
-                                            </div>
+                                        <td class="d-flex gap-1">
+                                            <a href="{{ route('sells.show', $sell->id) }}" class="btn btn-info">
+                                                <i class="fa-regular fa-eye" style="color: #ffffff;"></i>
+                                            </a>
+                                            <form action="{{ route('sells.update', $sell->id) }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="btn btn-success form-submit-sweetAlert">
+                                                    Clear Dues
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -81,61 +72,23 @@
         </div>
     </div>
 
-    <div class="modal modal-blur fade" id="payment-status-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Payment Status</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="" method="POST" id="modalForm">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <select class="form-select" name="status" id="orderStatus">
-                                        <option value="1" selected>Paid</option>
-                                    </select>
-                                    @error('status')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
-                            Cancel
-                        </a>
-                        <button type="sumbit" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24"
-                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
-                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
-                                <path d="M16 5l3 3"></path>
-                            </svg>
-                            Edit
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-
-    {{-- <script>
-        $(document).on("click", ".payment-status", function() {
-
-            var sellId = $(this).data('id');
-
-            let link = "{{ route('sells.modal.update') }}/" + sellId + "/update";
-            // console.log(link);
-            $('#modalForm').attr('action', link);
-
-            // $(".modal-body #orderStatus").val(oldStatus);
+    <script type="text/javascript">
+        $('.form-submit-sweetAlert').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                title: "All Dues Paid?",
+                text: "You won't be able to revert this action",
+                icon: "warning",
+                type: "warning",
+                buttons: true,
+                dangerMode: false,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    form.submit();
+                }
+            });
         });
-    </script> --}}
+    </script>
 @endsection

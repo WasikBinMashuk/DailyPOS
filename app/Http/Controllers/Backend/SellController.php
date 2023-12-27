@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Sell;
 use App\Models\SellDetail;
+use App\Models\SellPayment;
+use Exception;
 use Illuminate\Http\Request;
 
 class SellController extends Controller
@@ -43,6 +45,26 @@ class SellController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // dd($request);
+        try {
+            $sellPayment = SellPayment::find($id);
+
+            if ($sellPayment->due == 0) {
+                // sweet alert
+                toast('No Dues', 'warning');
+                return redirect()->back();
+            }
+
+            $sellPayment->update([
+                'due' => 0,
+                'paid' => $sellPayment->paid + $sellPayment->due
+            ]);
+
+            // sweet alert
+            toast('Dues Received', 'success');
+        } catch (Exception $e) {
+            // dd($e->getMessage());
+            toast('Something went wrong', 'error');
+        }
+        return redirect()->route('sells.index');
     }
 }
