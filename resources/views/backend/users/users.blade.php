@@ -6,28 +6,15 @@
             <div class="card">
                 <div class=" card-header justify-content-between ">
                     <div>
-                        <h3 class="card-title">Registered Admins</h3>
+                        <h3 class="card-title">Registered Users</h3>
                     </div>
                     <div>
                         <div class="d-inline">
-                            <a class="btn btn-info" href="{{ route('users.create') }}">Add Admin</a>
+                            <a class="btn btn-info" href="{{ route('users.create') }}">Add</a>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
-                    {{-- @if (session('msg'))
-                      <div class="alert alert-success alert-dismissible fade show" role="alert">
-                          <strong>{{ Session::get('msg') }}</strong>
-                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                      </div>
-                @endif
-                @if (session('danger'))
-                      <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                          <strong>{{ Session::get('danger') }}</strong>
-                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                      </div>
-                @endif --}}
-
                     <table class="table" id="myTable">
                         <thead>
                             <tr>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch;
 use App\Models\Category;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -14,9 +15,9 @@ class Controller extends BaseController
     public function __construct()
     {
         // Load your objects
-        $shopCategories = Category::all();
+        $defaultBranch = Branch::where('default', 1)->first();
 
-        // Make it available to all views by sharing it for the header category dropdown
-        view()->share('shopCategories', $shopCategories);
+        // Make it available to all views by sharing it for the master header
+        view()->share('defaultBranch', $defaultBranch);
     }
 }

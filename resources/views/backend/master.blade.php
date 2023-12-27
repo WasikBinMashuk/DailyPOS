@@ -376,8 +376,8 @@
                                 </li>
 
                             </ul>
-                            {{-- <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
-                                <form action="./" method="get" autocomplete="off" novalidate>
+                            <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
+                                {{-- <form action="./" method="get" autocomplete="off" novalidate>
                                     <div class="input-icon">
                                         <span class="input-icon-addon">
                                             <!-- Download SVG icon from http://tabler-icons.io/i/search -->
@@ -393,8 +393,12 @@
                                         <input type="text" value="" class="form-control" placeholder="Search…"
                                             aria-label="Search in website">
                                     </div>
-                                </form>
-                            </div> --}}
+                                </form> --}}
+                                <div
+                                    style="width: 200px; padding: 10px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); text-align: center; background-color: #fff; cursor: default;">
+                                    <span class="text-uppercase h4">{{ $defaultBranch->branch_name }} Branch</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

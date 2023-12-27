@@ -6,11 +6,11 @@
             <div class="card">
                 <div class=" card-header justify-content-between ">
                     <div>
-                        <h3 class="card-title">Customers Table</h3>
+                        <h3 class="card-title">Registered Customers</h3>
                     </div>
                     <div>
                         <div class="d-inline">
-                            <a class="btn btn-info" href="{{ route('customers.create') }}">Add customer</a>
+                            <a class="btn btn-info" href="{{ route('customers.create') }}">Add</a>
                         </div>
                     </div>
                 </div>
