@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Billing Invoice - Webjourney</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Roboto', sans-serif;
+            line-height: 26px;
+            font-size: 15px
+        }
+
+        .custom--table {
+            width: 100%;
+            color: inherit;
+            vertical-align: top;
+            font-weight: 400;
+            border-collapse: collapse;
+            border-bottom: 2px solid #ddd;
+            margin-top: 0;
+        }
+
+        .table-title {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 32px;
+            margin-bottom: 10px
+        }
+
+        .custom--table thead {
+            font-weight: 700;
+            background: inherit;
+            color: inherit;
+            font-size: 16px;
+            font-weight: 500
+        }
+
+        .custom--table tbody {
+            border-top: 0;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .custom--table thead tr {
+            border-top: 2px solid #ddd;
+            border-bottom: 2px solid #ddd;
+            text-align: left
+        }
+
+        .custom--table thead tr th {
+            border-top: 2px solid #ddd;
+            border-bottom: 2px solid #ddd;
+            text-align: left;
+            font-size: 16px;
+            padding: 10px 0
+        }
+
+        .custom--table tbody tr {
+            vertical-align: top;
+        }
+
+        .custom--table tbody tr td {
+            font-size: 14px;
+            line-height: 18px vertical-align:top 10
+        }
+
+        .custom--table tbody tr td:last-child {
+            padding-bottom: 10px;
+        }
+
+        .custom--table tbody tr td .data-span {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 18px;
+        }
+
+        .custom--table tbody .table_footer_row {
+            border-top: 2px solid #ddd;
+            margin-bottom: 10px !important;
+            padding-bottom: 10px !important
+        }
+
+        /* invoice area */
+        .invoice-area {
+            padding: 10px 0
+        }
+
+        .invoice-wrapper {
+            max-width: 650px;
+            margin: 0 auto;
+            box-shadow: 0 0 10px #f3f3f3;
+            padding: 0px;
+        }
+
+        .invoice-header {
+            margin-bottom: 40px;
+        }
+
+        .invoice-flex-contents {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .invoice-title {
+            font-size: 25px;
+            font-weight: 700
+        }
+
+        .invoice-details {
+            margin-top: 20px
+        }
+
+        .invoice-details-flex {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .invoice-details-title {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 32px;
+            color: #333;
+            margin: 0;
+            padding: 0
+        }
+
+        .invoice-single-details {
+            padding: 10px
+        }
+
+        .details-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        .details-list .list {
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 18px;
+            color: #666;
+            margin: 0;
+            padding: 0;
+            transition: all .3s;
+        }
+
+        .details-list .list strong {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 18px;
+            color: #666;
+            margin: 0;
+            padding: 0;
+            transition: all .3s
+        }
+
+        .details-list .list a {
+            display: inline-block;
+            color: #666;
+            transition: all .3s;
+            text-decoration: none;
+            margin: 0;
+            line-height: 18px
+        }
+
+        .item-description {
+            margin-top: 10px;
+            padding: 10px;
+        }
+
+        .products-item {
+            text-align: left
+        }
+
+        .invoice-total-count .list-single {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            font-size: 16px;
+            line-height: 28px
+        }
+
+        .invoice-subtotal {
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 15px
+        }
+
+        .invoice-total {
+            padding-top: 10px
+        }
+
+        .invoice-flex-footer {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .single-footer-item {
+            flex: 1
+        }
+
+        .single-footer {
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .single-footer .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 30px;
+            width: 30px;
+            font-size: 16px;
+            background-color: #000e8f;
+            color: #fff
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Invoice area Starts -->
+    <div class="invoice-area">
+        <div class="invoice-wrapper">
+            <div class="invoice-header">
+                <h1 class="invoice-title" style="text-align:center;">DailyShop</h1>
+            </div>
+
+            <div class="item-description">
+                <h5 class="table-title">Purchases Details</h5>
+                <table class="custom--table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($pdfData as $data)
+                            <tr>
+                                <td>{{ $data->product_name }}</td>
+                                <td>{{ $data->quantity }}</td>
+                                <td>{{ $data->price }} BDT</td>
+                                <td>{{ $data->total_price }} BDT</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="item-description">
+                <div class="table-responsive">
+                    <table class="custom--table">
+                        <thead class="head-bg">
+                            <tr>
+                                <th>Buyer Details</th>
+                                <th>Date & Schedule</th>
+                                <th>Amount Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span class="data-span">Name:</span>{{ $pdfData[0]->customer_name }}<br>
+                                    <span class="data-span">Email:</span>{{ $pdfData[0]->customer_email }}<br>
+                                    <span class="data-span">Phone: </span>{{ $pdfData[0]->customer_mobile }}<br>
+                                    {{-- <span class="data-span">Address:</span>West Panthapath, Dhanmondi --}}
+                                </td>
+                                <td>
+                                    {{ $date }} <br>
+                                </td>
+                                <td>
+                                    <span class="data-span"> Sub Total:</span>{{ $pdfData[0]->subtotal }} BDT <br>
+                                    <span class="data-span"> Due: </span>{{ $pdfData[0]->due }} BDT <br>
+                                    <span class="data-span">Payment Method: </span>{{ $pdfData[0]->payment_method }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invoice area end -->
+    <footer>
+        <h3 style="text-align: center">
+            Copyright @2023 DailyPOS
+        </h3>
+    </footer>
+
+</body>
+
+</html>

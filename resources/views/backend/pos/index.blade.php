@@ -627,6 +627,22 @@
                 success: function(response) {
                     // Handle the response, e.g., show a success message
                     // console.log(response.message);
+                    var sell_id = response.id;
+                    $.ajax({
+                        url: '/pdf/download',
+                        type: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: {
+                            sell_id: sell_id
+                        },
+                        complete: function() {
+                            // This function will be executed whether the AJAX call is successful or not
+                            console.log('AJAX call completed');
+                            // location.reload();
+                        }
+                    });
 
                     // Reload the page
                     location.reload();

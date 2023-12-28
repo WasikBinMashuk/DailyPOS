@@ -10,6 +10,7 @@ use App\Http\Controllers\Frontend\CustomerAuthController;
 use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\EmailVerifyController;
 use App\Http\Controllers\Backend\OrderController;
+use App\Http\Controllers\Backend\PdfController;
 use App\Http\Controllers\Backend\PosController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Backend\ProductController;
@@ -135,9 +136,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/pos/products', [PosController::class, 'productFetch'])->name('pos.products');
     Route::post('/pos/store-data', [PosController::class, 'storeData']);
 
-    // Sell 
-    //Branch crud routes
+    // Sell
     Route::resource('sells', SellController::class);
+
+    // PDF
+    Route::post('/pdf/download', [PdfController::class, 'downloadInvoice']);
 
     // Roles routes with role of Super Admin only
     Route::group(['middleware' => 'role:Super Admin'], function () {

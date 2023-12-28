@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PosController extends Controller
 {
@@ -125,9 +126,8 @@ class PosController extends Controller
 
     public function storeData(Request $request)
     {
-        // $stocks = Stock::where('product_id', $request->data[0]['product_id'])->orderBy('quantity', 'DESC')->get();
-        // dd($stocks);
-        // dd($request->data);
+        session()->put('trigger', true); //using to handle success alert, check PdfController
+
         if (!$request->filled('data')) {
             return response()->json(['errors' => 'no data found'], 406);
         }
@@ -198,8 +198,7 @@ class PosController extends Controller
 
         // sweet alert
         // toast('Product Sold!', 'success');
-        Alert::success('Product Sold!', '');
-
-        return response()->json(['success' => true, 'message' => 'Product sold successfully']);
+        // Alert::success('Product Sold!', '');
+        return response()->json(['success' => true, 'message' => 'Product sold successfully', 'id' => $sell->id]);
     }
 }
