@@ -618,10 +618,8 @@
             $.ajax({
                 url: '/pos/store-data',
                 type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
                 data: {
+                    _token: CSRF_TOKEN,
                     data: tableData
                 },
                 success: function(response) {
@@ -631,16 +629,15 @@
                     $.ajax({
                         url: '/pdf/download',
                         type: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
                         data: {
+                            _token: CSRF_TOKEN,
                             sell_id: sell_id
                         },
-                        complete: function() {
-                            // This function will be executed whether the AJAX call is successful or not
-                            console.log('AJAX call completed');
-                            // location.reload();
+                        success: function() {
+                            console.log('PDF download AJAX call completed');
+                        },
+                        error: function(data) {
+                            console.log('error in pdf download ajax call');
                         }
                     });
 
@@ -666,7 +663,8 @@
                     } else {
                         // Handle other errors
                         // Reload the page
-                        location.reload();
+                        // location.reload();
+                        console.log('Something went wrong while store Ajax');
                     }
                 }
             });

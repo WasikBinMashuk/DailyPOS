@@ -426,9 +426,7 @@
             });
 
         });
-    </script>
 
-    <script type="text/javascript">
         function storeDataInDatabase() {
 
             $(".loader-div").show(); // show loader
@@ -459,10 +457,8 @@
             $.ajax({
                 url: '/purchases/store-data',
                 type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
                 data: {
+                    _token: CSRF_TOKEN,
                     data: tableData
                 },
                 success: function(response) {
@@ -491,10 +487,13 @@
                     } else {
                         // Handle other errors
                         // Reload the page
-                        location.reload();
+                        // location.reload();
+                        console.log('Something went wrong while store Ajax');
                     }
                 }
             });
         }
     </script>
+
+    <script type="text/javascript"></script>
 @endsection
