@@ -28,20 +28,15 @@
                                     <th scope="col">Source</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Date</th>
-                                    {{-- <th scope="col"></th> --}}
-
                                 </tr>
                             </thead>
-                            {{-- @php
-                                $serialNumber = 1;
-                            @endphp --}}
                             <tbody>
                                 @foreach ($stocks as $key => $stock)
                                     <tr>
                                         <td>{{ $stocks->firstItem() + $key }}</td>
                                         <td>{{ $stock->branch->branch_name }}</td>
                                         <td>{{ $stock->product->product_name }}</td>
-                                        <td>{{ $stock->source }}</td>
+                                        <td><span class="text-capitalize">{{ $stock->source }}</span></td>
                                         <td>{{ $stock->quantity }}</td>
                                         <td>{{ $stock->date }}</td>
 

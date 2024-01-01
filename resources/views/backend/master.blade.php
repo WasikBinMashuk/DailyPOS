@@ -303,8 +303,39 @@
                                                 <a class="dropdown-item" href="{{ route('product.index') }}">
                                                     Products
                                                 </a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                                        data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                        <span
+                                            class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="icon icon-tabler icon-tabler-map-pin" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                stroke="currentColor" fill="none" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                                                <path
+                                                    d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" />
+                                            </svg>
+                                        </span>
+                                        <span class="nav-link-title">
+                                            Branch/Supplier
+                                        </span>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-menu-columns">
+                                            <div class="dropdown-menu-column">
                                                 <a class="dropdown-item" href="{{ route('branches.index') }}">
                                                     Branch List
+                                                </a>
+                                                <a class="dropdown-item" href="{{ route('suppliers.index') }}">
+                                                    Suppliers List
                                                 </a>
                                             </div>
                                         </div>
@@ -334,17 +365,14 @@
                                     <div class="dropdown-menu">
                                         <div class="dropdown-menu-columns">
                                             <div class="dropdown-menu-column">
-                                                <a class="dropdown-item" href="{{ route('suppliers.index') }}">
-                                                    Suppliers List
-                                                </a>
-                                                <a class="dropdown-item" href="{{ route('stock.index') }}">
-                                                    Stock History
-                                                </a>
                                                 <a class="dropdown-item" href="{{ route('purchases.index') }}">
                                                     Purchase History
                                                 </a>
                                                 <a class="dropdown-item" href="{{ route('sells.index') }}">
                                                     Sell History
+                                                </a>
+                                                <a class="dropdown-item" href="{{ route('stock.index') }}">
+                                                    Stock History
                                                 </a>
                                             </div>
 
@@ -356,17 +384,17 @@
                                         <span
                                             class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
                                             <svg xmlns="http://www.w3.org/2000/svg"
-                                                class="icon icon-tabler icon-tabler-user-hexagon" width="24"
+                                                class="icon icon-tabler icon-tabler-mood-plus" width="24"
                                                 height="24" viewBox="0 0 24 24" stroke-width="2"
                                                 stroke="currentColor" fill="none" stroke-linecap="round"
                                                 stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path d="M12 13a3 3 0 1 0 0 -6a3 3 0 0 0 0 6z"></path>
-                                                <path d="M6.201 18.744a4 4 0 0 1 3.799 -2.744h4a4 4 0 0 1 3.798 2.741">
-                                                </path>
-                                                <path
-                                                    d="M19.875 6.27c.7 .398 1.13 1.143 1.125 1.948v7.284c0 .809 -.443 1.555 -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225 0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33 2.33 0 0 1 2.25 0l6.75 3.98h-.033z">
-                                                </path>
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M20.985 12.528a9 9 0 1 0 -8.45 8.456" />
+                                                <path d="M16 19h6" />
+                                                <path d="M19 16v6" />
+                                                <path d="M9 10h.01" />
+                                                <path d="M15 10h.01" />
+                                                <path d="M9.5 15c.658 .64 1.56 1 2.5 1s1.842 -.36 2.5 -1" />
                                             </svg>
                                         </span>
                                         <span class="nav-link-title">

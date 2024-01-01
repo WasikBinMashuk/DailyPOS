@@ -52,16 +52,15 @@ class PosController extends Controller
         $search = $request->search;
 
         if ($search == '') {
-            $customers = Customer::orderby('name', 'asc')->select('id', 'name')->limit(5)->get();
+            $customers = Customer::orderby('name', 'asc')->select('id', 'name')->where('status', 1)->limit(5)->get();
         } else {
-            $customers = Customer::orderby('name', 'asc')->select('id', 'name')->where('name', 'like', "%$search%")->orWhere('mobile', 'like', "%$search%")->limit(5)->get();
+            $customers = Customer::orderby('name', 'asc')->select('id', 'name')->where('status', 1)->where('name', 'like', "%$search%")->orWhere('mobile', 'like', "%$search%")->limit(5)->get();
         }
 
         $response = array();
         foreach ($customers as $customer) {
             $response[] = array("value" => $customer->id, "label" => $customer->name);
         }
-        // dd($response);
         return response()->json($response);
     }
 
@@ -95,18 +94,14 @@ class PosController extends Controller
 
     public function autoCompletePosProducts(Request $request)
     {
-
         $search = $request->search;
 
         if ($search == '') {
-            // $products = Product::orderby('product_name', 'asc')->select('id', 'product_name', 'price', 'stock')->limit(5)->get();
             $products = Stock::with('product')->where('branch_id', $request->branch_id)->where('quantity', '>=', '1')
                 ->select('product_id', DB::raw('SUM(quantity) as quantity'))
                 ->groupBy('product_id')
                 ->limit(5)->get();
         } else {
-            // $products = Product::orderby('product_name', 'asc')->select('id', 'product_name', 'price', 'stock')->where('product_name', 'like', "%$search%")->orWhere('product_code', 'like', "%$search%")->limit(5)->get();
-
             $products = Stock::with('product')->where('branch_id', $request->branch_id)->where('quantity', '>=', '1')
                 ->whereHas('product', function ($query) use ($search) {
                     $query->where('product_name', 'like', "%$search%")->orWhere('product_code', 'like', "%$search%");
@@ -120,7 +115,6 @@ class PosController extends Controller
         foreach ($products as $product) {
             $response[] = array("value" => $product->product->id, "label" => $product->product->product_name, "price" => $product->product->price, "stock" => $product->quantity);
         }
-        // dd($response);
         return response()->json($response);
     }
 

@@ -14,8 +14,8 @@
                             <div class="d-inline">
                                 {{-- <a class="btn btn-info" href="{{ route('sells.create') }}">Add</a> --}}
                                 {{-- Branch --}}
-                                <span class="badge bg-light text-dark fw-semibold fs-4">{{ $branch->branch_name }}
-                                    Branch</span>
+                                {{-- <span class="badge bg-light text-dark fw-semibold fs-4">{{ $branch->branch_name }}
+                                    Branch</span> --}}
                             </div>
 
                         </div>
@@ -42,10 +42,18 @@
                                         <td>{{ $sell->id }}</td>
                                         <td>{{ $sell->customer_id }}</td>
                                         <td>{{ $sell->customer->name }}</td>
-                                        <td>{{ $sell->sellPayment->payment_method }}</td>
-                                        <td>{{ $sell->sellPayment->due }}</td>
-                                        <td>{{ $sell->sellPayment->paid }}</td>
-                                        <td>{{ $sell->subtotal }}</td>
+                                        <td><span class="text-capitalize">{{ $sell->sellPayment->payment_method }}</span>
+                                        </td>
+                                        <td>
+                                            @if ($sell->sellPayment->due > 0.0)
+                                                <span
+                                                    class="badge bg-warning fs-5 me-3">{{ $sell->sellPayment->due }}&#2547;</span>
+                                            @else
+                                                {{ $sell->sellPayment->due }}
+                                            @endif
+                                        </td>
+                                        <td>{{ $sell->sellPayment->paid }}&#2547;</td>
+                                        <td>{{ $sell->subtotal }}&#2547;</td>
                                         <td class="d-flex gap-1">
                                             <a href="{{ route('sells.show', $sell->id) }}" class="btn btn-info">
                                                 <i class="fa-regular fa-eye" style="color: #ffffff;"></i>
@@ -53,7 +61,8 @@
                                             <form action="{{ route('sells.update', $sell->id) }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
-                                                <button type="submit" class="btn btn-success form-submit-sweetAlert">
+                                                <button type="submit" class="btn btn-success form-submit-sweetAlert"
+                                                    @if ($sell->sellPayment->due <= 0.0) disabled @endif>
                                                     Clear Dues
                                                 </button>
                                             </form>

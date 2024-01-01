@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class=" card-header justify-content-between ">
                         <div>
-                            <h3 class="card-title">Suppliers</h3>
+                            <h3 class="card-title">Supplier List ({{ $suppliers->total() }})</h3>
                         </div>
                         <div>
 

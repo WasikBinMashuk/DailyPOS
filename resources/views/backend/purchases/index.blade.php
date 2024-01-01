@@ -42,12 +42,14 @@
                                         <td>{{ $purchase->date }}</td>
                                         <td>
                                             @if ($purchase->status == 'received')
-                                                <span class="badge bg-success">Received</span>
+                                                <span
+                                                    class="badge bg-success text-capitalize">{{ $purchase->status }}</span>
                                             @else
-                                                <span class="badge bg-warning">Pending</span>
+                                                <span
+                                                    class="badge bg-warning text-capitalize">{{ $purchase->status }}</span>
                                             @endif
                                         </td>
-                                        <td>{{ $purchase->payment_method }}</td>
+                                        <td><span class="text-uppercase">{{ $purchase->payment_method }}</span></td>
                                         <td>{{ $purchase->subtotal }}</td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="Purchase Actions">
@@ -55,18 +57,10 @@
                                                     class="btn btn-primary">
                                                     <i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i>
                                                 </a>
-                                                <a href="{{ route('purchases.show', $purchase->id) }}" class="btn btn-info">
+                                                <a href="{{ route('purchases.show', $purchase->id) }}"
+                                                    class="btn btn-info">
                                                     <i class="fa-regular fa-eye" style="color: #ffffff;"></i>
                                                 </a>
-                                                {{-- <form action="{{ route('purchases.destroy', $purchase->id) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger"
-                                                        onclick="return confirm('Are you sure to delete this user?')">
-                                                        <i class="fa-regular fa-trash-can" style="color: #ffffff;"></i>
-                                                    </button>
-                                                </form> --}}
                                             </div>
                                         </td>
                                     </tr>
