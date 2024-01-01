@@ -616,7 +616,7 @@
 
             // Make an AJAX request to store data in the database
             $.ajax({
-                url: '/pos/store-data',
+                url: "{{ route('pos.store') }}",
                 type: 'POST',
                 data: {
                     _token: CSRF_TOKEN,

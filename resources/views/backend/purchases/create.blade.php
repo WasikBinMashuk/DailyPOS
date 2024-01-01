@@ -455,7 +455,7 @@
 
             // Make an AJAX request to store data in the database
             $.ajax({
-                url: '/purchases/store-data',
+                url: "{{ route('purchases.store') }}",
                 type: 'POST',
                 data: {
                     _token: CSRF_TOKEN,

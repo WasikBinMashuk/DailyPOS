@@ -118,7 +118,7 @@ Route::group(['middleware' => ['auth']], function () {
     //Purchase crud routes
     Route::resource('purchases', PurchaseController::class);
     // Route::post('/purchases/submit-form', [PurchaseController::class, 'formSubmit'])->name('purchase.cart');
-    Route::post('/purchases/store-data', [PurchaseController::class, 'storeData']);
+    Route::post('/purchases/store-data', [PurchaseController::class, 'storeData'])->name('purchases.store');
     Route::post('/purchases/autocomplete/products', [PurchaseController::class, 'autoCompleteProducts'])->name('autoComplete.product');
 
 
@@ -134,7 +134,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/pos/autocomplete/products', [PosController::class, 'autoCompletePosProducts'])->name('autoComplete.pos.product');
     Route::get('/pos/product/filter', [PosController::class, 'productFilter'])->name('pos.product.filter');
     Route::get('/pos/products', [PosController::class, 'productFetch'])->name('pos.products');
-    Route::post('/pos/store-data', [PosController::class, 'storeData']);
+    Route::post('/pos/store-data', [PosController::class, 'storeData'])->name('pos.store');
 
     // Sell
     Route::resource('sells', SellController::class);
