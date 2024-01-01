@@ -178,112 +178,6 @@
         // @formatter:on
     </script>
 
-
-    {{-- <script>
-        function submitForm() {
-            let formData = new FormData(document.getElementById('myForm'));
-
-            // Make an AJAX request to submit the form data
-            $.ajax({
-                url: '/purchases/submit-form',
-                type: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    // Handle the response, update the table, etc.
-                    updateTable(response.data);
-
-                    // Clear previous errors
-                    $('.error-message').text('');
-
-                    // Clear the form
-                    clearForm();
-                },
-                error: function(data) {
-                    if (data.status === 422) {
-                        var errors = data.responseJSON.errors;
-
-                        // Clear previous errors
-                        $('.error-message').text('');
-
-                        // Display errors in your form
-                        $.each(errors, function(key, value) {
-                            // You can customize how you want to display the errors here
-                            $('#' + key + '_error').text(value[0]);
-                        });
-                    } else {
-                        // Handle other errors
-                    }
-                }
-            });
-        }
-
-        function clearForm() {
-            // Reset the form to clear all input fields
-            document.getElementById('myForm').reset();
-        }
-
-        function updateTable(data) {
-            // Update the table with the submitted data
-            // You can append a new row to an existing table or update it as needed
-            let newRow = `<tr>
-                            <td>${data.supplier_id}</td>
-                            <td>${data.product_name}</td>
-                            <td>${data.quantity}</td>
-                            <td>${data.price}</td>
-                            <td>${data.total_price}</td>
-                            <td><button onclick="deleteRow(this)" class="btn btn-danger">Delete</button></td>
-                        </tr>`;
-
-            // Assuming you have a table with the id 'dataTable'
-            $('#dataTable tbody').append(newRow);
-        }
-
-        function deleteRow(button) {
-            // Get the row to be deleted
-            var row = button.parentNode.parentNode;
-
-            // Remove the row from the table
-            row.parentNode.removeChild(row);
-        }
-
-        function storeDataInDatabase() {
-            // Get all rows from the table
-            let tableData = [];
-            $('#dataTable tbody tr').each(function() {
-                let rowData = {
-                    supplier_id: $(this).find('td:eq(0)').text(),
-                    product_name: $(this).find('td:eq(1)').text(),
-                    quantity: $(this).find('td:eq(2)').text(),
-                    price: $(this).find('td:eq(3)').text(),
-                    total_price: $(this).find('td:eq(4)').text(),
-                };
-                tableData.push(rowData);
-            });
-
-            // Make an AJAX request to store data in the database
-            $.ajax({
-                url: '/purchases/store-data',
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: {
-                    data: tableData
-                },
-                success: function(response) {
-                    // Handle the response, e.g., show a success message
-                    // console.log(response.message);
-                },
-                error: function(error) {
-                    // Handle the error
-                    console.error(error);
-                }
-            });
-        }
-    </script> --}}
-
     {{-- JQuery autocomplete UI, Update dependant table --}}
     <script type="text/javascript">
         // CSRF Token
@@ -494,6 +388,4 @@
             });
         }
     </script>
-
-    <script type="text/javascript"></script>
 @endsection

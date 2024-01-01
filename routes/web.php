@@ -140,7 +140,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('sells', SellController::class);
 
     // PDF
-    Route::post('/pdf/download', [PdfController::class, 'downloadInvoice']);
+    Route::post('/pdf/download', [PdfController::class, 'downloadInvoice'])->name('pdf.download');
 
     // Roles routes with role of Super Admin only
     Route::group(['middleware' => 'role:Super Admin'], function () {

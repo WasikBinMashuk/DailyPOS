@@ -627,7 +627,7 @@
                     // console.log(response.message);
                     var sell_id = response.id;
                     $.ajax({
-                        url: '/pdf/download',
+                        url: "{{ route('pdf.download') }}",
                         type: 'POST',
                         data: {
                             _token: CSRF_TOKEN,
