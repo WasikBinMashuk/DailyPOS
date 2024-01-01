@@ -49,6 +49,8 @@
                                     @enderror
                                     <span class="input-group-text">
                                         <a href="#" class="link-secondary" title="Show password"
+                                            onmousedown="showPassword()" onmouseup="hidePassword()"
+                                            onmouseout="hidePassword()"
                                             data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                 height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -138,6 +140,31 @@
                     }
                 });
             });
+        </script>
+
+        {{-- Password hide-show toggle script --}}
+        <script>
+            var isMouseDown = false;
+
+            function showPassword() {
+                var passwordInput = document.getElementById('password');
+                var icon = document.querySelector('.link-secondary svg');
+
+                passwordInput.type = 'text';
+                icon.classList.add('text-primary'); // You can add a class to change the icon color
+                isMouseDown = true;
+            }
+
+            function hidePassword() {
+                if (isMouseDown) {
+                    var passwordInput = document.getElementById('password');
+                    var icon = document.querySelector('.link-secondary svg');
+
+                    passwordInput.type = 'password';
+                    icon.classList.remove('text-primary'); // Remove the class to revert the icon color
+                    isMouseDown = false;
+                }
+            }
         </script>
     </body>
 @endsection
