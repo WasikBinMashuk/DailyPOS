@@ -13,20 +13,9 @@ class SubCategoryController extends Controller
 
     public function index(Request $request)
     {
-        // $subCategories = Category::select('categories.id', 'categories.category_name', 'sub_categories.sub_category_name', 'sub_categories.id', 'sub_categories.category_id')
-        // ->Join('sub_categories', 'categories.id', '=', 'sub_categories.category_id')
-        // ->orderBy('categories.category_name', 'ASC')
-        // ->orderBy('sub_categories.sub_category_name', 'ASC')
-        // ->paginate(10);
-
-        //query with relationship eloquent
         $subCategories = SubCategory::with('category')
             ->orderBy('sub_category_name', 'ASC')
             ->paginate(10);
-
-        // $categories = Category::with('subCategories')
-        //     ->orderBy('category_name', 'ASC')
-        //     ->paginate(10);
         return view('backend.categories.Subcategories', compact('subCategories'));
     }
 
@@ -39,7 +28,6 @@ class SubCategoryController extends Controller
 
     public function storeSubCat(Request $request)
     {
-
         $request->validate([
             'category_id' => 'required|integer',
             'sub_category_name' => 'required|string|min:1|max:255',
@@ -64,7 +52,6 @@ class SubCategoryController extends Controller
     public function edit($id)
     {
         try {
-            // $editCategory = SubCategory::where('id', $id)->first();
             $editCategory = SubCategory::findOrFail($id);
 
             $categories = Category::all();

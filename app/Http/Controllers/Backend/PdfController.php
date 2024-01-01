@@ -12,7 +12,6 @@ class PdfController extends Controller
 {
     public function downloadInvoice(Request $request)
     {
-        // dd($request->sell_id);
         $pdfData = DB::table('sells as a')
             ->select('d.name as customer_name', 'd.email as customer_email', 'd.mobile as customer_mobile', 'e.branch_name', 'c.product_name', 'b.quantity', 'b.price', 'b.total_price', 'a.subtotal', 'f.payment_method', 'f.due')
             ->leftJoin('sell_details as b', 'a.id', '=', 'b.sell_id')
@@ -22,6 +21,7 @@ class PdfController extends Controller
             ->leftJoin('sell_payments as f', 'a.id', '=', 'f.sell_id')
             ->where('a.id', '=', $request->sell_id)
             ->get();
+
         $date = now()->format('d-m-Y');
         $pdf = Pdf::loadView('backend.invoice.invoicePDF', compact('pdfData', 'date'));
         $pdfTitle = 'billing-invoice-' . now() . '.pdf';

@@ -35,10 +35,6 @@ class DashboardController extends Controller
 
         $totalProducts = Stock::where('branch_id', $defaultBranch->id)->where('quantity', '>', '0')->count();
 
-        // $totalProductStockOut = Stock::whereHas('branch', function ($query) {
-        //     $query->where('default', 1);
-        // })->where('quantity', '0')->count();
-
         $totalProductStockOut = Stock::selectRaw('SUM(quantity) as total_quantity, product_id')
             ->where('branch_id', $defaultBranch->id)
             ->groupBy('product_id')

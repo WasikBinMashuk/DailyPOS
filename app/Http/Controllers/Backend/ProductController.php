@@ -73,8 +73,6 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-
-
         $request->validate([
             'category_id' => 'required|integer',
             'sub_category_id' => 'required|integer',
@@ -121,7 +119,6 @@ class ProductController extends Controller
     public function edit($id)
     {
         try {
-            // $editProduct = Product::where('id', $id)->first();
             $editProduct = Product::findOrFail($id);
 
             $categories = Category::all();
