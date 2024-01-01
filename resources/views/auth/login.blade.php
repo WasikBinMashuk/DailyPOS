@@ -48,7 +48,7 @@
                                         </span>
                                     @enderror
                                     <span class="input-group-text">
-                                        <a href="#" class="link-secondary" title="Show password"
+                                        <a href="javascript:void(0)" class="link-secondary" title="Show password"
                                             onmousedown="showPassword()" onmouseup="hidePassword()"
                                             onmouseout="hidePassword()"
                                             data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
