@@ -636,14 +636,14 @@
                         success: function() {
                             console.log('PDF download AJAX call completed');
                         },
-                        error: function(error) {
+                        error: function(data) {
                             console.log('error in pdf download ajax call');
-                            console.log(error);
+                            console.log(data);
                         }
                     });
 
                     // Reload the page
-                    // location.reload();
+                    location.reload();
 
                     $(".loader-div").hide(); // hide loader
                 },
