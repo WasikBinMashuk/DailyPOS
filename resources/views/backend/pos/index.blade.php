@@ -642,7 +642,7 @@
                     });
 
                     // Reload the page
-                    location.reload();
+                    // location.reload();
 
                     $(".loader-div").hide(); // hide loader
                 },
