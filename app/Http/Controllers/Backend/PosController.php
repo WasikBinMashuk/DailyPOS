@@ -192,7 +192,7 @@ class PosController extends Controller
 
         // sweet alert
         // toast('Product Sold!', 'success');
-        Alert::success('Product Sold!', '');
+        // Alert::success('Product Sold!', '');
         return response()->json(['success' => true, 'message' => 'Product sold successfully', 'id' => $sell->id]);
     }
 }
