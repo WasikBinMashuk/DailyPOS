@@ -638,6 +638,7 @@
                         },
                         error: function(data) {
                             console.log('error in pdf download ajax call');
+                            console.log(data.responseJSON.errors;);
                         }
                     });
 
