@@ -120,7 +120,7 @@ class PosController extends Controller
 
     public function storeData(Request $request)
     {
-        session()->put('trigger', true); //using to handle success alert, check PdfController
+        // session()->put('trigger', true); //using to handle success alert, check PdfController
 
         if (!$request->filled('data')) {
             return response()->json(['errors' => 'no data found'], 406);

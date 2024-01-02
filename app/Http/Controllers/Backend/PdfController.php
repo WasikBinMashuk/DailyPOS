@@ -32,13 +32,13 @@ class PdfController extends Controller
              * using this session to handle this alert because when we press the download button this code runs again
              *so using this session as a trigger. Starting from posController and forgeting after executing once
              */
-            if (session()->has('trigger')) {
-                Alert::success('Product Sold!', '');
-            }
-            session()->forget('trigger');
+            // if (session()->has('trigger')) {
+            //     Alert::success('Product Sold!', '');
+            // }
+            // session()->forget('trigger');
 
-            // return $pdf->download($pdfTitle);
-            return $pdf->stream($pdfTitle);
+            return $pdf->download($pdfTitle);
+            // return $pdf->stream($pdfTitle);
         } catch (Exception $e) {
             // dd($e->getMessage());
             return response()->json(['errors' => $e->getMessage()]);

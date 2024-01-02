@@ -636,9 +636,9 @@
                         success: function() {
                             console.log('PDF download AJAX call completed');
                         },
-                        error: function(data) {
+                        error: function(error) {
                             console.log('error in pdf download ajax call');
-                            console.log(data.responseJSON.errors);
+                            console.log(error);
                         }
                     });
 
