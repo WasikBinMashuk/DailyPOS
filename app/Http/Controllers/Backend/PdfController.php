@@ -35,6 +35,7 @@ class PdfController extends Controller
         }
         session()->forget('trigger');
 
-        return $pdf->download($pdfTitle);
+        // return $pdf->download($pdfTitle);
+        return $pdf->stream($pdfTitle);
     }
 }
