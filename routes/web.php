@@ -71,11 +71,11 @@ Route::group(['middleware' => ['auth']], function () {
 
     // users CRUD routes
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/create', [UserController::class, 'create'])->name('users.create')->middleware('role:Super Admin');
-    Route::post('/users/store', [UserController::class, 'store'])->name('users.store')->middleware('role:Super Admin');
-    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit')->middleware('role:Super Admin');
-    Route::put('/users/update', [UserController::class, 'update'])->name('users.update')->middleware('role:Super Admin');
-    Route::get('/users/{id}/delete', [UserController::class, 'delete'])->name('users.delete')->middleware('role:Super Admin');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create')->middleware('permission:user create');
+    Route::post('/users/store', [UserController::class, 'store'])->name('users.store')->middleware('permission:user create');
+    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit')->middleware('permission:user edit');
+    Route::put('/users/update', [UserController::class, 'update'])->name('users.update')->middleware('permission:user edit');
+    Route::get('/users/{id}/delete', [UserController::class, 'delete'])->name('users.delete')->middleware('permission:user delete');
 
     // change password routes
     Route::get('/changePassword', [UserController::class, 'changePassword'])->name('changePassword');
@@ -145,13 +145,20 @@ Route::group(['middleware' => ['auth']], function () {
     // Roles routes with role of Super Admin only
     Route::group(['middleware' => 'role:Super Admin'], function () {
         Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+        // Route::get('/roles/show', [RoleController::class, 'rolesShow'])->name('roles.show');
+        // Route::get('/roles/edit/{id}', [RoleController::class, 'roleEdit'])->name('roles.edit');
+        // Route::put('/roles/update/{id}', [RoleController::class, 'roleUpdate'])->name('roles.update');
         Route::post('/roles/store', [RoleController::class, 'store'])->name('roles.store');
         Route::post('/roles/permission/store', [RoleController::class, 'permissionStore'])->name('permission.store');
         Route::post('/roles/permissions/store', [RoleController::class, 'rolePermissionStore'])->name('roles.permission.store');
+        Route::post('/user/roles/store', [RoleController::class, 'userRoleStore'])->name('user.role.store');
+        Route::post('/user/permissions/store', [RoleController::class, 'userPermissionStore'])->name('user.permissions.store');
     });
 
     // Dependant Role-Permission Checkbox AJAX call route
-    Route::post('/getRole', [RoleController::class, 'getRole']);
+    Route::post('/getPermissions', [RoleController::class, 'getPermissions']);
+    Route::post('/getUserRole', [RoleController::class, 'getUserRole']);
+    Route::post('/getUserPermission', [RoleController::class, 'getUserPermission']);
 });
 
 
