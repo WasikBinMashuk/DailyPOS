@@ -20,9 +20,20 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
+        $categories = Category::all();
 
         if ($request->ajax()) {
-            $products = Product::with(['category', 'subCategory'])->get();
+            $status = $request->status; // Get the status filter value
+
+            $productsQuery = Product::with(['category', 'subCategory']);
+
+            // Apply status filter if selected
+            if ($status !== null) {
+                $productsQuery->where('status', $status);
+            }
+
+            $products = $productsQuery->get();
+
             return DataTables::of($products)
                 ->addColumn('product_image', function (Product $product) {
 
@@ -54,14 +65,14 @@ class ProductController extends Controller
                     $actionBtn = '<div class="btn-group" role="group" aria-label="Basic mixed styles example">
                 <a href="' . route('product.edit', $product->id) . '" class="btn btn-primary"><i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i></a>
                 <a href="' . route('product.delete', $product->id) . '" class="btn btn-danger" onclick="confirmation(event)"><i class="fa-regular fa-trash-can" style="color: #ffffff;"></i></a>
-              </div>';
+                </div>';
                     return $actionBtn;
                 })
                 ->rawColumns(['action', 'status', 'product_image', 'trendy', 'price'])
                 ->toJson();
         }
 
-        return view('backend.products.index');
+        return view('backend.products.index', compact('categories'));
     }
 
     public function create()
@@ -135,7 +146,6 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
-
         $request->validate([
             'category_id' => 'required|integer',
             'sub_category_id' => 'required|integer',

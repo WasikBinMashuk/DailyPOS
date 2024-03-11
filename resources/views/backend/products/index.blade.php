@@ -3,6 +3,37 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center mt-5">
+            <div class="col-md-12 mb-5">
+                <div class="card">
+                    <div class=" card-header justify-content-between ">
+                        <div class="d-flex">
+                            <div class="">
+                                <h3 class="card-title">Filters</h3>
+                            </div>
+                        </div>
+                        <div>
+                            {{-- <div class="d-inline">
+                                <a class="btn btn-info" href="#">Add</a>
+                            </div> --}}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div>
+                                    <select name="status" id="status" class="form-select">
+                                        <option value="" selected disabled>Select Status</option>
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
             <div class="col-md-12">
                 <div class="card">
                     <div class=" card-header justify-content-between ">
@@ -52,7 +83,10 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ URL::to('/products') }}"
+                    url: "{{ URL::to('/products') }}",
+                    data: function(d) {
+                        d.status = $('#status').val(); // Send the status filter value
+                    }
                 },
                 columns: [
 
@@ -100,6 +134,11 @@
                     // alert('DataTables has finished its initialisation.');
                     document.getElementById("totalRecords").innerHTML = table.page.info().recordsTotal;
                 }
+            });
+
+            // Handle change event of status filter
+            $('#status').on('change', function() {
+                table.ajax.reload(); // Reload table data when status filter changes
             });
         });
     </script>
