@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\LogHelper;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\OrderController;
@@ -40,7 +41,8 @@ Route::get('/empty-cart', [CartController::class, 'emptyCart'])->middleware('api
 
 
 
-Route::get('/messages', function () {
+Route::post('/messages', function () {
+    LogHelper::logEntry(LogHelper::LOG_INFO, "Messages api");
     return response()->json([
         'message' => 'Hello from the other side...',
         'status_code' => 200,
